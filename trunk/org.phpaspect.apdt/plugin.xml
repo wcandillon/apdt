@@ -61,7 +61,7 @@
       </category>
       <wizard
             category="org.phpaspect.apdt"
-            class="org.phpaspect.apdt.wizards.PHPaspectNewWizard"
+            class="org.phpaspect.apdt.ui.wizards.PHPaspectNewWizard"
             icon="icons/new_aspect_wizard.gif"
             id="org.phpaspect.apdt.wizards.PHPaspectNewWizard"
             name="Aspect">
