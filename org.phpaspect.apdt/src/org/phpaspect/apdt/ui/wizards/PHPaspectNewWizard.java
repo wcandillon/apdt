@@ -1,4 +1,4 @@
-package org.phpaspect.apdt.wizards;
+package org.phpaspect.apdt.ui.wizards;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;

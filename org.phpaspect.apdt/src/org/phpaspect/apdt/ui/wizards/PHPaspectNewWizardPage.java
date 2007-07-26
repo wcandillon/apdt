@@ -1,4 +1,4 @@
-package org.phpaspect.apdt.wizards;
+package org.phpaspect.apdt.ui.wizards;
 
 import java.net.MalformedURLException;
 import java.net.URL;
