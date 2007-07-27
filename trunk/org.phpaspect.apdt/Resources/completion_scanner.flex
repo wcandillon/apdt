@@ -9,10 +9,10 @@
  *   Zend and IBM - Initial implementation
  *******************************************************************************/
 
-package org.phpaspect.apdt.core.model.parser;
+package org.phpaspect.apdt.core.parser;
 
 import java_cup.runtime.Symbol;
-import org.phpaspect.apdt.core.model.parser.PHPAspectSymbols;
+import org.phpaspect.apdt.core.parser.PHPAspectSymbols;
 import org.eclipse.php.internal.core.util.collections.IntHashtable;
 import org.eclipse.php.internal.core.phpModel.parser.ParserClient;
 import org.eclipse.php.internal.core.phpModel.parser.StateStack;
@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
 %%
 
 %class CompletionLexerPHPAspect
-%extends CompletionLexer
 %public
 %unicode
 %line
@@ -321,9 +320,9 @@ import java.util.regex.Pattern;
         int leftPosition = getTokenStartPosition();
         if (lastPhpDocText != null) {
             if(lastPhpDocText == firstPhpDocText) {
-                if(symbolNumber == ParserConstants5.T_FUNCTION ||
-                        symbolNumber == ParserConstants5.T_CLASS ||
-                        symbolNumber == ParserConstants5.T_DEFINE){
+                if(symbolNumber == PHPAspectSymbols.T_FUNCTION ||
+                        symbolNumber == PHPAspectSymbols.T_CLASS ||
+                        symbolNumber == PHPAspectSymbols.T_DEFINE){
                     phpDocs.put(leftPosition, lastPhpDocText);
                     phpDocsStart.put(leftPosition, new Integer(lastPhpDocStart.intValue()));
                     firstPhpDocText = null;
@@ -334,7 +333,7 @@ import java.util.regex.Pattern;
             }
             lastPhpDocText = null;
         }
-        if(noSymboles && symbolNumber != ParserConstants5.T_INLINE_HTML){	// T_INLINE_HTML doesn't infect the phpDoc 
+        if(noSymboles && symbolNumber != PHPAspectSymbols.T_INLINE_HTML){	// T_INLINE_HTML doesn't infect the phpDoc 
         	noSymboles = false;        
         }
         return new Symbol(symbolNumber, leftPosition, leftPosition + getTokenLength());
@@ -381,27 +380,27 @@ NEWLINE=("\r"|"\n"|"\r\n")
 %%
 
 <ST_IN_SCRIPTING>"exit" {
-	return createSymbol(ParserConstants5.T_EXIT);
+	return createSymbol(PHPAspectSymbols.T_EXIT);
 }
 
 <ST_IN_SCRIPTING>"die" {
-	return createSymbol(ParserConstants5.T_EXIT);
+	return createSymbol(PHPAspectSymbols.T_EXIT);
 }
 
 <ST_IN_SCRIPTING>"function"|"cfunction" {
-	return createSymbol(ParserConstants5.T_FUNCTION);
+	return createSymbol(PHPAspectSymbols.T_FUNCTION);
 }
 
 <ST_IN_SCRIPTING>"const" {
-	return createSymbol(ParserConstants5.T_CONST);
+	return createSymbol(PHPAspectSymbols.T_CONST);
 }
 
 <ST_IN_SCRIPTING>"return" {
-	return createSymbol(ParserConstants5.T_RETURN);
+	return createSymbol(PHPAspectSymbols.T_RETURN);
 }
 
 <ST_IN_SCRIPTING>"try" {
-	return createSymbol(ParserConstants5.T_TRY);
+	return createSymbol(PHPAspectSymbols.T_TRY);
 }
 
 <ST_IN_SCRIPTING>"catch" {
