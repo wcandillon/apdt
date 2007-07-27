@@ -67,5 +67,15 @@
             name="Aspect">
       </wizard>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            file-extensions="ap"
+            id="org.phpaspect.apdt.content-type1"
+            name="PHPAspect"
+            priority="high">
+      </content-type>
+   </extension>
 
 </plugin>

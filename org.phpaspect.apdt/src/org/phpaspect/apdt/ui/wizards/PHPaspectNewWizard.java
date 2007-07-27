@@ -2,6 +2,7 @@ package org.phpaspect.apdt.ui.wizards;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.core.runtime.*;
@@ -29,6 +30,7 @@ import org.eclipse.ui.ide.IDE;
 public class PHPaspectNewWizard extends Wizard implements INewWizard {
 	private PHPaspectNewWizardPage page;
 	private ISelection selection;
+	private String fileName;
 
 	/**
 	 * Constructor for PHPaspectNewWizard.
@@ -91,6 +93,7 @@ public class PHPaspectNewWizard extends Wizard implements INewWizard {
 		throws CoreException {
 		// create a sample file
 		monitor.beginTask("Creating " + fileName, 2);
+		this.fileName = fileName;
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IResource resource = root.findMember(new Path(containerName));
 		if (!resource.exists() || !(resource instanceof IContainer)) {
@@ -122,14 +125,15 @@ public class PHPaspectNewWizard extends Wizard implements INewWizard {
 		});
 		monitor.worked(1);
 	}
-	
+
 	/**
 	 * We will initialize file contents with a sample text.
 	 */
 
 	private InputStream openContentStream() {
+		String aspectName = fileName.substring(0, 1).toUpperCase()+fileName.replace(".ap", "").substring(1);
 		String contents =
-			"This is the initial file contents for *.ap file that should be word-sorted in the Preview page of the multi-page editor";
+			"<?php\naspect "+aspectName+"{\n\n}\n?>";
 		return new ByteArrayInputStream(contents.getBytes());
 	}
 
