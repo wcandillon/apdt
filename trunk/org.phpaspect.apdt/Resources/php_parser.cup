@@ -119,7 +119,7 @@ parser code {:
     class DefaultErrorStrategy implements ErrorStrategy {
 
         public boolean errorRecovery(boolean debug) throws Exception {
-            return PhpParser5.super.error_recovery(debug);
+            return PHPAspectParser.super.error_recovery(debug);
         }
     }
 
@@ -611,9 +611,9 @@ T_CURLY_OPEN class_statement_list T_CURLY_CLOSE:end_curly
 ;
 
 class_entry_type ::=
-T_CLASS                     {: RESULT = PhpParser5.ZERO_INTEGER; :}
-| T_ABSTRACT T_CLASS        {: RESULT = PhpParser5.ABSTRACT_INTEGER; :}
-| T_FINAL T_CLASS           {: RESULT = PhpParser5.FINAL_INTEGER; :}
+T_CLASS                     {: RESULT = PHPAspectParser.ZERO_INTEGER; :}
+| T_ABSTRACT T_CLASS        {: RESULT = PHPAspectParser.ABSTRACT_INTEGER; :}
+| T_FINAL T_CLASS           {: RESULT = PHPAspectParser.FINAL_INTEGER; :}
 ;
 
 extends_from ::=
@@ -623,7 +623,7 @@ extends_from ::=
 ;
 
 interface_entry ::=
-	T_INTERFACE             {: RESULT = PhpParser5.INTERFACE_INTEGER; :}
+	T_INTERFACE             {: RESULT = PHPAspectParser.INTERFACE_INTEGER; :}
 ;
 
 interface_extends_list ::=
@@ -865,12 +865,12 @@ variable_modifiers ::=
 non_empty_member_modifiers:modifier
 {: RESULT = modifier; :}
 | T_VAR
-{: RESULT = PhpParser5.ZERO_INTEGER; :}
+{: RESULT = PHPAspectParser.ZERO_INTEGER; :}
 ;
 
 method_modifiers ::=
 /* empty */
-{: RESULT = PhpParser5.ZERO_INTEGER; :}
+{: RESULT = PHPAspectParser.ZERO_INTEGER; :}
 | non_empty_member_modifiers:modifier
 {: RESULT = modifier; :}
 ;
@@ -884,17 +884,17 @@ member_modifier:modofier
 
 member_modifier ::=
 T_PUBLIC
-{: RESULT = PhpParser5.PUBLIC_INTEGER; :}
+{: RESULT = PHPAspectParser.PUBLIC_INTEGER; :}
 | T_PROTECTED
-{: RESULT = PhpParser5.PROTECTED_INTEGER; :}
+{: RESULT = PHPAspectParser.PROTECTED_INTEGER; :}
 | T_PRIVATE
-{: RESULT = PhpParser5.PRIVATE_INTEGER; :}
+{: RESULT = PHPAspectParser.PRIVATE_INTEGER; :}
 | T_STATIC
-{: RESULT = PhpParser5.STATIC_INTEGER; :}
+{: RESULT = PHPAspectParser.STATIC_INTEGER; :}
 | T_ABSTRACT
-{: RESULT = PhpParser5.ABSTRACT_INTEGER; :}
+{: RESULT = PHPAspectParser.ABSTRACT_INTEGER; :}
 | T_FINAL
-{: RESULT = PhpParser5.FINAL_INTEGER; :}
+{: RESULT = PHPAspectParser.FINAL_INTEGER; :}
 ;
 
 class_variable_declaration ::=
