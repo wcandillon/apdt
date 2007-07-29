@@ -77,5 +77,16 @@
             priority="high">
       </content-type>
    </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.phpaspect.apdt.editors.PHPAspectEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            extensions="ap"
+            icon="icons/phpaspectfile.gif"
+            id="org.phpaspect.apdt.editors.PHPAspectEditor"
+            name="PHPAspect Editor">
+      </editor>
+   </extension>
 
 </plugin>

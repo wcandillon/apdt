@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.phpaspect.apdt.core.parser.PHPAspectParser;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -84,7 +85,9 @@ public class PHPAspectBuilder extends IncrementalProjectBuilder {
 
 	public static final String BUILDER_ID = "org.phpaspect.apdt.phpAspectBuilder";
 
-	private static final String MARKER_TYPE = "org.phpaspect.apdt.xmlProblem";
+	private static final String MARKER_TYPE = "org.phpaspect.apdt.aspectProblem";
+	
+	private PHPAspectParser parser;
 
 	private SAXParserFactory parserFactory;
 
@@ -129,7 +132,21 @@ public class PHPAspectBuilder extends IncrementalProjectBuilder {
 			deleteMarkers(file);
 			XMLErrorHandler reporter = new XMLErrorHandler(file);
 			try {
-				getParser().parse(file.getContents(), reporter);
+				//getParser().parse(file.getContents(), reporter);
+			} catch (Exception e1) {
+			}
+		}
+	}
+	
+	public void checkAspect(IResource resource){
+		if (resource instanceof IFile && resource.getName().endsWith(".ap")) {
+			IFile file = (IFile) resource;
+			deleteMarkers(file);
+			XMLErrorHandler reporter = new XMLErrorHandler(file);
+			try {
+				//
+				getParser().parse();
+				//getParser().parse(file.getContents(), reporter);
 			} catch (Exception e1) {
 			}
 		}
@@ -150,12 +167,11 @@ public class PHPAspectBuilder extends IncrementalProjectBuilder {
 		}
 	}
 
-	private SAXParser getParser() throws ParserConfigurationException,
-			SAXException {
-		if (parserFactory == null) {
-			parserFactory = SAXParserFactory.newInstance();
+	private PHPAspectParser getParser(){
+		if (parser == null) {
+			parser = new PHPAspectParser();
 		}
-		return parserFactory.newSAXParser();
+		return parser;
 	}
 
 	protected void incrementalBuild(IResourceDelta delta,
