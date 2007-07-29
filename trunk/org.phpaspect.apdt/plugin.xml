@@ -72,7 +72,7 @@
       <content-type
             base-type="org.eclipse.core.runtime.text"
             file-extensions="ap"
-            id="org.phpaspect.apdt.content-type1"
+            id="org.phpaspect.apdt.content-type.aspect"
             name="PHPAspect"
             priority="high">
       </content-type>
@@ -86,6 +86,9 @@
             icon="icons/phpaspectfile.gif"
             id="org.phpaspect.apdt.editors.PHPAspectEditor"
             name="PHPAspect Editor">
+         <contentTypeBinding
+               contentTypeId="org.phpaspect.apdt.content-type.aspect">
+         </contentTypeBinding>
       </editor>
    </extension>
 </plugin>
