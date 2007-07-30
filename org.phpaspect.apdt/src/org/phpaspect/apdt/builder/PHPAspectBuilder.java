@@ -144,8 +144,7 @@ public class PHPAspectBuilder extends IncrementalProjectBuilder {
 			deleteMarkers(file);
 			XMLErrorHandler reporter = new XMLErrorHandler(file);
 			try {
-				//
-				getParser().parse();
+				//getParser().parse();
 				//getParser().parse(file.getContents(), reporter);
 			} catch (Exception e1) {
 			}
