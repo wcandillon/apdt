@@ -11,7 +11,8 @@
 
 package org.phpaspect.apdt.core.parser;
 
-import java_cup.runtime.Symbol;
+import org.eclipse.php.internal.core.phpModel.javacup.runtime.Symbol;
+import org.eclipse.php.internal.core.phpModel.parser.CompletionLexer;
 import org.phpaspect.apdt.core.parser.PHPAspectSymbols;
 import org.eclipse.php.internal.core.util.collections.IntHashtable;
 import org.eclipse.php.internal.core.phpModel.parser.ParserClient;
@@ -23,15 +24,16 @@ import java.util.regex.Pattern;
 
 %%
 
-%class CompletionLexerPHPAspect
+%class PHPAspectCompletionLexer
+%extends CompletionLexer
 %public
 %unicode
 %line
 
 /* %cup */
-%implements java_cup.runtime.Scanner
+%implements org.eclipse.php.internal.core.phpModel.javacup.runtime.Scanner
 %function next_token
-%type java_cup.runtime.Symbol
+%type org.eclipse.php.internal.core.phpModel.javacup.runtime.Symbol
 %eofval{
     return createSymbol(PHPAspectSymbols.EOF);
 %eofval}
