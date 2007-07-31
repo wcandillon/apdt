@@ -12,6 +12,7 @@ import java.util.StringTokenizer;
 
 import org.eclipse.php.internal.core.phpModel.parser.CompletionLexer;
 import org.eclipse.php.internal.core.phpModel.parser.ParserClient;
+import org.eclipse.php.internal.core.phpModel.parser.PhpParser;
 import org.eclipse.php.internal.core.phpModel.parser.IncludingType;
 import org.eclipse.php.internal.core.phpModel.parser.phpdoc.DocumentorLexer;
 import org.eclipse.php.internal.core.phpModel.phpElementData.PHPDocBlock;
