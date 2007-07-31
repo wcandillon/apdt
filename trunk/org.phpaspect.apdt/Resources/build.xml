@@ -1,25 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="APDTBuild" default="build" basedir=".">
+
+	<property name="lexer" value="completion_scanner.flex" />
+	<property name="parser" value="php_parser.cup" />
+	<property name="lexerName" value="PHPAspectCompletionLexer" />
+	<property name="parserName" value="PHPAspectParser" />
+	<property name="symbolsName" value="PHPAspectSymbols" />
 	<property name="jflex_home" value="jflex-1.3.5/lib/JFlex.jar" />
 	<property name="javacup_home" value="org.eclipse.php.internal.core.phpModel.javacup.Main" />
 	<property name="output_dir" value="../src/org/phpaspect/apdt/core/parser" />
+	<property name="classpath" value="../../org.eclipse.php.core/bin" />
+
 	<target name="build">
 		<java jar="${jflex_home}" fork="true" failonerror="true">
-			<arg value="completion_scanner.flex" />
+			<arg value="${lexer}" />
 		</java>
 		<java classname="${javacup_home}"
-				classpath="../../org.eclipse.php.core/bin"
-				input="php_parser.cup" fork="true" failonerror="true">
+				classpath="${classpath}"
+				input="${parser}" fork="true" failonerror="true">
 			<arg line="-expect 1" />
-			<arg line="-parser PHPAspectParser" />
-			<arg line="-symbols PHPAspectSymbols" />
+			<arg line="-parser ${parserName}" />
+			<arg line="-symbols ${symbolsName}" />
 		</java>
-		<replace file="PHPAspectParser.java">
+		<replace file="${parserName}.java">
  			<replacefilter token="extends java_cup.runtime.lr_parser" value="extends org.eclipse.php.internal.core.phpModel.javacup.runtime.lr_parser implements PhpParser" />
  			<replacefilter token="java_cup" value="org.eclipse.php.internal.core.phpModel.javacup" />
  		</replace>
- 		<move file="PHPAspectParser.java" todir="${output_dir}" />
- 		<move file="PHPAspectSymbols.java" todir="${output_dir}" />
-		<move file="PHPAspectCompletionLexer.java" todir="${output_dir}" />
+ 		<move file="${parserName}.java" todir="${output_dir}" />
+ 		<move file="${symbolsName}.java" todir="${output_dir}" />
+		<move file="${lexerName}.java" todir="${output_dir}" />
 	</target>
 </project>
