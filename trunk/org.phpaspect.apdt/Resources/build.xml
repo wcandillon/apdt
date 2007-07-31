@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="APDTBuild" default="build" basedir=".">
 
-	<property name="lexer" value="completion_scanner.flex" />
-	<property name="parser" value="php_parser.cup" />
+	<property name="lexer" value="phpaspect_scanner.flex" />
+	<property name="parser" value="phpaspect_parser.cup" />
 	<property name="lexerName" value="PHPAspectCompletionLexer" />
 	<property name="parserName" value="PHPAspectParser" />
 	<property name="symbolsName" value="PHPAspectSymbols" />
