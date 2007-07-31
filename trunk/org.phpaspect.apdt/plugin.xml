@@ -80,8 +80,9 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.phpaspect.apdt.editors.PHPAspectEditor"
-            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            class="org.eclipse.php.internal.ui.editor.PHPStructuredEditor"
+            contributorClass="org.eclipse.php.internal.ui.editor.PHPEditorActionBarContributor"
+            default="true"
             extensions="ap"
             icon="icons/phpaspectfile.gif"
             id="org.phpaspect.apdt.editors.PHPAspectEditor"
