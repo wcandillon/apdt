@@ -16,7 +16,6 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.phpaspect.apdt.core.parser.PHPAspectParser;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -87,7 +86,7 @@ public class PHPAspectBuilder extends IncrementalProjectBuilder {
 
 	private static final String MARKER_TYPE = "org.phpaspect.apdt.aspectProblem";
 	
-	private PHPAspectParser parser;
+//	private PHPAspectParser parser;
 
 	private SAXParserFactory parserFactory;
 
@@ -166,12 +165,12 @@ public class PHPAspectBuilder extends IncrementalProjectBuilder {
 		}
 	}
 
-	private PHPAspectParser getParser(){
-		if (parser == null) {
-			parser = new PHPAspectParser();
-		}
-		return parser;
-	}
+//	private PHPAspectParser getParser(){
+//		if (parser == null) {
+//			parser = new PHPAspectParser();
+//		}
+//		return parser;
+//	}
 
 	protected void incrementalBuild(IResourceDelta delta,
 			IProgressMonitor monitor) throws CoreException {
