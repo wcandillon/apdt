@@ -5,7 +5,6 @@ import java.util.Arrays;
 import org.eclipse.php.internal.core.phpModel.parser.PHPCodeDataFactory;
 import org.eclipse.php.internal.core.phpModel.parser.PHPLanguageManager;
 import org.eclipse.php.internal.core.phpModel.parser.PHPLanguageModel;
-import org.eclipse.php.internal.core.phpModel.parser.PHPVersion;
 import org.eclipse.php.internal.core.phpModel.phpElementData.PHPKeywordData;
 
 public class PHPAspectLanguageModel extends PHPLanguageModel {
