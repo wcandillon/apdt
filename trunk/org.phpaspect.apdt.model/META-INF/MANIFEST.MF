@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Model
+Bundle-SymbolicName: org.phpaspect.apdt.model
+Bundle-Version: 1.0.0
+Export-Package: org.phpaspect.apdt.model
+Require-Bundle: org.eclipse.core.resources

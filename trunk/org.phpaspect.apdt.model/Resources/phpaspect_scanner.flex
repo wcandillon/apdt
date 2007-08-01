@@ -9,11 +9,11 @@
  *   Zend and IBM - Initial implementation
  *******************************************************************************/
 
-package org.phpaspect.apdt.core.parser;
+package org.phpaspect.apdt.model;
 
 import org.eclipse.php.internal.core.phpModel.javacup.runtime.Symbol;
 import org.eclipse.php.internal.core.phpModel.parser.CompletionLexer;
-import org.phpaspect.apdt.core.parser.PHPAspectSymbols;
+import org.phpaspect.apdt.model.PHPAspectSymbols;
 import org.eclipse.php.internal.core.util.collections.IntHashtable;
 import org.eclipse.php.internal.core.phpModel.parser.ParserClient;
 import org.eclipse.php.internal.core.phpModel.parser.StateStack;
