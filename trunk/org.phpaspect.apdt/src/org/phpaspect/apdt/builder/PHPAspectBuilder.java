@@ -2,8 +2,7 @@ package org.phpaspect.apdt.builder;
 
 import java.util.Map;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
+
 import javax.xml.parsers.SAXParserFactory;
 
 import org.eclipse.core.resources.IFile;
@@ -30,6 +29,8 @@ public class PHPAspectBuilder extends IncrementalProjectBuilder {
 		 */
 		public boolean visit(IResourceDelta delta) throws CoreException {
 			IResource resource = delta.getResource();
+
+			System.out.println("PHPAspectBuilder="+resource.getName());
 			switch (delta.getKind()) {
 			case IResourceDelta.ADDED:
 				// handle added resource
