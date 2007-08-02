@@ -23,7 +23,6 @@ public class PHPAspectNature implements IProjectNature {
 	public void configure() throws CoreException {
 		IProjectDescription desc = project.getDescription();
 		ICommand[] commands = desc.getBuildSpec();
-
 		for (int i = 0; i < commands.length; ++i) {
 			if (commands[i].getBuilderName().equals(PHPAspectBuilder.BUILDER_ID)) {
 				return;
