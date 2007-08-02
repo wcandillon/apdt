@@ -26,19 +26,39 @@
             id="org.phpaspect.apdt.phpAspectBuilder">
       </builder>
    </extension>
-   <extension
+      <extension
          point="org.eclipse.ui.popupMenus">
       <objectContribution
-            adaptable="true"
             objectClass="org.eclipse.core.resources.IProject"
-            nameFilter="*"
-            id="org.phpaspect.apdt.contribution1">
+            adaptable="true"
+            id="iprojectcontributions">
+        <visibility>
+         	<and>
+	         	<objectState name="nature" value="org.eclipse.php.core.PHPNature"/>
+	         	<not>
+		         	<objectState name="nature" value="org.phpaspect.apdt.phpAspectNature"/>
+		        </not>
+		    </and>
+         </visibility>
          <action
-               label="Add/Remove Sample Nature"
+               label="Convert to PHPAspect Project"
                class="org.phpaspect.apdt.builder.ToggleNatureAction"
                menubarPath="additions"
-               enablesFor="+"
-               id="org.phpaspect.apdt.addRemoveNatureAction">
+               id="addphpaspectnatureaction">
+         </action>
+      </objectContribution>
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IProject"
+            adaptable="true"
+            id="iprojectcontributions">
+         <visibility>
+         	<objectState name="nature" value="org.phpaspect.apdt.phpAspectNature"/>
+         </visibility>
+         <action
+               label="Convert to PHP Project"
+               class="org.phpaspect.apdt.builder.ToggleNatureAction"
+               menubarPath="additions"
+               id="removephpaspectnatureaction">
          </action>
       </objectContribution>
    </extension>
@@ -78,7 +98,7 @@
             extension="ap"
             name="PHPAspect Editor"
             symbolicFontName="org.eclipse.wst.sse.ui.textfont">
-            <contentTypeBinding contentTypeId="org.phpaspect.apdt.phpaspect" />
+            <contentTypeBinding contentTypeId="org.phpaspect.apdt.phpaspectsource" />
       </editor>
    </extension>
    <extension
@@ -86,7 +106,7 @@
       <content-type
             base-type="org.eclipse.php.core.phpsource"
             file-extensions="ap"
-            id="phpaspect"
+            id="phpaspectsource"
             name="PHPAspect Content Type"
             priority="high">
       </content-type>
