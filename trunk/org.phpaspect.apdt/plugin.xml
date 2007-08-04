@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-
+	<extension point="org.eclipse.ui.decorators">
+	  <decorator 
+	    id="APDTDecorator" 
+	    label="Decorator Label" 
+	    state="false" 
+	    class="org.phpaspect.apdt.ui.APDTDecorator" 
+	    objectClass="org.eclipse.core.resources.IResource" 
+	    adaptable="true"> 
+	  </decorator> 
+	</extension>
    <extension
          id="phpAspectBuilder"
          name="PHPAspect Project Builder"
@@ -25,8 +34,18 @@
       <builder
             id="org.phpaspect.apdt.phpAspectBuilder">
       </builder>
+      <requires-nature id="org.eclipse.php.core.PHPNature" />
    </extension>
-      <extension
+   <!-- Can't make it work -->
+   <!--extension
+         point="org.eclipse.ui.ide.projectNatureImages">
+      <image
+            icon="icons/aspect.gif"
+            natureId="phpAspectNature"
+            id="phpAspectNatureImage">
+      </image>
+   </extension-->
+   <extension
          point="org.eclipse.ui.popupMenus">
       <objectContribution
             objectClass="org.eclipse.core.resources.IProject"
@@ -84,7 +103,8 @@
             class="org.phpaspect.apdt.ui.wizards.PHPaspectNewWizard"
             icon="icons/new_aspect_wizard.gif"
             id="org.phpaspect.apdt.wizards.PHPaspectNewWizard"
-            name="Aspect">
+            name="Aspect"
+            finalPerspective="org.eclipse.php.perspective">
       </wizard>
    </extension>
    <extension
