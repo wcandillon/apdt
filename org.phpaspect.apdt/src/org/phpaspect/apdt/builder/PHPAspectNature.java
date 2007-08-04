@@ -25,7 +25,7 @@ public class PHPAspectNature implements IProjectNature {
 		
 		IProjectDescription desc = project.getDescription();
 		ICommand[] commands = desc.getBuildSpec();
-		boolean hadAPHPBuilder = false;
+		boolean hadPHPBuilder = false;
 		
 		for (int i = 0; i < commands.length; ++i) {
 			if (commands[i].getBuilderName().equals(PHPAspectBuilder.BUILDER_ID)) {
@@ -33,15 +33,15 @@ public class PHPAspectNature implements IProjectNature {
 			}
 			//We're replacing the PHP Builder by the PHPAspect one
 			if(commands[i].getBuilderName().equals(PHPProjectOptions.BUILDER_ID)){
-				hadAPHPBuilder = true;
+				hadPHPBuilder = true;
 				commands[i] = desc.newCommand();
 				commands[i].setBuilderName(PHPAspectBuilder.BUILDER_ID);
 			}
-		}
-		
+		}		
 		desc.setBuildSpec(commands);
 		
-		if(!hadAPHPBuilder){
+		//If not PHP builder has been detected we're adding the PHPAspect one anyways
+		if(!hadPHPBuilder){
 			project.setDescription(desc, null);
 			ICommand[] newCommands = new ICommand[commands.length + 1];
 			System.arraycopy(commands, 0, newCommands, 0, commands.length);
@@ -65,6 +65,7 @@ public class PHPAspectNature implements IProjectNature {
 
 		for (int i = 0; i < commands.length; ++i) {
 			//We're replacing the PHPAspect Builder by the PHP one
+			//TODO: What'if the PHPAspect builder was added and isn't replacing any PHP Builder ?
 			if (commands[i].getBuilderName().equals(PHPAspectBuilder.BUILDER_ID)) {
 				commands[i] = description.newCommand();
 				commands[i].setBuilderName(PHPProjectOptions.BUILDER_ID);
@@ -91,5 +92,4 @@ public class PHPAspectNature implements IProjectNature {
 	public void setProject(IProject project) {
 		this.project = project;
 	}
-
 }
