@@ -12,9 +12,19 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.php.internal.ui.explorer.ExplorerPart;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IObjectActionDelegate;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchSite;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.internal.ViewSite;
+import org.eclipse.ui.internal.Workbench;
+import org.eclipse.ui.views.navigator.ResourceNavigator;
 
 public class ToggleNatureAction implements IObjectActionDelegate {
 
@@ -94,6 +104,16 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 			newNatures[0] = PHPAspectNature.NATURE_ID;
 			description.setNatureIds(newNatures);
 			project.setDescription(description, null);
+			//We refreshing the PHP Explorer...
+			IWorkbenchWindow site = Workbench.getInstance().getActiveWorkbenchWindow();
+			if (site instanceof ViewSite) {
+				ViewSite viewSite = (ViewSite) site;
+				IWorkbenchPart part = viewSite.getPart();
+				if (part instanceof ExplorerPart) {
+					ExplorerPart explorer = (ExplorerPart) part;
+					explorer.getViewer().refresh();
+				}
+			}
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
