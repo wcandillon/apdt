@@ -41,8 +41,8 @@
          point="org.eclipse.ui.ide.projectNatureImages">
       <image
             icon="icons/phpaspect_ovr.gif"
-            natureId="phpAspectNature"
-            id="phpAspectNatureImage">
+            natureId="org.phpaspect.apdt.phpAspectNature"
+            id="org.phpaspect.apdt.phpAspectProjectNatureImage">
       </image>
    </extension>
    <extension

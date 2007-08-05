@@ -1,14 +1,18 @@
 package org.phpaspect.apdt.builder;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
@@ -84,12 +88,14 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 			}
 
 			// Add the nature
+			//We put the PHPAspect as the first element for the icon decoration
 			String[] newNatures = new String[natures.length + 1];
-			System.arraycopy(natures, 0, newNatures, 0, natures.length);
-			newNatures[natures.length] = PHPAspectNature.NATURE_ID;
+			System.arraycopy(natures, 0, newNatures, 1, natures.length);
+			newNatures[0] = PHPAspectNature.NATURE_ID;
 			description.setNatureIds(newNatures);
 			project.setDescription(description, null);
 		} catch (CoreException e) {
+			e.printStackTrace();
 		}
 	}
 
