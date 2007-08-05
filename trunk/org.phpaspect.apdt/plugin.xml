@@ -2,13 +2,13 @@
 <?eclipse version="3.2"?>
 <plugin>
 	<extension point="org.eclipse.ui.decorators">
-	  <decorator 
-	    id="APDTDecorator" 
-	    label="Decorator Label" 
-	    state="false" 
-	    class="org.phpaspect.apdt.ui.APDTDecorator" 
-	    objectClass="org.eclipse.core.resources.IResource" 
-	    adaptable="true"> 
+	  <decorator
+         adaptable="true"
+         class="org.phpaspect.apdt.ui.APDTDecorator"
+         id="APDTDecorator"
+         label="Decorator Label"
+         objectClass="org.eclipse.core.resources.IResource"
+         state="true"> 
 	  </decorator> 
 	</extension>
    <extension
@@ -36,21 +36,39 @@
       </builder>
       <requires-nature id="org.eclipse.php.core.PHPNature" />
    </extension>
-   <!-- Can't make it work -->
-   <!--extension
+   <!-- Doesn't work -->
+   <extension
          point="org.eclipse.ui.ide.projectNatureImages">
       <image
-            icon="icons/aspect.gif"
+            icon="icons/phpaspect_ovr.gif"
             natureId="phpAspectNature"
             id="phpAspectNatureImage">
       </image>
-   </extension-->
+   </extension>
    <extension
          point="org.eclipse.ui.popupMenus">
       <objectContribution
-            objectClass="org.eclipse.core.resources.IProject"
+            objectClass="org.eclipse.core.resources.IResource"
             adaptable="true"
-            id="iprojectcontributions">
+            id="tools.menu">
+            <menu
+            	label="PHPAspect Tools"
+            	path="additions"
+            	id="tools.submenu">
+            	<groupMarker name="content" />
+            	<separator name="additions" />
+            </menu>
+      </objectContribution>
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IResource"
+            adaptable="true"
+            id="convertToPHPAspect">
+	         <action
+	               label="Convert to PHPAspect Project"
+	               class="org.phpaspect.apdt.builder.ToggleNatureAction"
+	               id="addphpaspectnatureaction"
+	               menubarPath="tools.submenu/content">
+	         </action>
         <visibility>
          	<and>
 	         	<objectState name="nature" value="org.eclipse.php.core.PHPNature"/>
@@ -59,24 +77,18 @@
 		        </not>
 		    </and>
          </visibility>
-         <action
-               label="Convert to PHPAspect Project"
-               class="org.phpaspect.apdt.builder.ToggleNatureAction"
-               menubarPath="additions"
-               id="addphpaspectnatureaction">
-         </action>
       </objectContribution>
       <objectContribution
             objectClass="org.eclipse.core.resources.IProject"
             adaptable="true"
-            id="iprojectcontributions">
+            id="convertToPHP">
          <visibility>
          	<objectState name="nature" value="org.phpaspect.apdt.phpAspectNature"/>
          </visibility>
          <action
                label="Convert to PHP Project"
                class="org.phpaspect.apdt.builder.ToggleNatureAction"
-               menubarPath="additions"
+               menubarPath="tools.submenu/content"
                id="removephpaspectnatureaction">
          </action>
       </objectContribution>
