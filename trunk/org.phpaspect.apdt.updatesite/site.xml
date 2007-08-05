@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
+   <description url="http://phpaspect.org/apdt/update">
+      APDT Site Update
+   </description>
    <feature url="features/org.phpaspect.apdt.feature_1.0.0.jar" id="org.phpaspect.apdt.feature" version="1.0.0"/>
 </site>
