@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<model>
+	<lexer>
+		<token>aspect</token>
+		<token>before</token>
+        <token>around</token>
+	    <token>after</token>
+        <token>pointcut</token>
+    </lexer>
+    <grammar>
+    
+    </grammar>
+</model>
