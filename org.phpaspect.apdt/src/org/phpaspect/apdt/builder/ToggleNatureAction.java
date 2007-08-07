@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.IWorkbenchSite;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
@@ -93,6 +94,8 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 							natures.length - i - 1);
 					description.setNatureIds(newNatures);
 					project.setDescription(description, null);
+					//We refreshing the PHP Explorer..
+					refreshExplorerPart();					
 					return;
 				}
 			}
@@ -104,18 +107,23 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 			newNatures[0] = PHPAspectNature.NATURE_ID;
 			description.setNatureIds(newNatures);
 			project.setDescription(description, null);
-			//We refreshing the PHP Explorer...
-			IWorkbenchWindow site = Workbench.getInstance().getActiveWorkbenchWindow();
-			if (site instanceof ViewSite) {
-				ViewSite viewSite = (ViewSite) site;
-				IWorkbenchPart part = viewSite.getPart();
-				if (part instanceof ExplorerPart) {
-					ExplorerPart explorer = (ExplorerPart) part;
-					explorer.getViewer().refresh();
-				}
-			}
+			//We refreshing the PHP Explorer..
+			refreshExplorerPart();
 		} catch (CoreException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	//TODO: Using a job to refresh the explorer part
+	private void refreshExplorerPart(){
+		IWorkbenchPartSite site = Workbench.getInstance().getActiveWorkbenchWindow().getPartService().getActivePart().getSite();
+		if (site instanceof ViewSite) {
+			ViewSite viewSite = (ViewSite) site;
+			IWorkbenchPart part = viewSite.getPart();
+			if (part instanceof ExplorerPart) {
+				ExplorerPart explorer = (ExplorerPart) part;
+				explorer.getViewer().refresh();
+			}
 		}
 	}
 
