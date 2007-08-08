@@ -13,6 +13,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.phpaspect.apdt.internal.core.builder.PHPAspectNature;
+import org.phpaspect.apdt.internal.ui.RefreshPackageExplorer;
 
 
 public class TogglePHPAspectNatureAction implements IObjectActionDelegate {
@@ -83,7 +84,7 @@ public class TogglePHPAspectNatureAction implements IObjectActionDelegate {
 					description.setNatureIds(newNatures);
 					project.setDescription(description, null);
 					//We refreshing the PHP Explorer..
-					//APDTUtils.refreshPackageExplorer();				
+					RefreshPackageExplorer.refreshJob();			
 					return;
 				}
 			}
@@ -96,7 +97,7 @@ public class TogglePHPAspectNatureAction implements IObjectActionDelegate {
 			description.setNatureIds(newNatures);
 			project.setDescription(description, null);
 			//We refreshing the PHP Explorer..
-			//APDTUtils.refreshPackageExplorer();
+			RefreshPackageExplorer.refreshJob();
 		} catch (CoreException e) {
 			//TODO: reenforcement
 			e.printStackTrace();
@@ -112,25 +113,5 @@ public class TogglePHPAspectNatureAction implements IObjectActionDelegate {
 	private void removePHPAspectNature(IProject project) throws CoreException{
 		//TODO:removeMarkerOnReferencingProjects (see AJDTUtils)
 	}
-	
-	//TODO: Using a job to refresh the explorer part instead
-//	private void refreshExplorerPart(){
-//	IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-//	if (page != null) {
-//	    ExplorerPart explorerPart = (ExplorerPart) page.findView("org.eclipse.php.ui.explorer");
-//	    if (explorerPart != null) {
-//	        // Do something
-//	    }
-//	}
-//		IWorkbenchPartSite site = Workbench.getInstance().getActiveWorkbenchWindow().getPartService().getActivePart().getSite();
-//		if (site instanceof ViewSite) {
-//			ViewSite viewSite = (ViewSite) site;
-//			IWorkbenchPart part = viewSite.getPart();
-//			if (part instanceof ExplorerPart) {
-//				ExplorerPart explorer = (ExplorerPart) part;
-//				explorer.getViewer().refresh();
-//			}
-//		}
-//	}
 
 }
