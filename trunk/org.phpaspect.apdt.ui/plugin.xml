@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.3"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.ide.projectNatureImages">
+      <image
+            icon="icons/phpaspect_ovr.gif"
+            natureId="org.phpaspect.apdt.core.phpAspectNature"
+            id="org.phpaspect.apdt.core.phpAspectProjectNatureImage">
+      </image>
+   </extension>
+	<extension point="org.eclipse.ui.decorators">
+	  <decorator
+         adaptable="true"
+         class="org.phpaspect.apdt.internal.ui.icons.APDTDecorator"
+         id="APDTDecorator"
+         label="Decorator Label"
+         objectClass="org.eclipse.core.resources.IResource"
+         state="true"> 
+	  </decorator> 
+	</extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IResource"
+            adaptable="true"
+            id="tools.menu">
+            <menu
+            	label="PHPAspect Tools"
+            	path="additions"
+            	id="tools.submenu">
+            	<groupMarker name="content" />
+            	<separator name="additions" />
+            </menu>
+      </objectContribution>
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IResource"
+            adaptable="true"
+            id="convertToPHPAspect">
+	         <action
+	               label="Convert to PHPAspect Project"
+	               class="org.phpaspect.apdt.internal.ui.actions.TogglePHPAspectNatureAction"
+	               id="addphpaspectnatureaction"
+	               menubarPath="tools.submenu/content">
+	         </action>
+        <visibility>
+         	<and>
+	         	<objectState name="nature" value="org.eclipse.php.core.PHPNature"/>
+	         	<not>
+		         	<objectState name="nature" value="org.phpaspect.apdt.core.phpAspectNature"/>
+		        </not>
+		    </and>
+         </visibility>
+      </objectContribution>
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IProject"
+            adaptable="true"
+            id="convertToPHP">
+         <visibility>
+         	<objectState name="nature" value="org.phpaspect.apdt.core.phpAspectNature"/>
+         </visibility>
+         <action
+               label="Remove PHPAspect capability"
+               class="org.phpaspect.apdt.internal.ui.actions.TogglePHPAspectNatureAction"
+               menubarPath="tools.submenu/content"
+               id="removephpaspectnatureaction">
+         </action>
+      </objectContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.php.internal.ui.editor.PHPStructuredEditor"
+            contributorClass="org.eclipse.php.internal.ui.editor.PHPEditorActionBarContributor"
+            default="true"
+            icon="icons/phpaspectfile.gif"
+            id="org.phpaspect.apdt.ui.editor"
+            extension="ap"
+            name="PHPAspect Editor"
+            symbolicFontName="org.eclipse.wst.sse.ui.textfont">
+            <contentTypeBinding contentTypeId="org.phpaspect.apdt.core.phpaspectsource" />
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="org.phpaspect.apdt.ui"
+            name="PHPAspect">
+      </category>
+      <wizard
+            category="org.phpaspect.apdt.ui"
+            class="org.phpaspect.apdt.internal.ui.wizards.NewAspectWizard"
+            icon="icons/aspect.gif"
+            id="org.phpaspect.apdt.internal.ui.wizards.NewAspectWizard"
+            name="Create a new Aspect">
+      </wizard>
+   </extension>
+</plugin>
