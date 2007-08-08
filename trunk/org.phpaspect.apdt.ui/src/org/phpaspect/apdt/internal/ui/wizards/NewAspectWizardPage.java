@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
+import org.phpaspect.apdt.internal.ui.icons.APDTPluginImages;
 
 /**
  * The "New" wizard page allows setting the container for the new file as well
@@ -40,8 +41,9 @@ public class NewAspectWizardPage extends WizardPage {
 	 */
 	public NewAspectWizardPage(ISelection selection) {
 		super("wizardPage");
-		setTitle("Multi-page Editor File");
-		setDescription("This wizard creates a new file with *.ap extension that can be opened by a multi-page editor.");
+		setTitle("Create a new aspect");
+		setDescription("Creates a new aspect within the current PHP project.");
+		setImageDescriptor(APDTPluginImages.DESC_WIZBAN_NEW_ASPECT);
 		this.selection = selection;
 	}
 

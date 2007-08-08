@@ -29,6 +29,8 @@ import org.eclipse.ui.ide.IDE;
 public class NewAspectWizard extends Wizard implements INewWizard {
 	private NewAspectWizardPage page;
 	private ISelection selection;
+	private String containerName;
+	private String fileName;
 
 	/**
 	 * Constructor for NewAspectWizard.
@@ -53,8 +55,8 @@ public class NewAspectWizard extends Wizard implements INewWizard {
 	 * using wizard as execution context.
 	 */
 	public boolean performFinish() {
-		final String containerName = page.getContainerName();
-		final String fileName = page.getFileName();
+		containerName = page.getContainerName();
+		fileName = page.getFileName();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
@@ -128,8 +130,8 @@ public class NewAspectWizard extends Wizard implements INewWizard {
 	 */
 
 	private InputStream openContentStream() {
-		String contents =
-			"This is the initial file contents for *.ap file that should be word-sorted in the Preview page of the multi-page editor";
+		String aspectName = fileName.substring(0, 1).toUpperCase()+fileName.replace(".ap", "").substring(1);
+		String contents = "<?php\naspect "+aspectName+"{\n\n}\n?>";
 		return new ByteArrayInputStream(contents.getBytes());
 	}
 
