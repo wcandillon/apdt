@@ -4,6 +4,7 @@ Bundle-Name: APDT Ui Plug-in
 Bundle-SymbolicName: org.phpaspect.apdt.ui; singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.phpaspect.apdt.internal.ui.APDTUiPlugin
+Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
@@ -14,8 +15,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.wst.sse.ui,
  org.eclipse.php.ui,
  org.eclipse.ui.ide
+Eclipse-LazyStart: true
 Export-Package: org.phpaspect.apdt.internal.ui,
  org.phpaspect.apdt.internal.ui.actions,
  org.phpaspect.apdt.internal.ui.icons,
  org.phpaspect.apdt.internal.ui.text,
  org.phpaspect.apdt.internal.ui.wizards
+Bundle-Vendor: phpAspect.org

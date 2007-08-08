@@ -89,10 +89,10 @@
       </category>
       <wizard
             category="org.phpaspect.apdt.ui"
-            class="org.phpaspect.apdt.internal.ui.wizards.NewAspectWizard"
-            icon="icons/aspect.gif"
-            id="org.phpaspect.apdt.internal.ui.wizards.NewAspectWizard"
-            name="Create a new Aspect">
+            class="org.phpaspect.apdt.internal.ui.wizards.AspectCreationWizard"
+            icon="icons/new_aspect_wizard.gif"
+            id="org.phpaspect.apdt.ui.wizards.AspectCreationWizard"
+            name="PHPAspect">
       </wizard>
    </extension>
 </plugin>
