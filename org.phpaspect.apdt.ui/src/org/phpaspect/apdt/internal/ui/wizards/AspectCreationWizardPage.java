@@ -27,7 +27,7 @@ import org.phpaspect.apdt.internal.ui.icons.APDTPluginImages;
  * OR with the extension that matches the expected one (ap).
  */
 
-public class NewAspectWizardPage extends WizardPage {
+public class AspectCreationWizardPage extends WizardPage {
 	private Text containerText;
 
 	private Text fileText;
@@ -39,10 +39,10 @@ public class NewAspectWizardPage extends WizardPage {
 	 * 
 	 * @param pageName
 	 */
-	public NewAspectWizardPage(ISelection selection) {
+	public AspectCreationWizardPage(ISelection selection) {
 		super("wizardPage");
-		setTitle("Create a new aspect");
-		setDescription("Creates a new aspect within the current PHP project.");
+		setTitle("Multi-page Editor File");
+		setDescription("This wizard creates a new file with *.ap extension that can be opened by a multi-page editor.");
 		setImageDescriptor(APDTPluginImages.DESC_WIZBAN_NEW_ASPECT);
 		this.selection = selection;
 	}

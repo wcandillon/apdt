@@ -12,6 +12,7 @@ public class APDTPluginImages {
 	
 	static{
 		APDTPluginImages.baseURL = APDTUiPlugin.getDefault().getBundle().getEntry("/icons/");
+		System.out.println("h");
 	}
 	
 	public static final ImageDescriptor DESC_WIZBAN_NEW_ASPECT = create("newaspect_wiz.gif");

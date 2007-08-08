@@ -26,16 +26,16 @@ import org.eclipse.ui.ide.IDE;
  * be able to open it.
  */
 
-public class NewAspectWizard extends Wizard implements INewWizard {
-	private NewAspectWizardPage page;
+public class AspectCreationWizard extends Wizard implements INewWizard {
+	private AspectCreationWizardPage page;
 	private ISelection selection;
 	private String containerName;
 	private String fileName;
 
 	/**
-	 * Constructor for NewAspectWizard.
+	 * Constructor for AspectCreationWizard.
 	 */
-	public NewAspectWizard() {
+	public AspectCreationWizard() {
 		super();
 		setNeedsProgressMonitor(true);
 	}
@@ -45,7 +45,7 @@ public class NewAspectWizard extends Wizard implements INewWizard {
 	 */
 
 	public void addPages() {
-		page = new NewAspectWizardPage(selection);
+		page = new AspectCreationWizardPage(selection);
 		addPage(page);
 	}
 
@@ -131,7 +131,8 @@ public class NewAspectWizard extends Wizard implements INewWizard {
 
 	private InputStream openContentStream() {
 		String aspectName = fileName.substring(0, 1).toUpperCase()+fileName.replace(".ap", "").substring(1);
-		String contents = "<?php\naspect "+aspectName+"{\n\n}\n?>";
+		String contents =
+			"<?php\naspect "+aspectName+"{\n\n}\n?>";
 		return new ByteArrayInputStream(contents.getBytes());
 	}
 
