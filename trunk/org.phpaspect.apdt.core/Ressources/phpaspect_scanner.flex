@@ -9,7 +9,7 @@
  *   Zend and IBM - Initial implementation
  *******************************************************************************/
 
-package org.eclipse.php.internal.core.ast.parser;
+package org.phpaspect.apdt.internal.core.parser;
 
 import org.eclipse.php.internal.core.phpModel.javacup.runtime.Symbol;
 import org.eclipse.php.internal.core.phpModel.javacup.sym;
@@ -20,7 +20,7 @@ import java.util.*;
 
 %%
 
-%class PhpAstLexer5
+%class PHPAspectLexer
 %public
 %unicode
 %line
@@ -148,153 +148,153 @@ NEWLINE=("\r"|"\n"|"\r\n")
 %%
 
 <ST_IN_SCRIPTING>"exit" {
-	return createFullSymbol(ParserConstants5.T_EXIT);
+	return createFullSymbol(PHPAspectSymbols.T_EXIT);
 }
 
 <ST_IN_SCRIPTING>"die" {
-	return createFullSymbol(ParserConstants5.T_EXIT);
+	return createFullSymbol(PHPAspectSymbols.T_EXIT);
 }
 
 <ST_IN_SCRIPTING>"function"|"cfunction" {
-	return createSymbol(ParserConstants5.T_FUNCTION);
+	return createSymbol(PHPAspectSymbols.T_FUNCTION);
 }
 
 <ST_IN_SCRIPTING>"const" {
-	return createSymbol(ParserConstants5.T_CONST);
+	return createSymbol(PHPAspectSymbols.T_CONST);
 }
 
 <ST_IN_SCRIPTING>"return" {
-	return createSymbol(ParserConstants5.T_RETURN);
+	return createSymbol(PHPAspectSymbols.T_RETURN);
 }
 
 <ST_IN_SCRIPTING>"try" {
-	return createSymbol(ParserConstants5.T_TRY);
+	return createSymbol(PHPAspectSymbols.T_TRY);
 }
 
 <ST_IN_SCRIPTING>"catch" {
-	return createSymbol(ParserConstants5.T_CATCH);
+	return createSymbol(PHPAspectSymbols.T_CATCH);
 }
 
 <ST_IN_SCRIPTING>"throw" {
-	return createSymbol(ParserConstants5.T_THROW);
+	return createSymbol(PHPAspectSymbols.T_THROW);
 }
 
 <ST_IN_SCRIPTING>"if" {
-	return createSymbol(ParserConstants5.T_IF);
+	return createSymbol(PHPAspectSymbols.T_IF);
 }
 
 <ST_IN_SCRIPTING>"elseif" {
-	return createSymbol(ParserConstants5.T_ELSEIF);
+	return createSymbol(PHPAspectSymbols.T_ELSEIF);
 }
 
 <ST_IN_SCRIPTING>"endif" {
-	return createSymbol(ParserConstants5.T_ENDIF);
+	return createSymbol(PHPAspectSymbols.T_ENDIF);
 }
 
 <ST_IN_SCRIPTING>"else" {
-	return createSymbol(ParserConstants5.T_ELSE);
+	return createSymbol(PHPAspectSymbols.T_ELSE);
 }
 
 <ST_IN_SCRIPTING>"while" {
-	return createSymbol(ParserConstants5.T_WHILE);
+	return createSymbol(PHPAspectSymbols.T_WHILE);
 }
 
 <ST_IN_SCRIPTING>"endwhile" {
-	return createSymbol(ParserConstants5.T_ENDWHILE);
+	return createSymbol(PHPAspectSymbols.T_ENDWHILE);
 }
 
 <ST_IN_SCRIPTING>"do" {
-	return createSymbol(ParserConstants5.T_DO);
+	return createSymbol(PHPAspectSymbols.T_DO);
 }
 
 <ST_IN_SCRIPTING>"for" {
-	return createSymbol(ParserConstants5.T_FOR);
+	return createSymbol(PHPAspectSymbols.T_FOR);
 }
 
 <ST_IN_SCRIPTING>"endfor" {
-	return createSymbol(ParserConstants5.T_ENDFOR);
+	return createSymbol(PHPAspectSymbols.T_ENDFOR);
 }
 
 <ST_IN_SCRIPTING>"foreach" {
-	return createSymbol(ParserConstants5.T_FOREACH);
+	return createSymbol(PHPAspectSymbols.T_FOREACH);
 }
 
 <ST_IN_SCRIPTING>"endforeach" {
-	return createSymbol(ParserConstants5.T_ENDFOREACH);
+	return createSymbol(PHPAspectSymbols.T_ENDFOREACH);
 }
 
 <ST_IN_SCRIPTING>"declare" {
-	return createSymbol(ParserConstants5.T_DECLARE);
+	return createSymbol(PHPAspectSymbols.T_DECLARE);
 }
 
 <ST_IN_SCRIPTING>"enddeclare" {
-	return createSymbol(ParserConstants5.T_ENDDECLARE);
+	return createSymbol(PHPAspectSymbols.T_ENDDECLARE);
 }
 
 <ST_IN_SCRIPTING>"instanceof" {
-	return createSymbol(ParserConstants5.T_INSTANCEOF);
+	return createSymbol(PHPAspectSymbols.T_INSTANCEOF);
 }
 
 <ST_IN_SCRIPTING>"as" {
-	return createSymbol(ParserConstants5.T_AS);
+	return createSymbol(PHPAspectSymbols.T_AS);
 }
 
 <ST_IN_SCRIPTING>"switch" {
-	return createSymbol(ParserConstants5.T_SWITCH);
+	return createSymbol(PHPAspectSymbols.T_SWITCH);
 }
 
 <ST_IN_SCRIPTING>"endswitch" {
-	return createSymbol(ParserConstants5.T_ENDSWITCH);
+	return createSymbol(PHPAspectSymbols.T_ENDSWITCH);
 }
 
 <ST_IN_SCRIPTING>"case" {
-	return createSymbol(ParserConstants5.T_CASE);
+	return createSymbol(PHPAspectSymbols.T_CASE);
 }
 
 <ST_IN_SCRIPTING>"default" {
-	return createSymbol(ParserConstants5.T_DEFAULT);
+	return createSymbol(PHPAspectSymbols.T_DEFAULT);
 }
 
 <ST_IN_SCRIPTING>"break" {
-	return createSymbol(ParserConstants5.T_BREAK);
+	return createSymbol(PHPAspectSymbols.T_BREAK);
 }
 
 <ST_IN_SCRIPTING>"continue" {
-	return createSymbol(ParserConstants5.T_CONTINUE);
+	return createSymbol(PHPAspectSymbols.T_CONTINUE);
 }
 
 <ST_IN_SCRIPTING>"echo" {
-	return createSymbol(ParserConstants5.T_ECHO);
+	return createSymbol(PHPAspectSymbols.T_ECHO);
 }
 
 <ST_IN_SCRIPTING>"print" {
-	return createSymbol(ParserConstants5.T_PRINT);
+	return createSymbol(PHPAspectSymbols.T_PRINT);
 }
 
 <ST_IN_SCRIPTING>"class" {
-	return createSymbol(ParserConstants5.T_CLASS);
+	return createSymbol(PHPAspectSymbols.T_CLASS);
 }
 
 <ST_IN_SCRIPTING>"interface" {
-	return createSymbol(ParserConstants5.T_INTERFACE);
+	return createSymbol(PHPAspectSymbols.T_INTERFACE);
 }
 
 <ST_IN_SCRIPTING>"extends" {
-	return createSymbol(ParserConstants5.T_EXTENDS);
+	return createSymbol(PHPAspectSymbols.T_EXTENDS);
 }
 
 <ST_IN_SCRIPTING>"implements" {
-	return createSymbol(ParserConstants5.T_IMPLEMENTS);
+	return createSymbol(PHPAspectSymbols.T_IMPLEMENTS);
 }
 
 <ST_IN_SCRIPTING,ST_DOUBLE_QUOTES,ST_BACKQUOTE,ST_HEREDOC>"->" {
     pushState(ST_LOOKING_FOR_PROPERTY);
-    return createSymbol(ParserConstants5.T_OBJECT_OPERATOR);
+    return createSymbol(PHPAspectSymbols.T_OBJECT_OPERATOR);
 }
 
 <ST_LOOKING_FOR_PROPERTY>{LABEL} {
     popState();
-    return createFullSymbol(ParserConstants5.T_STRING);
+    return createFullSymbol(PHPAspectSymbols.T_STRING);
 }
 
 <ST_LOOKING_FOR_PROPERTY>{ANY_CHAR} {
@@ -303,269 +303,269 @@ NEWLINE=("\r"|"\n"|"\r\n")
 }
 
 <ST_IN_SCRIPTING>"::" {
-	return createSymbol(ParserConstants5.T_PAAMAYIM_NEKUDOTAYIM);
+	return createSymbol(PHPAspectSymbols.T_PAAMAYIM_NEKUDOTAYIM);
 }
 
 <ST_IN_SCRIPTING>"new" {
-	return createSymbol(ParserConstants5.T_NEW);
+	return createSymbol(PHPAspectSymbols.T_NEW);
 }
 
 <ST_IN_SCRIPTING>"clone" {
-	return createSymbol(ParserConstants5.T_CLONE);
+	return createSymbol(PHPAspectSymbols.T_CLONE);
 }
 
 <ST_IN_SCRIPTING>"var" {
-	return createSymbol(ParserConstants5.T_VAR);
+	return createSymbol(PHPAspectSymbols.T_VAR);
 }
 
 <ST_IN_SCRIPTING>"("{TABS_AND_SPACES}("int"|"integer"){TABS_AND_SPACES}")" {
-	return createSymbol(ParserConstants5.T_INT_CAST);
+	return createSymbol(PHPAspectSymbols.T_INT_CAST);
 }
 
 <ST_IN_SCRIPTING>"("{TABS_AND_SPACES}("real"|"double"|"float"){TABS_AND_SPACES}")" {
-	return createSymbol(ParserConstants5.T_DOUBLE_CAST);
+	return createSymbol(PHPAspectSymbols.T_DOUBLE_CAST);
 }
 
 <ST_IN_SCRIPTING>"("{TABS_AND_SPACES}"string"{TABS_AND_SPACES}")" {
-	return createSymbol(ParserConstants5.T_STRING_CAST);
+	return createSymbol(PHPAspectSymbols.T_STRING_CAST);
 }
 
 <ST_IN_SCRIPTING>"("{TABS_AND_SPACES}"array"{TABS_AND_SPACES}")" {
-	return createSymbol(ParserConstants5.T_ARRAY_CAST);
+	return createSymbol(PHPAspectSymbols.T_ARRAY_CAST);
 }
 
 <ST_IN_SCRIPTING>"("{TABS_AND_SPACES}"object"{TABS_AND_SPACES}")" {
-	return createSymbol(ParserConstants5.T_OBJECT_CAST);
+	return createSymbol(PHPAspectSymbols.T_OBJECT_CAST);
 }
 
 <ST_IN_SCRIPTING>"("{TABS_AND_SPACES}("bool"|"boolean"){TABS_AND_SPACES}")" {
-	return createSymbol(ParserConstants5.T_BOOL_CAST);
+	return createSymbol(PHPAspectSymbols.T_BOOL_CAST);
 }
 
 <ST_IN_SCRIPTING>"("{TABS_AND_SPACES}("unset"){TABS_AND_SPACES}")" {
-	return createSymbol(ParserConstants5.T_UNSET_CAST);
+	return createSymbol(PHPAspectSymbols.T_UNSET_CAST);
 }
 
 <ST_IN_SCRIPTING>"eval" {
-	return createSymbol(ParserConstants5.T_EVAL);
+	return createSymbol(PHPAspectSymbols.T_EVAL);
 }
 
 <ST_IN_SCRIPTING>"include" {
-	return createSymbol(ParserConstants5.T_INCLUDE);
+	return createSymbol(PHPAspectSymbols.T_INCLUDE);
 }
 
 <ST_IN_SCRIPTING>"include_once" {
-	return createSymbol(ParserConstants5.T_INCLUDE_ONCE);
+	return createSymbol(PHPAspectSymbols.T_INCLUDE_ONCE);
 }
 
 <ST_IN_SCRIPTING>"require" {
-	return createSymbol(ParserConstants5.T_REQUIRE);
+	return createSymbol(PHPAspectSymbols.T_REQUIRE);
 }
 
 <ST_IN_SCRIPTING>"require_once" {
-	return createSymbol(ParserConstants5.T_REQUIRE_ONCE);
+	return createSymbol(PHPAspectSymbols.T_REQUIRE_ONCE);
 }
 
 <ST_IN_SCRIPTING>"use" {
-	return createSymbol(ParserConstants5.T_USE);
+	return createSymbol(PHPAspectSymbols.T_USE);
 }
 
 <ST_IN_SCRIPTING>"global" {
-	return createSymbol(ParserConstants5.T_GLOBAL);
+	return createSymbol(PHPAspectSymbols.T_GLOBAL);
 }
 
 <ST_IN_SCRIPTING>"isset" {
-	return createSymbol(ParserConstants5.T_ISSET);
+	return createSymbol(PHPAspectSymbols.T_ISSET);
 }
 
 <ST_IN_SCRIPTING>"empty" {
-	return createSymbol(ParserConstants5.T_EMPTY);
+	return createSymbol(PHPAspectSymbols.T_EMPTY);
 }
 
 <ST_IN_SCRIPTING>"__halt_compiler" {
-	return createSymbol(ParserConstants5.T_HALT_COMPILER);
+	return createSymbol(PHPAspectSymbols.T_HALT_COMPILER);
 }
 <ST_IN_SCRIPTING>"static" {
-	return createSymbol(ParserConstants5.T_STATIC);
+	return createSymbol(PHPAspectSymbols.T_STATIC);
 }
 
 <ST_IN_SCRIPTING>"abstract" {
-	return createSymbol(ParserConstants5.T_ABSTRACT);
+	return createSymbol(PHPAspectSymbols.T_ABSTRACT);
 }
 
 <ST_IN_SCRIPTING>"final" {
-	return createSymbol(ParserConstants5.T_FINAL);
+	return createSymbol(PHPAspectSymbols.T_FINAL);
 }
 
 <ST_IN_SCRIPTING>"private" {
-	return createSymbol(ParserConstants5.T_PRIVATE);
+	return createSymbol(PHPAspectSymbols.T_PRIVATE);
 }
 
 <ST_IN_SCRIPTING>"protected" {
-	return createSymbol(ParserConstants5.T_PROTECTED);
+	return createSymbol(PHPAspectSymbols.T_PROTECTED);
 }
 
 <ST_IN_SCRIPTING>"public" {
-	return createSymbol(ParserConstants5.T_PUBLIC);
+	return createSymbol(PHPAspectSymbols.T_PUBLIC);
 }
 
 <ST_IN_SCRIPTING>"unset" {
-	return createSymbol(ParserConstants5.T_UNSET);
+	return createSymbol(PHPAspectSymbols.T_UNSET);
 }
 
 <ST_IN_SCRIPTING>"=>" {
-	return createSymbol(ParserConstants5.T_DOUBLE_ARROW);
+	return createSymbol(PHPAspectSymbols.T_DOUBLE_ARROW);
 }
 
 <ST_IN_SCRIPTING>"list" {
-	return createSymbol(ParserConstants5.T_LIST);
+	return createSymbol(PHPAspectSymbols.T_LIST);
 }
 
 <ST_IN_SCRIPTING>"array" {
-	return createSymbol(ParserConstants5.T_ARRAY);
+	return createSymbol(PHPAspectSymbols.T_ARRAY);
 }
 
 <ST_IN_SCRIPTING>"++" {
-	return createSymbol(ParserConstants5.T_INC);
+	return createSymbol(PHPAspectSymbols.T_INC);
 }
 
 <ST_IN_SCRIPTING>"--" {
-	return createSymbol(ParserConstants5.T_DEC);
+	return createSymbol(PHPAspectSymbols.T_DEC);
 }
 
 <ST_IN_SCRIPTING>"===" {
-	return createSymbol(ParserConstants5.T_IS_IDENTICAL);
+	return createSymbol(PHPAspectSymbols.T_IS_IDENTICAL);
 }
 
 <ST_IN_SCRIPTING>"!==" {
-	return createSymbol(ParserConstants5.T_IS_NOT_IDENTICAL);
+	return createSymbol(PHPAspectSymbols.T_IS_NOT_IDENTICAL);
 }
 
 <ST_IN_SCRIPTING>"==" {
-	return createSymbol(ParserConstants5.T_IS_EQUAL);
+	return createSymbol(PHPAspectSymbols.T_IS_EQUAL);
 }
 
 <ST_IN_SCRIPTING>"!="|"<>" {
-	return createSymbol(ParserConstants5.T_IS_NOT_EQUAL);
+	return createSymbol(PHPAspectSymbols.T_IS_NOT_EQUAL);
 }
 
 <ST_IN_SCRIPTING>"<=" {
-	return createSymbol(ParserConstants5.T_IS_SMALLER_OR_EQUAL);
+	return createSymbol(PHPAspectSymbols.T_IS_SMALLER_OR_EQUAL);
 }
 
 <ST_IN_SCRIPTING>">=" {
-	return createSymbol(ParserConstants5.T_IS_GREATER_OR_EQUAL);
+	return createSymbol(PHPAspectSymbols.T_IS_GREATER_OR_EQUAL);
 }
 
 <ST_IN_SCRIPTING>"+=" {
-	return createSymbol(ParserConstants5.T_PLUS_EQUAL);
+	return createSymbol(PHPAspectSymbols.T_PLUS_EQUAL);
 }
 
 <ST_IN_SCRIPTING>"-=" {
-	return createSymbol(ParserConstants5.T_MINUS_EQUAL);
+	return createSymbol(PHPAspectSymbols.T_MINUS_EQUAL);
 }
 
 <ST_IN_SCRIPTING>"*=" {
-	return createSymbol(ParserConstants5.T_MUL_EQUAL);
+	return createSymbol(PHPAspectSymbols.T_MUL_EQUAL);
 }
 
 <ST_IN_SCRIPTING>"/=" {
-	return createSymbol(ParserConstants5.T_DIV_EQUAL);
+	return createSymbol(PHPAspectSymbols.T_DIV_EQUAL);
 }
 
 <ST_IN_SCRIPTING>".=" {
-	return createSymbol(ParserConstants5.T_CONCAT_EQUAL);
+	return createSymbol(PHPAspectSymbols.T_CONCAT_EQUAL);
 }
 
 <ST_IN_SCRIPTING>"%=" {
-	return createSymbol(ParserConstants5.T_MOD_EQUAL);
+	return createSymbol(PHPAspectSymbols.T_MOD_EQUAL);
 }
 
 <ST_IN_SCRIPTING>"<<=" {
-	return createSymbol(ParserConstants5.T_SL_EQUAL);
+	return createSymbol(PHPAspectSymbols.T_SL_EQUAL);
 }
 
 <ST_IN_SCRIPTING>">>=" {
-	return createSymbol(ParserConstants5.T_SR_EQUAL);
+	return createSymbol(PHPAspectSymbols.T_SR_EQUAL);
 }
 
 <ST_IN_SCRIPTING>"&=" {
-	return createSymbol(ParserConstants5.T_AND_EQUAL);
+	return createSymbol(PHPAspectSymbols.T_AND_EQUAL);
 }
 
 <ST_IN_SCRIPTING>"|=" {
-	return createSymbol(ParserConstants5.T_OR_EQUAL);
+	return createSymbol(PHPAspectSymbols.T_OR_EQUAL);
 }
 
 <ST_IN_SCRIPTING>"^=" {
-	return createSymbol(ParserConstants5.T_XOR_EQUAL);
+	return createSymbol(PHPAspectSymbols.T_XOR_EQUAL);
 }
 
 <ST_IN_SCRIPTING>"||" {
-	return createSymbol(ParserConstants5.T_BOOLEAN_OR);
+	return createSymbol(PHPAspectSymbols.T_BOOLEAN_OR);
 }
 
 <ST_IN_SCRIPTING>"&&" {
-	return createSymbol(ParserConstants5.T_BOOLEAN_AND);
+	return createSymbol(PHPAspectSymbols.T_BOOLEAN_AND);
 }
 
 <ST_IN_SCRIPTING>"OR" {
-	return createSymbol(ParserConstants5.T_LOGICAL_OR);
+	return createSymbol(PHPAspectSymbols.T_LOGICAL_OR);
 }
 
 <ST_IN_SCRIPTING>"AND" {
-	return createSymbol(ParserConstants5.T_LOGICAL_AND);
+	return createSymbol(PHPAspectSymbols.T_LOGICAL_AND);
 }
 
 <ST_IN_SCRIPTING>"XOR" {
-	return createSymbol(ParserConstants5.T_LOGICAL_XOR);
+	return createSymbol(PHPAspectSymbols.T_LOGICAL_XOR);
 }
 
 <ST_IN_SCRIPTING>"<<" {
-	return createSymbol(ParserConstants5.T_SL);
+	return createSymbol(PHPAspectSymbols.T_SL);
 }
 
 <ST_IN_SCRIPTING>">>" {
-	return createSymbol(ParserConstants5.T_SR);
+	return createSymbol(PHPAspectSymbols.T_SR);
 }
 
 // TOKENS
 <ST_IN_SCRIPTING> {
-    ";"                     {return createSymbol(ParserConstants5.T_SEMICOLON);}
-    ":"                     {return createSymbol(ParserConstants5.T_NEKUDOTAIM);}
-    ","                     {return createSymbol(ParserConstants5.T_COMMA);}
-    "."                     {return createSymbol(ParserConstants5.T_NEKUDA);}
-    "["                     {return createSymbol(ParserConstants5.T_OPEN_RECT);}
-    "]"                     {return createSymbol(ParserConstants5.T_CLOSE_RECT);}
-    "("                     {return createSymbol(ParserConstants5.T_OPEN_PARENTHESE);}
-    ")"                     {return createSymbol(ParserConstants5.T_CLOSE_PARENTHESE);}
-    "|"                     {return createSymbol(ParserConstants5.T_OR);}
-    "^"                     {return createSymbol(ParserConstants5.T_KOVA);}
-    "&"                     {return createSymbol(ParserConstants5.T_REFERENCE);}
-    "+"                     {return createSymbol(ParserConstants5.T_PLUS);}
-    "-"                     {return createSymbol(ParserConstants5.T_MINUS);}
-    "/"                     {return createSymbol(ParserConstants5.T_DIV);}
-    "*"                     {return createSymbol(ParserConstants5.T_TIMES);}
-    "="                     {return createSymbol(ParserConstants5.T_EQUAL);}
-    "%"                     {return createSymbol(ParserConstants5.T_PRECENT);}
-    "!"                     {return createSymbol(ParserConstants5.T_NOT);}
-    "~"                     {return createSymbol(ParserConstants5.T_TILDA);}
-    "$"                     {return createSymbol(ParserConstants5.T_DOLLAR);}
-    "<"                     {return createSymbol(ParserConstants5.T_RGREATER);}
-    ">"                     {return createSymbol(ParserConstants5.T_LGREATER);}
-    "?"                     {return createSymbol(ParserConstants5.T_QUESTION_MARK);}
-    "@"                     {return createSymbol(ParserConstants5.T_AT);}
+    ";"                     {return createSymbol(PHPAspectSymbols.T_SEMICOLON);}
+    ":"                     {return createSymbol(PHPAspectSymbols.T_NEKUDOTAIM);}
+    ","                     {return createSymbol(PHPAspectSymbols.T_COMMA);}
+    "."                     {return createSymbol(PHPAspectSymbols.T_NEKUDA);}
+    "["                     {return createSymbol(PHPAspectSymbols.T_OPEN_RECT);}
+    "]"                     {return createSymbol(PHPAspectSymbols.T_CLOSE_RECT);}
+    "("                     {return createSymbol(PHPAspectSymbols.T_OPEN_PARENTHESE);}
+    ")"                     {return createSymbol(PHPAspectSymbols.T_CLOSE_PARENTHESE);}
+    "|"                     {return createSymbol(PHPAspectSymbols.T_OR);}
+    "^"                     {return createSymbol(PHPAspectSymbols.T_KOVA);}
+    "&"                     {return createSymbol(PHPAspectSymbols.T_REFERENCE);}
+    "+"                     {return createSymbol(PHPAspectSymbols.T_PLUS);}
+    "-"                     {return createSymbol(PHPAspectSymbols.T_MINUS);}
+    "/"                     {return createSymbol(PHPAspectSymbols.T_DIV);}
+    "*"                     {return createSymbol(PHPAspectSymbols.T_TIMES);}
+    "="                     {return createSymbol(PHPAspectSymbols.T_EQUAL);}
+    "%"                     {return createSymbol(PHPAspectSymbols.T_PRECENT);}
+    "!"                     {return createSymbol(PHPAspectSymbols.T_NOT);}
+    "~"                     {return createSymbol(PHPAspectSymbols.T_TILDA);}
+    "$"                     {return createSymbol(PHPAspectSymbols.T_DOLLAR);}
+    "<"                     {return createSymbol(PHPAspectSymbols.T_RGREATER);}
+    ">"                     {return createSymbol(PHPAspectSymbols.T_LGREATER);}
+    "?"                     {return createSymbol(PHPAspectSymbols.T_QUESTION_MARK);}
+    "@"                     {return createSymbol(PHPAspectSymbols.T_AT);}
 }
 
 <ST_IN_SCRIPTING>"{" {
     pushState(ST_IN_SCRIPTING);
-    return createSymbol(ParserConstants5.T_CURLY_OPEN);
+    return createSymbol(PHPAspectSymbols.T_CURLY_OPEN);
 
 }
 
 <ST_DOUBLE_QUOTES,ST_BACKQUOTE,ST_HEREDOC>"${" {
     pushState(ST_LOOKING_FOR_VARNAME);
-    return createSymbol(ParserConstants5.T_DOLLAR_OPEN_CURLY_BRACES);
+    return createSymbol(PHPAspectSymbols.T_DOLLAR_OPEN_CURLY_BRACES);
 }
 
 <ST_IN_SCRIPTING>"}" {
@@ -573,13 +573,13 @@ NEWLINE=("\r"|"\n"|"\r\n")
     if (!stack.isEmpty()) {
         popState();
     }
-    return createSymbol(ParserConstants5.T_CURLY_CLOSE);
+    return createSymbol(PHPAspectSymbols.T_CURLY_CLOSE);
 }
 
 <ST_LOOKING_FOR_VARNAME>{LABEL} {
     popState();
     pushState(ST_IN_SCRIPTING);
-    return createFullSymbol(ParserConstants5.T_STRING_VARNAME);
+    return createFullSymbol(PHPAspectSymbols.T_STRING_VARNAME);
 }
 
 <ST_LOOKING_FOR_VARNAME>{ANY_CHAR} {
@@ -589,43 +589,43 @@ NEWLINE=("\r"|"\n"|"\r\n")
 }
 
 <ST_IN_SCRIPTING>{LNUM} {
-    return createFullSymbol(ParserConstants5.T_LNUMBER);
+    return createFullSymbol(PHPAspectSymbols.T_LNUMBER);
 }
 
 <ST_IN_SCRIPTING>{HNUM} {
-    return createFullSymbol(ParserConstants5.T_DNUMBER);
+    return createFullSymbol(PHPAspectSymbols.T_DNUMBER);
 }
 
 <ST_DOUBLE_QUOTES,ST_BACKQUOTE,ST_HEREDOC>{LNUM}|{HNUM} { /* treat numbers (almost) as strings inside encapsulated strings */
-    return createFullSymbol(ParserConstants5.T_NUM_STRING);
+    return createFullSymbol(PHPAspectSymbols.T_NUM_STRING);
 }
 
 <ST_IN_SCRIPTING>{DNUM}|{EXPONENT_DNUM} {
-    return createFullSymbol(ParserConstants5.T_DNUMBER);
+    return createFullSymbol(PHPAspectSymbols.T_DNUMBER);
 }
 
 <ST_IN_SCRIPTING>"__CLASS__" {
-    return createSymbol(ParserConstants5.T_CLASS_C);
+    return createSymbol(PHPAspectSymbols.T_CLASS_C);
 }
 
 <ST_IN_SCRIPTING>"__FUNCTION__" {
-    return createSymbol(ParserConstants5.T_FUNC_C);
+    return createSymbol(PHPAspectSymbols.T_FUNC_C);
 }
 
 <ST_IN_SCRIPTING>"__METHOD__" {
-    return createSymbol(ParserConstants5.T_METHOD_C);
+    return createSymbol(PHPAspectSymbols.T_METHOD_C);
 }
 
 <ST_IN_SCRIPTING>"__LINE__" {
-    return createSymbol(ParserConstants5.T_LINE);
+    return createSymbol(PHPAspectSymbols.T_LINE);
 }
 
 <ST_IN_SCRIPTING>"__FILE__" {
-    return createSymbol(ParserConstants5.T_FILE);
+    return createSymbol(PHPAspectSymbols.T_FILE);
 }
 
 <YYINITIAL>(([^<]|"<"[^?%s<])+)|"<s"|"<" {
-    return createSymbol(ParserConstants5.T_INLINE_HTML);
+    return createSymbol(PHPAspectSymbols.T_INLINE_HTML);
 }
 
 <YYINITIAL>"<?"|"<script"{WHITESPACE}+"language"{WHITESPACE}*"="{WHITESPACE}*("php"|"\"php\""|"\'php\'"){WHITESPACE}*">" {
@@ -633,7 +633,7 @@ NEWLINE=("\r"|"\n"|"\r\n")
         yybegin(ST_IN_SCRIPTING);
         //return T_OPEN_TAG;
     } else {
-        return createSymbol(ParserConstants5.T_INLINE_HTML);
+        return createSymbol(PHPAspectSymbols.T_INLINE_HTML);
     }
 }
 
@@ -644,7 +644,7 @@ NEWLINE=("\r"|"\n"|"\r\n")
         yybegin(ST_IN_SCRIPTING);
         //return T_OPEN_TAG_WITH_ECHO;
     } else {
-        return createSymbol(ParserConstants5.T_INLINE_HTML);
+        return createSymbol(PHPAspectSymbols.T_INLINE_HTML);
     }
 }
 
@@ -653,7 +653,7 @@ NEWLINE=("\r"|"\n"|"\r\n")
         yybegin(ST_IN_SCRIPTING);
 		//return T_OPEN_TAG;
     } else {
-        return createSymbol(ParserConstants5.T_INLINE_HTML);
+        return createSymbol(PHPAspectSymbols.T_INLINE_HTML);
     }
 }
 
@@ -663,20 +663,20 @@ NEWLINE=("\r"|"\n"|"\r\n")
 }
 
 <ST_IN_SCRIPTING,ST_DOUBLE_QUOTES,ST_HEREDOC,ST_BACKQUOTE>"$"{LABEL} {
-    return createFullSymbol(ParserConstants5.T_VARIABLE);
+    return createFullSymbol(PHPAspectSymbols.T_VARIABLE);
 }
 
 <ST_IN_SCRIPTING>"define" {
     /* not a keyword, hust for recognize constans.*/
-    return createFullSymbol(ParserConstants5.T_DEFINE);
+    return createFullSymbol(PHPAspectSymbols.T_DEFINE);
 }
 
 <ST_IN_SCRIPTING>{LABEL} {
-    return createFullSymbol(ParserConstants5.T_STRING);
+    return createFullSymbol(PHPAspectSymbols.T_STRING);
 }
 
 <ST_DOUBLE_QUOTES,ST_BACKQUOTE,ST_HEREDOC>{LABEL} {
-    return createFullSymbol(ParserConstants5.T_STRING);
+    return createFullSymbol(PHPAspectSymbols.T_STRING);
 }
 
 <ST_IN_SCRIPTING>{WHITESPACE} {
@@ -724,7 +724,7 @@ NEWLINE=("\r"|"\n"|"\r\n")
 
 <ST_IN_SCRIPTING>"/*"{WHITESPACE}*"@var"{WHITESPACE}("$"?){LABEL}{WHITESPACE}{LABEL}{WHITESPACE}?"*/" {
     handleVarComment();
-    return createFullSymbol(ParserConstants5.T_VAR_COMMENT);
+    return createFullSymbol(PHPAspectSymbols.T_VAR_COMMENT);
 }
 
 <ST_IN_SCRIPTING>"/**" {
@@ -766,45 +766,45 @@ yybegin(ST_DOCBLOCK);
 
 <ST_IN_SCRIPTING>("?>"|"</script"{WHITESPACE}*">"){NEWLINE}? {
     yybegin(YYINITIAL);
-    return createSymbol(ParserConstants5.T_SEMICOLON);  /* implicit ';' at php-end tag */
+    return createSymbol(PHPAspectSymbols.T_SEMICOLON);  /* implicit ';' at php-end tag */
 }
 
 <ST_IN_SCRIPTING>"%>"{NEWLINE}? {
     if (asp_tags) {
         yybegin(YYINITIAL);
-        return createSymbol(ParserConstants5.T_SEMICOLON);  /* implicit ';' at php-end tag */
+        return createSymbol(PHPAspectSymbols.T_SEMICOLON);  /* implicit ';' at php-end tag */
     } else {
-        return createSymbol(ParserConstants5.T_INLINE_HTML);
+        return createSymbol(PHPAspectSymbols.T_INLINE_HTML);
     }
 }
 
 <ST_IN_SCRIPTING>([\"]([^$\"\\]|("\\".))*[\"]) {
-    return createFullSymbol(ParserConstants5.T_CONSTANT_ENCAPSED_STRING);
+    return createFullSymbol(PHPAspectSymbols.T_CONSTANT_ENCAPSED_STRING);
 }
 
 <ST_IN_SCRIPTING>([']([^'\\]|("\\".))*[']) {
-    return createFullSymbol(ParserConstants5.T_CONSTANT_ENCAPSED_STRING);
+    return createFullSymbol(PHPAspectSymbols.T_CONSTANT_ENCAPSED_STRING);
 }
 
 <ST_IN_SCRIPTING>[\"] {
     yybegin(ST_DOUBLE_QUOTES);
-    return createSymbol(ParserConstants5.T_QUATE);
+    return createSymbol(PHPAspectSymbols.T_QUATE);
 }
 
 <ST_IN_SCRIPTING>"<<<"{TABS_AND_SPACES}{LABEL}{NEWLINE} {
     heredoc = yytext().substring(3).trim();    // for '<<<'
     yybegin(ST_HEREDOC);
-    return createSymbol(ParserConstants5.T_START_HEREDOC);
+    return createSymbol(PHPAspectSymbols.T_START_HEREDOC);
 }
 
 <ST_IN_SCRIPTING>[`] {
     yybegin(ST_BACKQUOTE);
-    return createSymbol(ParserConstants5.T_BACKQUATE);
+    return createSymbol(PHPAspectSymbols.T_BACKQUATE);
 }
 
 <ST_IN_SCRIPTING>['] {
     yybegin(ST_SINGLE_QUOTE);
-    return createSymbol(ParserConstants5.T_SINGLE_QUATE);
+    return createSymbol(PHPAspectSymbols.T_SINGLE_QUATE);
 }
 
 <ST_HEREDOC>^{LABEL}(";")?{NEWLINE} {
@@ -822,80 +822,80 @@ yybegin(ST_DOCBLOCK);
         }
         heredoc = null;
         yybegin(ST_IN_SCRIPTING);
-        return createSymbol(ParserConstants5.T_END_HEREDOC);
+        return createSymbol(PHPAspectSymbols.T_END_HEREDOC);
     } else {
-        return createFullSymbol(ParserConstants5.T_STRING);
+        return createFullSymbol(PHPAspectSymbols.T_STRING);
     }
 }
 
 <ST_DOUBLE_QUOTES,ST_BACKQUOTE,ST_HEREDOC>{ESCAPED_AND_WHITESPACE} {
-    return createSymbol(ParserConstants5.T_ENCAPSED_AND_WHITESPACE);
+    return createSymbol(PHPAspectSymbols.T_ENCAPSED_AND_WHITESPACE);
 }
 
 <ST_SINGLE_QUOTE>([^'\\]|\\[^'\\])+ {
-    return createSymbol(ParserConstants5.T_ENCAPSED_AND_WHITESPACE);
+    return createSymbol(PHPAspectSymbols.T_ENCAPSED_AND_WHITESPACE);
 }
 
 <ST_DOUBLE_QUOTES>[`]+ {
-    return createSymbol(ParserConstants5.T_ENCAPSED_AND_WHITESPACE);
+    return createSymbol(PHPAspectSymbols.T_ENCAPSED_AND_WHITESPACE);
 }
 
 <ST_BACKQUOTE>[\"]+ {
-    return createSymbol(ParserConstants5.T_ENCAPSED_AND_WHITESPACE);
+    return createSymbol(PHPAspectSymbols.T_ENCAPSED_AND_WHITESPACE);
 }
 
 <ST_DOUBLE_QUOTES,ST_BACKQUOTE,ST_HEREDOC>"$"[^a-zA-Z_\x7f-\xff{] {
     if (yylength() == 2) {
         yypushback(1);
     }
-    return createSymbol(ParserConstants5.T_CHARACTER);
+    return createSymbol(PHPAspectSymbols.T_CHARACTER);
 }
 
 // ENCAPSED_TOKENS
 <ST_DOUBLE_QUOTES,ST_BACKQUOTE,ST_HEREDOC> {
-    "["     {return createSymbol(ParserConstants5.T_OPEN_RECT);}
+    "["     {return createSymbol(PHPAspectSymbols.T_OPEN_RECT);}
 
-    "]"     {return createSymbol(ParserConstants5.T_CLOSE_RECT); }
+    "]"     {return createSymbol(PHPAspectSymbols.T_CLOSE_RECT); }
 
-    "$"     {return createSymbol(ParserConstants5.T_DOLLAR);}
+    "$"     {return createSymbol(PHPAspectSymbols.T_DOLLAR);}
     
-    "{"     {return createSymbol(ParserConstants5.T_CURLY_OPEN); }
+    "{"     {return createSymbol(PHPAspectSymbols.T_CURLY_OPEN); }
     
-    "}"     {return createSymbol(ParserConstants5.T_CURLY_CLOSE); }
+    "}"     {return createSymbol(PHPAspectSymbols.T_CURLY_CLOSE); }
 }
 
 <ST_DOUBLE_QUOTES,ST_BACKQUOTE,ST_HEREDOC>"\\{" {
-	return createSymbol(ParserConstants5.T_STRING);
+	return createSymbol(PHPAspectSymbols.T_STRING);
 }
 
 <ST_DOUBLE_QUOTES,ST_BACKQUOTE,ST_HEREDOC>"{$" {
     pushState(ST_IN_SCRIPTING);
     yypushback(yylength()-1);
-    return createSymbol(ParserConstants5.T_CURLY_OPEN_WITH_DOLAR);
+    return createSymbol(PHPAspectSymbols.T_CURLY_OPEN_WITH_DOLAR);
 }
 
 <ST_SINGLE_QUOTE>"\\'" {
-    return createSymbol(ParserConstants5.T_CHARACTER);
+    return createSymbol(PHPAspectSymbols.T_CHARACTER);
 }
 
 <ST_SINGLE_QUOTE>"\\\\" {
-    return createSymbol(ParserConstants5.T_CHARACTER);
+    return createSymbol(PHPAspectSymbols.T_CHARACTER);
 }
 
 <ST_DOUBLE_QUOTES>"\\\"" {
-    return createSymbol(ParserConstants5.T_CHARACTER);
+    return createSymbol(PHPAspectSymbols.T_CHARACTER);
 }
 
 <ST_BACKQUOTE>"\\`" {
-    return createSymbol(ParserConstants5.T_CHARACTER);
+    return createSymbol(PHPAspectSymbols.T_CHARACTER);
 }
 
 <ST_DOUBLE_QUOTES,ST_BACKQUOTE,ST_HEREDOC>"\\"[0-7]{1,3} {
-    return createSymbol(ParserConstants5.T_CHARACTER);
+    return createSymbol(PHPAspectSymbols.T_CHARACTER);
 }
 
 <ST_DOUBLE_QUOTES,ST_BACKQUOTE,ST_HEREDOC>"\\x"[0-9A-Fa-f]{1,2} {
-    return createSymbol(ParserConstants5.T_CHARACTER);
+    return createSymbol(PHPAspectSymbols.T_CHARACTER);
 }
 
 <ST_DOUBLE_QUOTES,ST_BACKQUOTE,ST_HEREDOC>"\\"{ANY_CHAR} {
@@ -911,28 +911,28 @@ yybegin(ST_DOCBLOCK);
         case '$':
             break;
         default:
-            return createSymbol(ParserConstants5.T_BAD_CHARACTER);
+            return createSymbol(PHPAspectSymbols.T_BAD_CHARACTER);
     }
-    return createSymbol(ParserConstants5.T_CHARACTER);
+    return createSymbol(PHPAspectSymbols.T_CHARACTER);
 }
 
 <ST_HEREDOC>[\"'`]+ {
-    return createSymbol(ParserConstants5.T_ENCAPSED_AND_WHITESPACE);
+    return createSymbol(PHPAspectSymbols.T_ENCAPSED_AND_WHITESPACE);
 }
 
 <ST_DOUBLE_QUOTES>[\"] {
     yybegin(ST_IN_SCRIPTING);
-    return createSymbol(ParserConstants5.T_QUATE);
+    return createSymbol(PHPAspectSymbols.T_QUATE);
 }
 
 <ST_BACKQUOTE>[`] {
     yybegin(ST_IN_SCRIPTING);
-    return createSymbol(ParserConstants5.T_BACKQUATE);
+    return createSymbol(PHPAspectSymbols.T_BACKQUATE);
 }
 
 <ST_SINGLE_QUOTE>['] {
     yybegin(ST_IN_SCRIPTING);
-    return createSymbol(ParserConstants5.T_SINGLE_QUATE);
+    return createSymbol(PHPAspectSymbols.T_SINGLE_QUATE);
 }
 
 <ST_IN_SCRIPTING,YYINITIAL,ST_DOUBLE_QUOTES,ST_BACKQUOTE,ST_SINGLE_QUOTE,ST_HEREDOC>{ANY_CHAR} {
