@@ -83,9 +83,9 @@ public class PHPAspectBuilder extends IncrementalProjectBuilder {
 		}
 	}
 
-	public static final String BUILDER_ID = "org.phpaspect.apdt.phpAspectBuilder";
+	public static final String BUILDER_ID = "org.phpaspect.apdt.core.PHPAspectBuilder";
 
-	private static final String MARKER_TYPE = "org.phpaspect.apdt.aspectProblem";
+	private static final String MARKER_TYPE = "org.phpaspect.apdt.core.aspectProblem";
 	
 //	private PHPAspectParser parser;
 
