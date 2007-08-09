@@ -7,21 +7,26 @@
 	<property name="parserName" value="PHPAspectParser" />
 	<property name="symbolsName" value="PHPAspectSymbols" />
 	<property name="jflex_home" value="jflex-1.3.5/lib/JFlex.jar" />
-	<property name="javacup_home" value="" />
-	<property name="output_dir" value="../src/org/phpaspect/apdt/parser" />
+	<property name="javacup_home" value="../../org.eclipse.php.core/bin" />
+	<property name="output_dir" value="../src/org/phpaspect/apdt/internal/core/parser" />
 	<property name="classpath" value="../../org.eclipse.php.core/bin" />
 
 	<target name="build">
 		<java jar="${jflex_home}" fork="true" failonerror="true">
 			<arg value="${lexer}" />
 		</java>
-		<java jar="${javacup_home}" input="${parser}"
+		<java classname="org.eclipse.php.internal.core.phpModel.javacup.Main" classpath="${javacup_home}" input="${parser}"
 				fork="true" failonerror="true">
-			<arg line="-expect 1" />
+			<arg line="-expect 4" />
 			<arg line="-parser ${parserName}" />
 			<arg line="-symbols ${symbolsName}" />
 		</java>
- 		<move file="${parserName}.java" todir="${output_dir}" />
+		<replace file="${parserName}.java">
+			<replacefilter token="java_cup." value="org.eclipse.php.internal.core.phpModel.javacup."/>
+			<replacefilter token="PhpAstLexer5" value="PHPAspectLexer"/>
+			<replacefilter token="PhpAstParser5" value="PHPAspectParser"/>
+		</replace>
+		<move file="${parserName}.java" todir="${output_dir}" />
  		<move file="${symbolsName}.java" todir="${output_dir}" />
 		<move file="${lexerName}.java" todir="${output_dir}" />
 	</target>
