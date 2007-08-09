@@ -2,6 +2,14 @@
 <?eclipse version="3.3"?>
 <plugin>
    <extension
+      id="org.phpaspect.apdt.core.PHPAspectBuilder" name="PHPAspect Builder" point="org.eclipse.core.resources.builders">
+      <builder>
+         <run 
+            class="org.phpaspect.apdt.internal.core.builder.PHPAspectBuilder">
+         </run>
+      </builder>
+   </extension>
+   <extension
          id="phpAspectNature"
          name="PHPAspect Project Nature"
          point="org.eclipse.core.resources.natures">
