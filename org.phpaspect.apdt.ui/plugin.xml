@@ -92,7 +92,16 @@
             class="org.phpaspect.apdt.internal.ui.wizards.AspectCreationWizard"
             icon="icons/new_aspect_wizard.gif"
             id="org.phpaspect.apdt.ui.wizards.AspectCreationWizard"
-            name="PHPAspect">
+            name="PHPAspect"
+            project="true">
+      </wizard>
+      <wizard
+            category="org.phpaspect.apdt.ui"
+            class="org.phpaspect.apdt.internal.ui.wizards.PHPAspectProjectCreationWizard"
+            icon="icons/sample.gif"
+            id="org.phpaspect.apdt.internal.ui.wizards.PHPAspectProjectCreationWizard"
+            name="New PHPAspect project"
+            project="true">
       </wizard>
    </extension>
 </plugin>

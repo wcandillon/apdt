@@ -9,8 +9,12 @@ public class UIMessages extends NLS {
 		// Do not instantiate
 	}
 	
-	public static String apdt_version;
+	/* JOBS */
 	public static String utils_refresh_explorer_job;
+	/* Wizard for creating new aspects */
+	public static String NewAspectCreationWizard_title;
+	public static String NewAspectCreationWizardPage_title;
+	public static String NewAspectCreationWizardPage_description;
 	
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, UIMessages.class);
