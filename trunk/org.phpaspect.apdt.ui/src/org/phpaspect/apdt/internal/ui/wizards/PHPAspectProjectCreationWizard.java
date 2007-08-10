@@ -21,22 +21,19 @@ import org.eclipse.ui.ide.IDE;
  * (a folder or a project) is selected in the workspace 
  * when the wizard is opened, it will accept it as the target
  * container. The wizard creates one file with the extension
- * "ap". If a sample multi-page editor (also available
+ * "mpe". If a sample multi-page editor (also available
  * as a template) is registered for the same extension, it will
  * be able to open it.
  */
 
-public class AspectCreationWizard extends Wizard implements INewWizard {
-	private AspectCreationWizardPage page;
+public class PHPAspectProjectCreationWizard extends Wizard implements INewWizard {
+	private PHPAspectProjectCreationWizardPage page;
 	private ISelection selection;
-	private String containerName;
-	private String aspect;
-	private String fileName;
 
 	/**
-	 * Constructor for AspectCreationWizard.
+	 * Constructor for PHPAspectProjectCreationWizard.
 	 */
-	public AspectCreationWizard() {
+	public PHPAspectProjectCreationWizard() {
 		super();
 		setNeedsProgressMonitor(true);
 	}
@@ -46,7 +43,7 @@ public class AspectCreationWizard extends Wizard implements INewWizard {
 	 */
 
 	public void addPages() {
-		page = new AspectCreationWizardPage(selection);
+		page = new PHPAspectProjectCreationWizardPage(selection);
 		addPage(page);
 	}
 
@@ -56,9 +53,8 @@ public class AspectCreationWizard extends Wizard implements INewWizard {
 	 * using wizard as execution context.
 	 */
 	public boolean performFinish() {
-		containerName = page.getContainerName();
-		fileName = page.getFileName();
-		aspect = page.getAspect();
+		final String containerName = page.getContainerName();
+		final String fileName = page.getFileName();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
@@ -132,7 +128,9 @@ public class AspectCreationWizard extends Wizard implements INewWizard {
 	 */
 
 	private InputStream openContentStream() {
-		return new ByteArrayInputStream(aspect.getBytes());
+		String contents =
+			"This is the initial file contents for *.mpe file that should be word-sorted in the Preview page of the multi-page editor";
+		return new ByteArrayInputStream(contents.getBytes());
 	}
 
 	private void throwCoreException(String message) throws CoreException {
