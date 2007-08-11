@@ -9,6 +9,7 @@ package org.phpaspect.apdt.internal.core.parser;
 
 import java.util.*;
 import org.eclipse.php.internal.core.ast.nodes.*;
+import org.phpaspect.apdt.internal.core.nodes.*;
 
 parser code {:
 	protected final static Integer PUBLIC = new Integer(BodyDeclaration.Modifier.PUBLIC);
@@ -97,6 +98,9 @@ terminal  String T_ISSET;
 terminal  String T_EMPTY;
 terminal  T_HALT_COMPILER;
 terminal  T_CLASS;
+terminal  T_ASPECT;
+terminal  T_PERSESSION;
+terminal  T_FROM;
 terminal  T_INTERFACE;
 terminal  T_EXTENDS;
 terminal  T_IMPLEMENTS;
@@ -165,6 +169,12 @@ non terminal Statement statement;
 non terminal List inner_statement_list;
 non terminal Statement inner_statement;
 non terminal Statement unticked_statement;
+/* PHPAspect */
+non terminal Statement aspect_declaration_statement;
+non terminal Statement unticked_aspect_declaration_statement;
+non terminal Integer aspect_entry_type;
+non terminal List aspect_statement_list;
+
 non terminal List unset_variables;
 non terminal VariableBase unset_variable;
 non terminal Expression use_filename;
@@ -300,8 +310,8 @@ precedence right T_STATIC, T_ABSTRACT, T_FINAL, T_PRIVATE, T_PROTECTED, T_PUBLIC
 thestart ::=
 top_statement_list:statementList
 {:
-	PhpAstLexer5 phpAstLexer5 = (PhpAstLexer5) parser.getScanner();
-	List commentList = phpAstLexer5.getCommentList();
+	PHPAspectLexer PHPAspectLexer = (PHPAspectLexer) parser.getScanner();
+	List commentList = PHPAspectLexer.getCommentList();
 	Program program = new Program(statementListleft, statementListright, statementList, commentList);
 	RESULT = program; 
 :}
@@ -322,28 +332,55 @@ top_statement_list:statementList top_statement:statement
 :}
 ;
 
-top_statement ::=
-statement:statement
+top_statement ::= aspect_declaration_statement:statement
 {: 
 	RESULT = statement; 
-:}
-
-| function_declaration_statement:statement
-{: 
-	RESULT = statement; 
-:}
-
-| class_declaration_statement:statement
-{: 
-	RESULT = statement; 
-:}
-
-| T_HALT_COMPILER T_OPEN_PARENTHESE T_CLOSE_PARENTHESE T_SEMICOLON:statement
-{: 
-	// Note: we never generate T_HALT_COMPILER
-	RESULT = null;
 :}
 ;
+
+/* start */
+aspect_declaration_statement ::= unticked_aspect_declaration_statement:aspectDeclaration
+{:
+	RESULT = aspectDeclaration;
+:}
+;
+
+unticked_aspect_declaration_statement ::=
+aspect_entry_type:modifier T_STRING:aspectName
+extends_from:superClass implements_list:interfaces
+T_CURLY_OPEN:blockStart aspect_statement_list:statementList T_CURLY_CLOSE:blockEnd T_SEMICOLON
+{:
+	Identifier classId = new Identifier(aspectNameleft, aspectNameright, aspectName);
+	Block block = new Block(blockStartleft, blockEndright, statementList);
+	//ClassDeclaration classDeclaration = new ClassDeclaration(modifierleft ,blockEndright, modifier.intValue(), classId, superClass, interfaces, block);
+	AspectDeclaration aspectDeclaration = new AspectDeclaration(modifierleft ,blockEndright, modifier.intValue(), classId, superClass, interfaces, block);
+	RESULT = aspectDeclaration;
+:}
+;
+
+aspect_entry_type ::=
+T_ASPECT
+{:
+	RESULT = new Integer(AspectDeclaration.MODIFIER_NONE);
+:}
+               
+| T_ABSTRACT T_ASPECT
+{:
+	RESULT = new Integer(AspectDeclaration.MODIFIER_ABSTRACT);
+:}        
+
+| T_FINAL T_ASPECT   
+{:
+	RESULT = new Integer(AspectDeclaration.MODIFIER_FINAL);
+:}        
+;
+
+aspect_statement_list ::= class_statement_list:list
+{:
+	RESULT = list;
+:}        
+;
+/* end */
 
 inner_statement_list ::=
 inner_statement_list:statementList inner_statement:statement
@@ -1282,7 +1319,7 @@ T_OPEN_PARENTHESE parameter_list:paramList T_CLOSE_PARENTHESE
 method_body:body
 {:
 	int methodStart = modifier == null ? startleft : modifierleft;
-	modifier = modifier == null ? PhpAstParser5.PUBLIC : modifier;
+	modifier = modifier == null ? PHPAspectParser.PUBLIC : modifier;
 	Identifier functionId = new Identifier(functionNameleft, functionNameright, functionName);
 	FunctionDeclaration functionDeclaration = new FunctionDeclaration(startleft, bodyright, functionId, paramList, body, isReference.booleanValue());
 	MethodDeclaration methodDeclaration = new MethodDeclaration(methodStart, bodyright, modifier.intValue(), functionDeclaration, true);
@@ -1321,7 +1358,7 @@ non_empty_member_modifiers:list
 
 | T_VAR
 {:
-	RESULT = PhpAstParser5.PUBLIC;
+	RESULT = PHPAspectParser.PUBLIC;
 :}
 ;
 
@@ -1360,32 +1397,32 @@ member_modifier:modifier
 member_modifier ::=
 T_PUBLIC
 {:
-	RESULT = PhpAstParser5.PUBLIC;
+	RESULT = PHPAspectParser.PUBLIC;
 :}
 
 | T_PROTECTED
 {:
-	RESULT = PhpAstParser5.PROTECTED;
+	RESULT = PHPAspectParser.PROTECTED;
 :}
 
 | T_PRIVATE
 {:
-	RESULT = PhpAstParser5.PRIVATE;
+	RESULT = PHPAspectParser.PRIVATE;
 :}
 
 | T_STATIC
 {:
-	RESULT = PhpAstParser5.STATIC;
+	RESULT = PHPAspectParser.STATIC;
 :}
 
 | T_ABSTRACT
 {:
-	RESULT = PhpAstParser5.ABSTRACT;
+	RESULT = PHPAspectParser.ABSTRACT;
 :}
 
 | T_FINAL
 {:
-	RESULT = PhpAstParser5.FINAL;
+	RESULT = PHPAspectParser.FINAL;
 :}
 ;
 
