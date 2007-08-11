@@ -23,7 +23,7 @@ public class APDTDecorator extends LabelProvider implements ILabelDecorator {
 				return null;
 			}
 		} catch (CoreException e) {
-			// TODO Do something ?
+			//TODO enforcement
 			e.printStackTrace();
 		}
 		//Returning a null image decorates a resource icon
