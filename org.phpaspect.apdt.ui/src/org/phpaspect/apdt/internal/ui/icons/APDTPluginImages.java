@@ -14,8 +14,8 @@ public class APDTPluginImages {
 		APDTPluginImages.baseURL = APDTUiPlugin.getDefault().getBundle().getEntry("/icons/");
 	}
 	
-	public static final ImageDescriptor DESC_WIZBAN_NEW_ASPECT = create("newaspect_wiz.gif");
-	public static final ImageDescriptor PHPASPECT_PROJECT = create("aj_ovr.gif");
+	public static final ImageDescriptor DESC_WIZBAN_NEW_ASPECT  = create("newaspect_wiz.gif");
+	public static final ImageDescriptor DESC_WIZBAN_NEW_PROJECT = create("newphpaspectprj_wiz_big.gif");
 
 	private static ImageDescriptor create(String iconName) {
 		try {

@@ -40,11 +40,7 @@ public class WizardsUtils {
 	}
 	
 	public static boolean isValidPHPTypeName(String typeName){
-		if (typeName.matches("[a-zA-Z]+[0-9a-zA-Z]*")) {
-			return true;
-		}else{
-			return false;
-		}
+		return typeName.matches("[a-zA-Z]+[0-9a-zA-Z]*");
 	}
 	
 }

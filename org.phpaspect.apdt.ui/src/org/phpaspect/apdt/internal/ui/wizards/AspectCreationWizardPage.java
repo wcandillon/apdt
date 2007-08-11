@@ -26,9 +26,7 @@ import org.phpaspect.apdt.internal.ui.text.UIMessages;
  * The "New" wizard page allows setting the container for the new file as well
  * as the file name. The page will only accept file name without the extension
  * OR with the extension that matches the expected one (ap).
- * @TODO Instanciation options
- * @TODO Subtype of ?
- * @TODO Checking the project nature.
+ * @TODO Checking the project (and the php5 setting ?).
  * @TODO NLS
  */
 
@@ -56,6 +54,8 @@ public class AspectCreationWizardPage extends WizardPage{
 	private Text implementsText;
 
 	private Button modDefaultButton;
+
+	private Text nsText;
 
 	/**
 	 * Constructor for SampleNewWizardPage.
@@ -114,6 +114,8 @@ public class AspectCreationWizardPage extends WizardPage{
 		});
 		
 		WizardsUtils.createBlank(container);
+
+		WizardsUtils.createLine(container, ncol);
 		
 		label = new Label(container, SWT.NULL);
 		label.setText("&Aspect name:");
@@ -126,8 +128,22 @@ public class AspectCreationWizardPage extends WizardPage{
 				dialogChanged();
 			}
 		});
-
-		WizardsUtils.createLine(container, ncol);
+		
+		WizardsUtils.createBlank(container);
+		
+//		label = new Label(container, SWT.NULL);
+//		label.setText("&Namespace:");
+//
+//		nsText = new Text(container, SWT.BORDER | SWT.SINGLE);
+//		gd = new GridData(GridData.FILL_HORIZONTAL);
+//		nsText.setLayoutData(gd);
+//		nsText.addModifyListener(new ModifyListener() {
+//			public void modifyText(ModifyEvent e) {
+//				dialogChanged();
+//			}
+//		});
+//		
+//		WizardsUtils.createBlank(container);
 		
 		new Label(container, SWT.NONE).setText("Modifier:"); //$NON-NLS-1$
 		

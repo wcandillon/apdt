@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
+import org.phpaspect.apdt.internal.ui.icons.APDTPluginImages;
 
 /**
  * The "New" wizard page allows setting the container for the new file as well
@@ -42,6 +43,7 @@ public class PHPAspectProjectCreationWizardPage extends WizardPage {
 		super("wizardPage");
 		setTitle("Multi-page Editor File");
 		setDescription("This wizard creates a new file with *.mpe extension that can be opened by a multi-page editor.");
+		setImageDescriptor(APDTPluginImages.DESC_WIZBAN_NEW_PROJECT);
 		this.selection = selection;
 	}
 
