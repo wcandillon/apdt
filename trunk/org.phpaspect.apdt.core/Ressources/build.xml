@@ -17,14 +17,12 @@
 		</java>
 		<java classname="org.eclipse.php.internal.core.phpModel.javacup.Main" classpath="${javacup_home}" input="${parser}"
 				fork="true" failonerror="true">
-			<arg line="-expect 4" />
+			<arg line="-expect 1" />
 			<arg line="-parser ${parserName}" />
 			<arg line="-symbols ${symbolsName}" />
 		</java>
 		<replace file="${parserName}.java">
 			<replacefilter token="java_cup." value="org.eclipse.php.internal.core.phpModel.javacup."/>
-			<replacefilter token="PhpAstLexer5" value="PHPAspectLexer"/>
-			<replacefilter token="PhpAstParser5" value="PHPAspectParser"/>
 		</replace>
 		<move file="${parserName}.java" todir="${output_dir}" />
  		<move file="${symbolsName}.java" todir="${output_dir}" />

@@ -2,9 +2,6 @@ package org.phpaspect.apdt.internal.core.builder;
 
 import java.util.Map;
 
-
-import javax.xml.parsers.SAXParserFactory;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
@@ -15,13 +12,13 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.helpers.DefaultHandler;
+import org.phpaspect.apdt.internal.core.parser.PHPAspectLexer;
+import org.phpaspect.apdt.internal.core.parser.PHPAspectParser;
+import org.phpaspect.apdt.internal.core.parser.PHPAspectParserFactory;
 
 public class PHPAspectBuilder extends IncrementalProjectBuilder {
 
-	class SampleDeltaVisitor implements IResourceDeltaVisitor {
+	class PHPAspectDeltaVisitor implements IResourceDeltaVisitor {
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -29,19 +26,17 @@ public class PHPAspectBuilder extends IncrementalProjectBuilder {
 		 */
 		public boolean visit(IResourceDelta delta) throws CoreException {
 			IResource resource = delta.getResource();
-
-			System.out.println("PHPAspectBuilder="+resource.getName());
 			switch (delta.getKind()) {
 			case IResourceDelta.ADDED:
 				// handle added resource
-				checkXML(resource);
+				checkAspect(resource);
 				break;
 			case IResourceDelta.REMOVED:
 				// handle removed resource
 				break;
 			case IResourceDelta.CHANGED:
 				// handle changed resource
-				checkXML(resource);
+				checkAspect(resource);
 				break;
 			}
 			//return true to continue visiting children.
@@ -49,48 +44,46 @@ public class PHPAspectBuilder extends IncrementalProjectBuilder {
 		}
 	}
 
-	class SampleResourceVisitor implements IResourceVisitor {
+	class PHPAspectResourceVisitor implements IResourceVisitor {
 		public boolean visit(IResource resource) {
-			checkXML(resource);
+			checkAspect(resource);
 			//return true to continue visiting children.
 			return true;
 		}
 	}
 
-	class XMLErrorHandler extends DefaultHandler {
-		
-		private IFile file;
-
-		public XMLErrorHandler(IFile file) {
-			this.file = file;
-		}
-
-		private void addMarker(SAXParseException e, int severity) {
-			PHPAspectBuilder.this.addMarker(file, e.getMessage(), e
-					.getLineNumber(), severity);
-		}
-
-		public void error(SAXParseException exception) throws SAXException {
-			addMarker(exception, IMarker.SEVERITY_ERROR);
-		}
-
-		public void fatalError(SAXParseException exception) throws SAXException {
-			addMarker(exception, IMarker.SEVERITY_ERROR);
-		}
-
-		public void warning(SAXParseException exception) throws SAXException {
-			addMarker(exception, IMarker.SEVERITY_WARNING);
-		}
-	}
+//	class PHPAspectErrorHandler extends DefaultHandler {
+//		
+//		private IFile file;
+//
+//		public PHPAspectErrorHandler(IFile file) {
+//			this.file = file;
+//		}
+//
+//		private void addMarker(SAXParseException e, int severity) {
+//			PHPAspectBuilder.this.addMarker(file, e.getMessage(), e
+//					.getLineNumber(), severity);
+//		}
+//
+//		public void error(SAXParseException exception) throws SAXException {
+//			addMarker(exception, IMarker.SEVERITY_ERROR);
+//		}
+//
+//		public void fatalError(SAXParseException exception) throws SAXException {
+//			addMarker(exception, IMarker.SEVERITY_ERROR);
+//		}
+//
+//		public void warning(SAXParseException exception) throws SAXException {
+//			addMarker(exception, IMarker.SEVERITY_WARNING);
+//		}
+//	}
 
 	public static final String BUILDER_ID = "org.phpaspect.apdt.core.PHPAspectBuilder";
 
 	private static final String MARKER_TYPE = "org.phpaspect.apdt.core.aspectProblem";
+
+	private PHPAspectParser parser;
 	
-//	private PHPAspectParser parser;
-
-	private SAXParserFactory parserFactory;
-
 	private void addMarker(IFile file, String message, int lineNumber,
 			int severity) {
 		try {
@@ -102,6 +95,7 @@ public class PHPAspectBuilder extends IncrementalProjectBuilder {
 			}
 			marker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
 		} catch (CoreException e) {
+			
 		}
 	}
 
@@ -126,27 +120,19 @@ public class PHPAspectBuilder extends IncrementalProjectBuilder {
 		return null;
 	}
 
-	void checkXML(IResource resource) {
-		if (resource instanceof IFile && resource.getName().endsWith(".xml")) {
-			IFile file = (IFile) resource;
-			deleteMarkers(file);
-			XMLErrorHandler reporter = new XMLErrorHandler(file);
-			try {
-				//getParser().parse(file.getContents(), reporter);
-			} catch (Exception e1) {
-			}
-		}
-	}
-	
-	public void checkAspect(IResource resource){
+	void checkAspect(IResource resource){
 		if (resource instanceof IFile && resource.getName().endsWith(".ap")) {
 			IFile file = (IFile) resource;
 			deleteMarkers(file);
-			XMLErrorHandler reporter = new XMLErrorHandler(file);
 			try {
-				//getParser().parse();
-				//getParser().parse(file.getContents(), reporter);
-			} catch (Exception e1) {
+				System.out.println("parse:"+file.getName());
+				parser = PHPAspectParserFactory.create(file);
+				parser.parse();
+			} catch (CoreException e) {
+				// TODO do something ?
+			} catch (Exception e){
+				System.out.println("exception:"+e.getMessage());
+				addMarker(file, e.getMessage(), ((PHPAspectLexer)parser.getScanner()).getCurrentLine(), IMarker.SEVERITY_ERROR);
 			}
 		}
 	}
@@ -161,21 +147,15 @@ public class PHPAspectBuilder extends IncrementalProjectBuilder {
 	protected void fullBuild(final IProgressMonitor monitor)
 			throws CoreException {
 		try {
-			getProject().accept(new SampleResourceVisitor());
+			getProject().accept(new PHPAspectResourceVisitor());
 		} catch (CoreException e) {
+			
 		}
 	}
-
-//	private PHPAspectParser getParser(){
-//		if (parser == null) {
-//			parser = new PHPAspectParser();
-//		}
-//		return parser;
-//	}
 
 	protected void incrementalBuild(IResourceDelta delta,
 			IProgressMonitor monitor) throws CoreException {
 		// the visitor does the work.
-		delta.accept(new SampleDeltaVisitor());
+		delta.accept(new PHPAspectDeltaVisitor());
 	}
 }

@@ -275,6 +275,19 @@ NEWLINE=("\r"|"\n"|"\r\n")
 	return createSymbol(PHPAspectSymbols.T_CLASS);
 }
 
+<ST_IN_SCRIPTING>"aspect" {
+	return createSymbol(PHPAspectSymbols.T_ASPECT);
+}
+
+<ST_IN_SCRIPTING>"perSession" {
+	return createSymbol(PHPAspectSymbols.T_PERSESSION);
+}
+
+<ST_IN_SCRIPTING>"from" {
+	return createSymbol(PHPAspectSymbols.T_FROM);
+}
+
+
 <ST_IN_SCRIPTING>"interface" {
 	return createSymbol(PHPAspectSymbols.T_INTERFACE);
 }
