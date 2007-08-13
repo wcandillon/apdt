@@ -23,17 +23,22 @@
       </builder>
       <requires-nature id="org.eclipse.php.core.PHPNature" />
    </extension>
-   <extension
-         id="apProblem"
-         name="PHPAspect Problem"
-         point="org.eclipse.core.resources.markers">
-      <super
-            type="org.eclipse.core.resources.problemmarker">
-      </super>
-      <persistent
-            value="true">
-      </persistent>
-   </extension>
+
+	 <extension
+	       id="phpaspectproblemmarker"
+	       name="PHPAspect Syntax Error"
+	       point="org.eclipse.core.resources.markers">
+	    <super type="org.eclipse.core.resources.problemmarker"/>
+	    <persistent value="true"/>
+	    <attribute name="lineNumber"/>
+	    <attribute name="charStart"/>
+	    <attribute name="charEnd"/>
+	    <attribute name="message"/>
+	    <attribute name="priority"/>
+	    <attribute name="severity"/>
+	    <attribute name="userEditable"/>
+	    <super type="org.eclipse.core.resources.textmarker"/>
+	 </extension>
   <extension
          point="org.eclipse.core.runtime.contentTypes">
       <content-type
