@@ -12,6 +12,10 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.php.internal.core.PHPCorePlugin;
+import org.eclipse.php.internal.core.documentModel.validate.PHPProblemsValidator;
+import org.eclipse.php.internal.core.phpModel.javacup.runtime.Symbol;
+import org.phpaspect.apdt.internal.core.APDTCorePlugin;
 import org.phpaspect.apdt.internal.core.parser.PHPAspectLexer;
 import org.phpaspect.apdt.internal.core.parser.PHPAspectParser;
 import org.phpaspect.apdt.internal.core.parser.PHPAspectParserFactory;
@@ -79,15 +83,13 @@ public class PHPAspectBuilder extends IncrementalProjectBuilder {
 //	}
 
 	public static final String BUILDER_ID = "org.phpaspect.apdt.core.PHPAspectBuilder";
-
-	private static final String MARKER_TYPE = "org.phpaspect.apdt.core.aspectProblem";
-
-	private PHPAspectParser parser;
+	private static String PHPASPECT_PROBLEM_MARKER_TYPE = APDTCorePlugin.PLUGIN_ID + ".phpaspectproblemmarker";
+	//private static final String MARKER_TYPE = "org.phpaspect.apdt.core.aspectProblem";
 	
 	private void addMarker(IFile file, String message, int lineNumber,
 			int severity) {
 		try {
-			IMarker marker = file.createMarker(MARKER_TYPE);
+			IMarker marker = file.createMarker(PHPASPECT_PROBLEM_MARKER_TYPE);
 			marker.setAttribute(IMarker.MESSAGE, message);
 			marker.setAttribute(IMarker.SEVERITY, severity);
 			if (lineNumber == -1) {
@@ -122,24 +124,27 @@ public class PHPAspectBuilder extends IncrementalProjectBuilder {
 
 	void checkAspect(IResource resource){
 		if (resource instanceof IFile && resource.getName().endsWith(".ap")) {
+			PHPAspectParser parser = null;
 			IFile file = (IFile) resource;
 			deleteMarkers(file);
 			try {
-				System.out.println("parse:"+file.getName());
-				parser = PHPAspectParserFactory.create(file);
+				PHPAspectLexer scanner = new PHPAspectLexer(file.getContents());
+				parser = new PHPAspectParser(scanner);
 				parser.parse();
+				//PHPAspectParserFactory.create(file).parse();
 			} catch (CoreException e) {
 				// TODO do something ?
+				e.printStackTrace();
 			} catch (Exception e){
-				System.out.println("exception:"+e.getMessage());
-				addMarker(file, e.getMessage(), ((PHPAspectLexer)parser.getScanner()).getCurrentLine(), IMarker.SEVERITY_ERROR);
+				addMarker(file, parser.getErrorMessage(), parser.getCurrentLine(), IMarker.SEVERITY_ERROR);
+				
 			}
 		}
 	}
 
 	private void deleteMarkers(IFile file) {
 		try {
-			file.deleteMarkers(MARKER_TYPE, false, IResource.DEPTH_ZERO);
+			file.deleteMarkers(PHPASPECT_PROBLEM_MARKER_TYPE, false, IResource.DEPTH_ZERO);
 		} catch (CoreException ce) {
 		}
 	}

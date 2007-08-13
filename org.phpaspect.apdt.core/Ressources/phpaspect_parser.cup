@@ -46,7 +46,22 @@ parser code {:
 		//	else System.err.println("");
 	    // else 
 	   	//	System.err.println("");
-    }	
+    }
+    
+    public String getErrorMessage(){
+    	String unexpected = PHPAspectSymbolsUtils.getTokenName(this.cur_token.sym);
+		return "Parse error: unexpected "+unexpected;
+    }
+    
+    public int getCurrentLine(){
+        PHPAspectLexer lexer = (PHPAspectLexer)getScanner();
+        return lexer.getCurrentLine();
+    }
+
+    public int getLength() {
+        PHPAspectLexer lexer = (PHPAspectLexer)getScanner();
+        return lexer.getLength();
+    }
 	
 :}
 

@@ -6,8 +6,13 @@ Bundle-Version: 1.0.0
 Bundle-Activator: org.phpaspect.apdt.internal.core.APDTCorePlugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
- org.eclipse.ui
+ org.eclipse.ui,
+ org.eclipse.php.core
 Eclipse-LazyStart: true
-Export-Package: org.phpaspect.apdt.internal.core,
- org.phpaspect.apdt.internal.core.builder
+Export-Package: org.phpaspect.apdt.core.visitor,
+ org.phpaspect.apdt.internal.core,
+ org.phpaspect.apdt.internal.core.builder,
+ org.phpaspect.apdt.internal.core.nodes,
+ org.phpaspect.apdt.internal.core.parser,
+ org.phpaspect.apdt.internal.core.visitors
 Bundle-Vendor: phpAspect.org
