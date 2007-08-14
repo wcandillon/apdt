@@ -70,7 +70,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.eclipse.php.internal.ui.editor.PHPStructuredEditor"
+            class="org.phpaspect.apdt.internal.ui.editor.PHPAspectEditor"
             contributorClass="org.eclipse.php.internal.ui.editor.PHPEditorActionBarContributor"
             default="true"
             icon="icons/phpaspectfile.gif"
