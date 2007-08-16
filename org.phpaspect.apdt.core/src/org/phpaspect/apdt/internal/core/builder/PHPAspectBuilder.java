@@ -13,12 +13,9 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.php.internal.core.PHPCorePlugin;
-import org.eclipse.php.internal.core.documentModel.validate.PHPProblemsValidator;
-import org.eclipse.php.internal.core.phpModel.javacup.runtime.Symbol;
 import org.phpaspect.apdt.internal.core.APDTCorePlugin;
 import org.phpaspect.apdt.internal.core.parser.PHPAspectLexer;
 import org.phpaspect.apdt.internal.core.parser.PHPAspectParser;
-import org.phpaspect.apdt.internal.core.parser.PHPAspectParserFactory;
 
 public class PHPAspectBuilder extends IncrementalProjectBuilder {
 
@@ -124,6 +121,7 @@ public class PHPAspectBuilder extends IncrementalProjectBuilder {
 
 	void checkAspect(IResource resource){
 		if (resource instanceof IFile && resource.getName().endsWith(".ap")) {
+
 			PHPAspectParser parser = null;
 			IFile file = (IFile) resource;
 			deleteMarkers(file);
@@ -134,10 +132,8 @@ public class PHPAspectBuilder extends IncrementalProjectBuilder {
 				//PHPAspectParserFactory.create(file).parse();
 			} catch (CoreException e) {
 				// TODO do something ?
-				e.printStackTrace();
 			} catch (Exception e){
-				addMarker(file, parser.getErrorMessage(), parser.getCurrentLine(), IMarker.SEVERITY_ERROR);
-				
+				addMarker(file, parser.getErrorMessage(), parser.getCurrentLine(), IMarker.SEVERITY_ERROR);			
 			}
 		}
 	}
@@ -145,6 +141,8 @@ public class PHPAspectBuilder extends IncrementalProjectBuilder {
 	private void deleteMarkers(IFile file) {
 		try {
 			file.deleteMarkers(PHPASPECT_PROBLEM_MARKER_TYPE, false, IResource.DEPTH_ZERO);
+			file.deleteMarkers(PHPCorePlugin.ID + ".phpproblemmarker", false, IResource.DEPTH_INFINITE);
+
 		} catch (CoreException ce) {
 		}
 	}

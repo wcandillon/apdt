@@ -37,7 +37,7 @@ public class PHPAspectNature implements IProjectNature {
 				commands[i] = desc.newCommand();
 				commands[i].setBuilderName(PHPAspectBuilder.BUILDER_ID);
 			}
-		}		
+		}
 		desc.setBuildSpec(commands);
 		
 		//If not PHP builder has been detected we're adding the PHPAspect one anyways

@@ -7,11 +7,15 @@ Bundle-Activator: org.phpaspect.apdt.internal.core.APDTCorePlugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.ui,
- org.eclipse.php.core
+ org.eclipse.php.core,
+ org.eclipse.wst.sse.core,
+ org.eclipse.wst.html.core
 Eclipse-LazyStart: true
 Export-Package: org.phpaspect.apdt.core.visitor,
  org.phpaspect.apdt.internal.core,
  org.phpaspect.apdt.internal.core.builder,
+ org.phpaspect.apdt.internal.core.documentModel.handler,
+ org.phpaspect.apdt.internal.core.documentModel.loader,
  org.phpaspect.apdt.internal.core.nodes,
  org.phpaspect.apdt.internal.core.parser,
  org.phpaspect.apdt.internal.core.visitors

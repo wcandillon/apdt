@@ -14,7 +14,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.php.core,
  org.eclipse.wst.sse.ui,
  org.eclipse.php.ui,
- org.eclipse.ui.ide
+ org.eclipse.ui.ide,
+ org.eclipse.wst.validation
 Eclipse-LazyStart: true
 Export-Package: org.phpaspect.apdt.internal.ui,
  org.phpaspect.apdt.internal.ui.actions,
