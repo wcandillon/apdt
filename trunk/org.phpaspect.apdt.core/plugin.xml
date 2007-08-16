@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.3"?>
 <plugin>
+	<!-- PHPAspect Model Handler -->
+	<extension
+         point="org.eclipse.wst.sse.core.modelHandler">
+      <modelHandler
+            default="yes"
+            class="org.phpaspect.apdt.internal.core.documentModel.handler.PHPAspectModelHandler"
+            associatedContentTypeId="org.phpaspect.apdt.core.phpaspectsource"
+            id="org.phpaspect.apdt.core.documentModel.handler">
+      </modelHandler>
+   </extension>
    <extension
       id="org.phpaspect.apdt.core.PHPAspectBuilder" name="PHPAspect Builder" point="org.eclipse.core.resources.builders">
       <builder>
