@@ -22,7 +22,6 @@ public class PHPAspectNature implements IProjectNature {
 	 * @see org.eclipse.core.resources.IProjectNature#configure()
 	 */
 	public void configure() throws CoreException {
-		
 		IProjectDescription desc = project.getDescription();
 		ICommand[] commands = desc.getBuildSpec();
 		boolean hadPHPBuilder = false;

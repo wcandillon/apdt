@@ -9,7 +9,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.php.core,
  org.eclipse.wst.sse.core,
- org.eclipse.wst.html.core
+ org.eclipse.wst.html.core,
+ org.eclipse.wst.xml.core
 Eclipse-LazyStart: true
 Export-Package: org.phpaspect.apdt.core.visitor,
  org.phpaspect.apdt.internal.core,
