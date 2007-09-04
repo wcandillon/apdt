@@ -369,7 +369,7 @@ public class AspectCreationWizardPage extends WizardPage{
 			aspect += " extends "+getSuperTypeName();
 		}
 		String[] interfaces = getInterfaces();
-		if(interfaces.length > 0){
+		if(interfaces.length > 0 && interfaces[0].length() > 0){
 			aspect += " implements";
 			for(int i=0; i<interfaces.length; i++){
 				aspect += " "+interfaces[i].trim();
