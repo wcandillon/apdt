@@ -117,4 +117,14 @@
 			</contentTypeIdentifier>
 		</validator>
 	</extension>
+	<extension point="org.eclipse.php.ui.phpElementFilters">
+	    <filter
+	        targetId="org.eclipse.php.ui.explorer"
+	        name="Hide Weaved files"
+	        enabled="true"
+	        description="Hides the weaved directory of the project which contains the PHP output"
+	        class="org.phpaspect.apdt.internal.ui.filters.WeavedSourceFilter"
+	        id="org.phpaspect.apdt.ui.explorer.WeavedSourceFilter">
+	    </filter>
+	</extension>
 </plugin>
