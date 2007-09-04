@@ -1,11 +1,12 @@
 package org.phpaspect.apdt.internal.core.builder;
 
 import org.eclipse.core.resources.ICommand;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.php.internal.core.project.options.PHPProjectOptions;
 
 public class PHPAspectNature implements IProjectNature {
 
@@ -22,34 +23,27 @@ public class PHPAspectNature implements IProjectNature {
 	 * @see org.eclipse.core.resources.IProjectNature#configure()
 	 */
 	public void configure() throws CoreException {
+		//We create the weaved directory
+		final IFolder folder = project.getFolder("weaved");
+		if(folder.exists()){
+			folder.delete(true, null);
+		}
+		folder.create(true, true, null);
+		
+		//We add the PHPAspect incremental builder
 		IProjectDescription desc = project.getDescription();
 		ICommand[] commands = desc.getBuildSpec();
-		boolean hadPHPBuilder = false;
-		
 		for (int i = 0; i < commands.length; ++i) {
 			if (commands[i].getBuilderName().equals(PHPAspectBuilder.BUILDER_ID)) {
 				return;
 			}
-			//We're replacing the PHP Builder by the PHPAspect one
-			if(commands[i].getBuilderName().equals(PHPProjectOptions.BUILDER_ID)){
-				hadPHPBuilder = true;
-				commands[i] = desc.newCommand();
-				commands[i].setBuilderName(PHPAspectBuilder.BUILDER_ID);
-			}
 		}
-		desc.setBuildSpec(commands);
-		
-		//If not PHP builder has been detected we're adding the PHPAspect one anyways
-		if(!hadPHPBuilder){
-			project.setDescription(desc, null);
-			ICommand[] newCommands = new ICommand[commands.length + 1];
-			System.arraycopy(commands, 0, newCommands, 0, commands.length);
-			ICommand command = desc.newCommand();
-			command.setBuilderName(PHPAspectBuilder.BUILDER_ID);
-			newCommands[newCommands.length - 1] = command;
-			desc.setBuildSpec(newCommands);	
-		}
-		
+		ICommand[] newCommands = new ICommand[commands.length + 1];
+		System.arraycopy(commands, 0, newCommands, 0, commands.length);
+		ICommand command = desc.newCommand();
+		command.setBuilderName(PHPAspectBuilder.BUILDER_ID);
+		newCommands[newCommands.length - 1] = command;
+		desc.setBuildSpec(newCommands);
 		project.setDescription(desc, null);
 	}
 
@@ -59,19 +53,24 @@ public class PHPAspectNature implements IProjectNature {
 	 * @see org.eclipse.core.resources.IProjectNature#deconfigure()
 	 */
 	public void deconfigure() throws CoreException {
+		//Remove the weaved files
+		final IFolder folder = project.getFolder("weaved");
+		folder.delete(true, null);
+		
+		//We remove the builder
 		IProjectDescription description = getProject().getDescription();
 		ICommand[] commands = description.getBuildSpec();
-
 		for (int i = 0; i < commands.length; ++i) {
-			//We're replacing the PHPAspect Builder by the PHP one
-			//TODO: What'if the PHPAspect builder was added and isn't replacing any PHP Builder ?
 			if (commands[i].getBuilderName().equals(PHPAspectBuilder.BUILDER_ID)) {
-				commands[i] = description.newCommand();
-				commands[i].setBuilderName(PHPProjectOptions.BUILDER_ID);
+				ICommand[] newCommands = new ICommand[commands.length - 1];
+				System.arraycopy(commands, 0, newCommands, 0, i);
+				System.arraycopy(commands, i + 1, newCommands, i,
+						commands.length - i - 1);
+				description.setBuildSpec(newCommands);
+				project.setDescription(description, null);
+				return;
 			}
 		}
-		description.setBuildSpec(commands);
-		project.setDescription(description, null);
 	}
 
 	/*

@@ -11,9 +11,8 @@
             id="org.phpaspect.apdt.core.documentModel.handler">
       </modelHandler>
    </extension>
-   <!-- TODO: using the pdt extension point instead -->
    <extension
-         id="PHPAspectBuilder"
+         id="PHPAspectBuilderExtension"
          name="PHPAspect Builder"
          point="org.eclipse.php.core.phpBuilderExtensions">
       <builder
@@ -21,14 +20,17 @@
             id="org.phpaspect.apdt.core.builder">
       </builder>
    </extension>
-   <!--extension
-      id="org.phpaspect.apdt.core.PHPAspectBuilder" name="PHPAspect Builder" point="org.eclipse.core.resources.builders">
-      <builder>
-         <run 
-            class="org.phpaspect.apdt.internal.core.builder.PHPAspectBuilder">
+   <extension
+         id="PHPAspectBuilder"
+         name="PHPAspect Project Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="org.phpaspect.apdt.core.internal.builder.PHPAspectBuilder">
          </run>
       </builder>
-   </extension-->
+   </extension>
    <extension
          id="phpAspectNature"
          name="PHPAspect Project Nature"
@@ -38,9 +40,6 @@
                class="org.phpaspect.apdt.internal.core.builder.PHPAspectNature">
          </run>
       </runtime>
-      <builder
-            id="org.phpaspect.apdt.core.PHPAspectBuilder">
-      </builder>
       <requires-nature id="org.eclipse.php.core.PHPNature" />
    </extension>
 

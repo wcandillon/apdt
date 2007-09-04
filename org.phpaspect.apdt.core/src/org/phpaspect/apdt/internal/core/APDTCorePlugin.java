@@ -1,5 +1,7 @@
 package org.phpaspect.apdt.internal.core;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -7,6 +9,8 @@ public class APDTCorePlugin extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.phpaspect.apdt.core";
 
+	public static final int INTERNAL_ERROR = 10001;
+	
 	// The shared instance
 	private static APDTCorePlugin plugin;
 	
@@ -42,4 +46,17 @@ public class APDTCorePlugin extends AbstractUIPlugin {
 	public static APDTCorePlugin getDefault() {
 		return plugin;
 	}
+	
+	public static void log(IStatus status) {
+		getDefault().getLog().log(status);
+	}
+
+	public static void log(Throwable e) {
+		log(new Status(IStatus.ERROR, PLUGIN_ID, INTERNAL_ERROR, "PHPCore plugin internal error", e)); //$NON-NLS-1$
+	}
+
+	public static void logErrorMessage(String message) {
+		log(new Status(IStatus.ERROR, PLUGIN_ID, INTERNAL_ERROR, message, null));
+	}
+
 }
