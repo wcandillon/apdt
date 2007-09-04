@@ -16,7 +16,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.content.IContentTypeManager;
-import org.eclipse.php.internal.core.PHPCorePlugin;
 import org.eclipse.php.internal.core.project.options.PHPProjectOptions;
 import org.eclipse.php.core.project.build.IPHPBuilderExtension;
 import org.phpaspect.apdt.internal.core.APDTCorePlugin;
@@ -34,6 +33,7 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 	}
 
 	public void startupOnInitialize(IncrementalProjectBuilder builder) {
+		
 	}
 
 	public void clean(IncrementalProjectBuilder builder, IProgressMonitor monitor) throws CoreException {
@@ -62,7 +62,7 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 			IProject project = builder.getProject();
 			project.accept(new PHPAspectResourceVisitor(monitor));
 		} catch (CoreException e) {
-			PHPCorePlugin.log(e);
+			APDTCorePlugin.log(e);
 			return;
 		}  
 	}
@@ -78,13 +78,13 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 				return;
 			}
 		} catch (CoreException e) {
-			PHPCorePlugin.log(e);
+			APDTCorePlugin.log(e);
 			return;
 		}
 
 	}
 	
-	public static final String BUILDER_ID = "org.phpaspect.apdt.core.PHPAspectBuilder";
+	public static final String BUILDER_ID = "org.phpaspect.apdt.core.PHPAspectBuilderExtension";
 	private static String PHPASPECT_PROBLEM_MARKER_TYPE = APDTCorePlugin.PLUGIN_ID + ".phpaspectproblemmarker";
 	// used to examine if a file is php associated
 	private static final IContentTypeManager CONTENT_TYPE_MANAGER = Platform.getContentTypeManager();
@@ -168,7 +168,7 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 		}
 		
 		private void processFileDelta(IResourceDelta fileDelta) {
-			System.out.println("processFileDelta");
+			//System.out.println("processFileDelta");
 			IFile file = (IFile) fileDelta.getResource();
 
 			switch (fileDelta.getKind()) {
@@ -190,10 +190,9 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 					return false;
 				}
 			} catch (CoreException e) {
-				PHPCorePlugin.log(e);
+				APDTCorePlugin.log(e);
 				return false;
 			}
-
 			return true;
 		}
 	}	
@@ -250,5 +249,3 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 		}
 	}
 }
-
-

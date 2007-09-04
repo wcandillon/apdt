@@ -49,7 +49,10 @@ parser code {:
     }
     
     public String getErrorMessage(){
-    	String unexpected = PHPAspectSymbolsUtils.getTokenName(this.cur_token.sym);
+    	String unexpected = PHPAspectSymbolsUtils.getTokenValue(this.cur_token.sym);
+		if(unexpected == null){
+			unexpected = scan();
+		}
 		return "Parse error: unexpected "+unexpected;
     }
     
