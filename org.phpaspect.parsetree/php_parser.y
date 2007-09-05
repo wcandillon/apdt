@@ -1065,7 +1065,7 @@ private void yyerror(String string) {
 private PHPAspectLexer lexer;
 
 /* interface to the lexer */
-private int yylex () {
+private int yylex () {PHPAspectParserYycheck2.yycheck2().length
   int yyl_return = -1;
   try {
     yyl_return = lexer.yylex();
@@ -1079,4 +1079,9 @@ private int yylex () {
 /* lexer is created in the constructor */
 public PHPAspectParser(Reader r) {
   lexer = new PHPAspectLexer(r);
+}
+
+public PHPAspectParser(Reader r, boolean debug) {
+	lexer = new PHPAspectLexer(r);
+	yydebug = debug;
 }

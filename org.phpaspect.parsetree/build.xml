@@ -27,6 +27,7 @@
 		
 		<!--move file="PHPAspectLexer.java" todir="${output_dir}" /-->
 		<move file="PHPAspectParser.java" todir="${output_dir}" />
+		<move file="PHPAspectParserYycheck2.java" todir="${output_dir}" />
  		<move file="PHPAspectParserTokens.java" todir="${output_dir}" />
 		<move file="PHPAspectParserVal.java" todir="${output_dir}" />
 	</target>
