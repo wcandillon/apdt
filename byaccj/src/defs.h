@@ -248,6 +248,7 @@ extern FILE *code_file;
 extern FILE *defines_file;
 extern FILE *input_file;
 extern FILE *output_file;
+extern FILE *output_table_file;
 extern FILE *text_file;
 extern FILE *union_file;
 extern FILE *verbose_file;

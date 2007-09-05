@@ -718,14 +718,18 @@ void output_check(void)
 
     if (jflag){   /*rwj*/
       //fprintf(output_file, "static short yycheck[];\nstatic { yycheck(); }\nstatic void yycheck() {\nyycheck = new short[] {%27d,",check[0]);
-    	fprintf(output_file, "static short yycheck[];\nstatic { yycheck(); }\nstatic void yycheck() {\nshort[] yycheck1 = new short[] {");
+    	fprintf(output_file, "static short yycheck[];\nstatic {\n\tyycheck = new short[yycheck().length+PHPAspectParserYycheck2.yycheck2().length];\n\tSystem.arraycopy(yycheck(), 0, yycheck, 0, yycheck().length);\n\tSystem.arraycopy(PHPAspectParserYycheck2.yycheck2(), 0, yycheck, yycheck().length, PHPAspectParserYycheck2.yycheck2().length);\n\t}\nstatic short[] yycheck() {return new short[] {");
     	
     }else{
       fprintf(output_file, "short yycheck[] = {%40d,", check[0]);
     }
 
     j = 10;
-    for (i = 1; i <= high; i++)
+    int limit = high;
+    if(jflag){
+    	limit = 6115;
+    }
+    for (i = 0; i <= limit; i++)
     {
 	if (j >= 10)
 	{
@@ -743,6 +747,26 @@ void output_check(void)
     fprintf(output_file, "\n};\n");
     if (jflag)
       fprintf(output_file, "}\n");
+    
+//    
+    if (jflag){
+    	fprintf(output_table_file, "package org.phpaspect.parsetree;\n\nclass PHPAspectParserYycheck2{\nprivate static short[] yycheck2 = new short[] {");
+    	j=10;
+    	for(i=6116; i<=high; i++){
+    		if (j >= 10)
+    		{
+    		    if (!rflag) ++outline;
+    		    putc('\n', output_table_file);
+    		    j = 1;
+    		}
+    		else
+    		    ++j;
+
+    		fprintf(output_table_file, "%5d,", check[i]);
+    	}
+		fprintf(output_table_file, "};\npublic static short[] yycheck2(){ return yycheck2; }\n}\n");
+    	
+    }
     FREE(check);
 }
 

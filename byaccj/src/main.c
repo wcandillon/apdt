@@ -55,6 +55,7 @@ FILE *code_file;	/*  y.code.c (used when the -r option is specified) */
 FILE *defines_file;	/*  y.tab.h					    */
 FILE *input_file;	/*  the input file				    */
 FILE *output_file;	/*  y.tab.c					    */
+FILE *output_table_file;
 FILE *text_file;	/*  a temp file, used to save text until all	    */
 			/*  symbols have been defined			    */
 FILE *union_file;	/*  a temp file, used to save the union		    */
@@ -464,6 +465,10 @@ void write_temporary_output(void)
 	if (output_file == 0)
 		open_error(output_file_name);
 
+	output_table_file = fopen("PHPAspectParserYycheck2.java", "w");
+	if (output_file == 0)
+			open_error("PHPAspectParserYycheck2.java");
+	
     if (!rflag) {
 		code_file_name = output_file_name;
 		code_file = output_file;
