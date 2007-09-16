@@ -1,6 +1,6 @@
 package org.phpaspect.apdt.internal.core.builder;
 
-import java.util.Map;
+import java.util.*;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -16,14 +16,24 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.content.IContentTypeManager;
+import org.eclipse.php.internal.core.phpModel.parser.PHPCodeDataFactory;
+import org.eclipse.php.internal.core.phpModel.phpElementData.IPHPMarker;
+import org.eclipse.php.internal.core.phpModel.phpElementData.PHPMarker;
+import org.eclipse.php.internal.core.phpModel.phpElementData.UserData;
 import org.eclipse.php.internal.core.project.options.PHPProjectOptions;
 import org.eclipse.php.core.project.build.IPHPBuilderExtension;
 import org.phpaspect.apdt.internal.core.APDTCorePlugin;
 import org.phpaspect.apdt.internal.core.builder.PHPAspectNature;
 import org.phpaspect.apdt.internal.core.parser.PHPAspectLexer;
 import org.phpaspect.apdt.internal.core.parser.PHPAspectParser;
+import org.phpaspect.apdt.internal.core.parser.PHPAspectSymbols;
+import org.phpaspect.apdt.internal.core.parser.PHPAspectSymbolsUtils;
+
 
 public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
+	
+	private static List<PHPMarker> markers = new ArrayList<PHPMarker>();
+	private static IFile workingFile = null;
 
 	public PHPAspectBuilderExtension() {
 	}
@@ -108,6 +118,7 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 	private void deleteMarkers(IFile file) {
 		try {
 			file.deleteMarkers(PHPASPECT_PROBLEM_MARKER_TYPE, false, IResource.DEPTH_ZERO);
+			markers = new ArrayList<PHPMarker>();
 		} catch (CoreException ce) {
 		}
 	}
@@ -129,6 +140,7 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 		PHPAspectParser parser = null;
 		deleteMarkers(file);
 		try {
+			workingFile = file;
 			PHPAspectLexer scanner = new PHPAspectLexer(file.getContents());
 			parser = new PHPAspectParser(scanner);
 			parser.parse();
@@ -137,7 +149,10 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 				// TODO do something ?
 				e.printStackTrace();
 		} catch (Exception e){
-				addMarker(file, parser.getErrorMessage(), parser.getCurrentLine(), IMarker.SEVERITY_ERROR);
+			for(PHPMarker marker: markers){
+				addMarker(file, marker.getDescription(), marker.getUserData().getStopLine(), IMarker.SEVERITY_ERROR);
+			}
+			//addMarker(file, parser.getErrorMessage(), parser.getCurrentLine(), IMarker.SEVERITY_ERROR);
 				
 		}
 	}
@@ -247,5 +262,92 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 			validate(file); 
 
 		}
+	}
+	
+	public static void handleSyntaxError(int currToken, String currText, short[] rowOfProbe, int startPosition, int endPosition, int lineNumber) {
+		String unexpectedString = "";
+		boolean addUnexpected;
+
+		if (currToken == PHPAspectSymbols.EOF) {
+			addUnexpected = true;
+			unexpectedString = "End of File";
+			startPosition = --endPosition;
+		} else if (currToken == PHPAspectSymbols.T_CONSTANT_ENCAPSED_STRING) {
+			addUnexpected = true;
+			endPosition = startPosition + currText.trim().length();
+			unexpectedString = "String";
+		} else {
+			addUnexpected = currText != null && currText.trim().length() > 0;
+			if (addUnexpected) {
+				unexpectedString = currText.trim();
+				endPosition = startPosition + unexpectedString.length();
+				unexpectedString = '\'' + unexpectedString + '\'';
+			}
+		}
+
+		//IntList list = new IntList();
+		List list = new ArrayList();
+		for (int probe = 0; probe < rowOfProbe.length; probe += 2) {
+			int curr = rowOfProbe[probe];
+			String value = getConstantValue(curr);
+			if (value != null && !value.equals("")) {
+				list.add(value);
+			}
+		}
+		int listSize = list.size();
+		if (listSize > 3) {
+			listSize = 0;
+		}
+
+		String description = "";
+
+		if (!addUnexpected) {
+			switch (listSize) {
+				case 0:
+					description = "Syntax Error";
+					break;
+				case 1:
+					description = "Syntax Error: expecting: " + list.get(0);
+					break;
+				case 2:
+					description = "Syntax Error: expecting: " + list.get(0) + " or " + list.get(1);
+					break;
+				case 3:
+					description = "Syntax Error: expecting: " + list.get(0) + " or " + list.get(1) + " or " + list.get(2);
+					break;
+			}
+		} else {
+			switch (listSize) {
+				case 0:
+					description = "Syntax Error: unexpected " + unexpectedString;
+					break;
+				case 1:
+					description = "Syntax Error: unexpected " + unexpectedString + ", expecting: " + list.get(0);
+					break;
+				case 2:
+					description = "Syntax Error: unexpected " + unexpectedString + ", expecting: " + list.get(0) + " or " + list.get(1);
+					break;
+				case 3:
+					description = "Syntax Error: unexpected " + unexpectedString + ", expecting: " + list.get(0) + " or " + list.get(1) + " or " + list.get(2);
+					break;
+			}
+		}
+		UserData userData = PHPCodeDataFactory.createUserData(workingFile.getName(), startPosition, endPosition, startPosition, lineNumber);
+		markers.add(new PHPMarker(IPHPMarker.ERROR, description, userData));
+	}
+	
+	private static String getConstantValue(int tag) {
+		String rv = PHPAspectSymbolsUtils.getTokenName(tag);
+		if (rv != null) {
+			return '\'' + rv + '\'';
+		}
+		if (tag == PHPAspectSymbols.T_STRING) {
+			return "Identifier";
+		}
+		if (tag == PHPAspectSymbols.T_VARIABLE) {
+			return "Variable";
+		}
+
+		return null;
 	}
 }

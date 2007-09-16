@@ -29,22 +29,6 @@ public class PHPAspectNature implements IProjectNature {
 			folder.delete(true, null);
 		}
 		folder.create(true, true, null);
-		
-		//We add the PHPAspect incremental builder
-		IProjectDescription desc = project.getDescription();
-		ICommand[] commands = desc.getBuildSpec();
-		for (int i = 0; i < commands.length; ++i) {
-			if (commands[i].getBuilderName().equals(PHPAspectBuilder.BUILDER_ID)) {
-				return;
-			}
-		}
-		ICommand[] newCommands = new ICommand[commands.length + 1];
-		System.arraycopy(commands, 0, newCommands, 0, commands.length);
-		ICommand command = desc.newCommand();
-		command.setBuilderName(PHPAspectBuilder.BUILDER_ID);
-		newCommands[newCommands.length - 1] = command;
-		desc.setBuildSpec(newCommands);
-		project.setDescription(desc, null);
 	}
 
 	/*
@@ -56,21 +40,6 @@ public class PHPAspectNature implements IProjectNature {
 		//Remove the weaved files
 		final IFolder folder = project.getFolder("weaved");
 		folder.delete(true, null);
-		
-		//We remove the builder
-		IProjectDescription description = getProject().getDescription();
-		ICommand[] commands = description.getBuildSpec();
-		for (int i = 0; i < commands.length; ++i) {
-			if (commands[i].getBuilderName().equals(PHPAspectBuilder.BUILDER_ID)) {
-				ICommand[] newCommands = new ICommand[commands.length - 1];
-				System.arraycopy(commands, 0, newCommands, 0, i);
-				System.arraycopy(commands, i + 1, newCommands, i,
-						commands.length - i - 1);
-				description.setBuildSpec(newCommands);
-				project.setDescription(description, null);
-				return;
-			}
-		}
 	}
 
 	/*

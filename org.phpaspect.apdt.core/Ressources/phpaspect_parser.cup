@@ -6,7 +6,8 @@ package org.phpaspect.apdt.internal.core.parser;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+import org.eclipse.php.internal.core.phpModel.javacup.runtime.Symbol;
+import org.phpaspect.apdt.internal.core.builder.PHPAspectBuilderExtension;
 import java.util.*;
 import org.eclipse.php.internal.core.ast.nodes.*;
 import org.phpaspect.apdt.internal.core.nodes.*;
@@ -48,13 +49,19 @@ parser code {:
 	   	//	System.err.println("");
     }
     
-    public String getErrorMessage(){
-    	String unexpected = PHPAspectSymbolsUtils.getTokenValue(this.cur_token.sym);
-		if(unexpected == null){
-			unexpected = scan();
-		}
-		return "Parse error: unexpected "+unexpected;
+	/**
+     * This method is called when a syntax error has been detected and recovery is about to be invoked.
+     * The super class just emit a "Syntax error" error message.
+     * @param cur_token the current lookahead Symbol.
+     */
+    public void syntax_error(Symbol cur_token){
+        //System.out.println("syntax_error:"+cur_token);
+        //super.syntax_error(cur_token,info);
+        int state = ((Symbol) stack.peek()).parse_state;
+        short[] rowOfProbe = action_tab[state];
+        PHPAspectBuilderExtension.handleSyntaxError(cur_token.sym, (String)cur_token.value, rowOfProbe, cur_token.left, cur_token.right, getCurrentLine());
     }
+	
     
     public int getCurrentLine(){
         PHPAspectLexer lexer = (PHPAspectLexer)getScanner();
