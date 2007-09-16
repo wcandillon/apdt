@@ -20,17 +20,7 @@
             id="org.phpaspect.apdt.core.builder">
       </builder>
    </extension>
-   <extension
-         id="PHPAspectBuilder"
-         name="PHPAspect Project Builder"
-         point="org.eclipse.core.resources.builders">
-      <builder
-            hasNature="true">
-         <run
-               class="org.phpaspect.apdt.core.internal.builder.PHPAspectBuilder">
-         </run>
-      </builder>
-   </extension>
+
    <extension
          id="phpAspectNature"
          name="PHPAspect Project Nature"
