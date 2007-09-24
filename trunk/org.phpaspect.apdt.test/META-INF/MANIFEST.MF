@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: APDT Test Plug-in
-Bundle-SymbolicName: org.phpaspect.apdt.test
+Bundle-SymbolicName: org.phpaspect.apdt.test;singleton:=true
 Bundle-Version: 1.0.0
 Eclipse-LazyStart: true
 Require-Bundle: org.phpaspect.apdt.core,
