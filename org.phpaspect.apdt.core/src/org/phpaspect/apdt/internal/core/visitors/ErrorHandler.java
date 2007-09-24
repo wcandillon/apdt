@@ -64,6 +64,10 @@ import org.eclipse.php.internal.core.ast.nodes.Variable;
 import org.eclipse.php.internal.core.ast.nodes.WhileStatement;
 import org.phpaspect.apdt.core.visitor.PHPAspectVisitor;
 import org.phpaspect.apdt.internal.core.nodes.AspectDeclaration;
+import org.phpaspect.apdt.internal.core.nodes.AspectInterTypeDeclaration;
+import org.phpaspect.apdt.internal.core.nodes.AspectInterTypeFieldDeclaration;
+import org.phpaspect.apdt.internal.core.nodes.AspectInterTypeFieldsDeclaration;
+import org.phpaspect.apdt.internal.core.nodes.AspectInterTypeMethodDeclaration;
 
 public class ErrorHandler implements PHPAspectVisitor {
 
@@ -383,6 +387,29 @@ public class ErrorHandler implements PHPAspectVisitor {
 	}
 
 	public void visit(AspectDeclaration aspectDeclaration) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void visit(AspectInterTypeDeclaration aspectInterTypeDeclaration) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void visit(
+			AspectInterTypeFieldDeclaration aspectInterTypeFieldDeclaration) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void visit(
+			AspectInterTypeFieldsDeclaration aspectInterTypeFieldsDeclaration) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void visit(
+			AspectInterTypeMethodDeclaration aspectInterTypeMethodDeclaration) {
 		// TODO Auto-generated method stub
 		
 	}
