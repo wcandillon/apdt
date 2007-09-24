@@ -17,7 +17,7 @@
 		</java>
 		<java classname="org.eclipse.php.internal.core.phpModel.javacup.Main" classpath="${javacup_home}" input="${parser}"
 				fork="true" failonerror="true">
-			<arg line="-expect 1" />
+			<arg line="-expect 2" />
 			<arg line="-parser ${parserName}" />
 			<arg line="-symbols ${symbolsName}" />
 		</java>

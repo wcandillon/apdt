@@ -7,10 +7,13 @@ package org.phpaspect.apdt.internal.core.parser;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 import org.eclipse.php.internal.core.phpModel.javacup.runtime.Symbol;
-import org.phpaspect.apdt.internal.core.builder.PHPAspectBuilderExtension;
 import java.util.*;
 import org.eclipse.php.internal.core.ast.nodes.*;
 import org.phpaspect.apdt.internal.core.nodes.*;
+import org.eclipse.php.internal.core.phpModel.parser.PHPCodeDataFactory;
+import org.eclipse.php.internal.core.phpModel.phpElementData.IPHPMarker;
+import org.eclipse.php.internal.core.phpModel.phpElementData.PHPMarker;
+import org.eclipse.php.internal.core.phpModel.phpElementData.UserData;
 
 parser code {:
 	protected final static Integer PUBLIC = new Integer(BodyDeclaration.Modifier.PUBLIC);
@@ -19,6 +22,12 @@ parser code {:
 	protected final static Integer ABSTRACT = new Integer(BodyDeclaration.Modifier.ABSTRACT);
 	protected final static Integer FINAL = new Integer(BodyDeclaration.Modifier.FINAL);
 	protected final static Integer STATIC = new Integer(BodyDeclaration.Modifier.STATIC);
+	
+	private List<PHPMarker> markers = new ArrayList<PHPMarker>();
+		
+	public List<PHPMarker> getPhpErrorMarkers(){
+		return markers;
+	}
 	
 	public Dispatch createDispatch(VariableBase dispatcher, VariableBase property) {
 		Dispatch dispatch = null;
@@ -59,13 +68,104 @@ parser code {:
         //super.syntax_error(cur_token,info);
         int state = ((Symbol) stack.peek()).parse_state;
         short[] rowOfProbe = action_tab[state];
-        PHPAspectBuilderExtension.handleSyntaxError(cur_token.sym, (String)cur_token.value, rowOfProbe, cur_token.left, cur_token.right, getCurrentLine());
+        PHPMarker phpErrorMarker = handleSyntaxError(cur_token.sym, (String)cur_token.value, rowOfProbe, cur_token.left, cur_token.right, getCurrentLine());
+    	markers.add(phpErrorMarker);
     }
+    
+    	
+	public PHPMarker handleSyntaxError(int currToken, String currText, short[] rowOfProbe, int startPosition, int endPosition, int lineNumber) {
+		String unexpectedString = "";
+		boolean addUnexpected;
+
+		if (currToken == PHPAspectSymbols.EOF) {
+			addUnexpected = true;
+			unexpectedString = "End of File";
+			startPosition = --endPosition;
+		} else if (currToken == PHPAspectSymbols.T_CONSTANT_ENCAPSED_STRING) {
+			addUnexpected = true;
+			endPosition = startPosition + currText.trim().length();
+			unexpectedString = "String";
+		} else {
+			addUnexpected = currText != null && currText.trim().length() > 0;
+			if (addUnexpected) {
+				unexpectedString = currText.trim();
+				endPosition = startPosition + unexpectedString.length();
+				unexpectedString = '\'' + unexpectedString + '\'';
+			}
+		}
+
+		//IntList list = new IntList();
+		List list = new ArrayList();
+		for (int probe = 0; probe < rowOfProbe.length; probe += 2) {
+			int curr = rowOfProbe[probe];
+			String value = getConstantValue(curr);
+			if (value != null && !value.equals("")) {
+				list.add(value);
+			}
+		}
+		int listSize = list.size();
+		if (listSize > 3) {
+			listSize = 0;
+		}
+
+		String description = "";
+
+		if (!addUnexpected) {
+			switch (listSize) {
+				case 0:
+					description = "Syntax Error";
+					break;
+				case 1:
+					description = "Syntax Error: expecting: " + list.get(0);
+					break;
+				case 2:
+					description = "Syntax Error: expecting: " + list.get(0) + " or " + list.get(1);
+					break;
+				case 3:
+					description = "Syntax Error: expecting: " + list.get(0) + " or " + list.get(1) + " or " + list.get(2);
+					break;
+			}
+		} else {
+			switch (listSize) {
+				case 0:
+					description = "Syntax Error: unexpected " + unexpectedString;
+					break;
+				case 1:
+					description = "Syntax Error: unexpected " + unexpectedString + ", expecting: " + list.get(0);
+					break;
+				case 2:
+					description = "Syntax Error: unexpected " + unexpectedString + ", expecting: " + list.get(0) + " or " + list.get(1);
+					break;
+				case 3:
+					description = "Syntax Error: unexpected " + unexpectedString + ", expecting: " + list.get(0) + " or " + list.get(1) + " or " + list.get(2);
+					break;
+			}
+		}
+		UserData userData = PHPCodeDataFactory.createUserData(null, startPosition, endPosition, startPosition, lineNumber);
+		return new PHPMarker(IPHPMarker.ERROR, description, userData);
+	}
+	
+	private String getConstantValue(int tag) {
+		String rv = PHPAspectSymbolsUtils.getTokenName(tag);
+		if (rv != null) {
+			return '\'' + rv + '\'';
+		}
+		if (tag == PHPAspectSymbols.T_STRING) {
+			return "Identifier";
+		}
+		if (tag == PHPAspectSymbols.T_VARIABLE) {
+			return "Variable";
+		}
+
+		return null;
+	}
+    
 	
     
     public int getCurrentLine(){
         PHPAspectLexer lexer = (PHPAspectLexer)getScanner();
-        return lexer.getCurrentLine();
+        //TODO: fix this bug
+        return lexer.getCurrentLine()+1;
     }
 
     public int getLength() {
@@ -195,10 +295,17 @@ non terminal List inner_statement_list;
 non terminal Statement inner_statement;
 non terminal Statement unticked_statement;
 /* PHPAspect */
-non terminal Statement aspect_declaration_statement;
-non terminal Statement unticked_aspect_declaration_statement;
+non terminal AspectDeclaration aspect_declaration_statement;
+non terminal AspectDeclaration unticked_aspect_declaration_statement;
 non terminal Integer aspect_entry_type;
 non terminal List aspect_statement_list;
+non terminal Statement aspect_statement;
+non terminal List aspect_inter_type_field_declaration;
+non terminal List aspect_inter_type_declaration;
+non terminal AspectInterTypeDeclaration aspect_inter_type_declaration_r;
+non terminal String aspect_inter_type_signature;
+non terminal String aspect_signature;
+non terminal Boolean aspect_subtype_or_not;
 
 non terminal List unset_variables;
 non terminal VariableBase unset_variable;
@@ -400,10 +507,116 @@ T_ASPECT
 :}        
 ;
 
-aspect_statement_list ::= class_statement_list:list
+aspect_statement_list ::= aspect_statement_list:list aspect_statement:aspectStatement
 {:
+	list.add(aspectStatement);
 	RESULT = list;
-:}        
+:}
+| /* empty */
+{:
+	RESULT = new LinkedList();
+:}
+;
+
+aspect_statement ::= class_statement:classStatement
+{:
+	RESULT = classStatement;
+:}     	
+|   variable_modifiers:modifier aspect_inter_type_field_declaration:decList T_SEMICOLON:end
+{:
+	AspectInterTypeFieldsDeclaration aspectInterTypeFieldsDeclaration = new AspectInterTypeFieldsDeclaration(modifierleft, endright, modifier.intValue(), false, decList);
+	RESULT = aspectInterTypeFieldsDeclaration;
+:}
+|	method_modifiers:modifier T_FUNCTION:start is_reference:isReference aspect_inter_type_declaration:interType T_PAAMAYIM_NEKUDOTAYIM string_st:functionName T_OPEN_PARENTHESE parameter_list:paramList T_CLOSE_PARENTHESE method_body:body	
+{:
+	int methodStart = modifier == null ? startleft : modifierleft;
+	modifier = modifier == null ? PHPAspectParser.PUBLIC : modifier;
+	Identifier functionId = new Identifier(functionNameleft, functionNameright, functionName);
+	FunctionDeclaration functionDeclaration = new FunctionDeclaration(startleft, bodyright, functionId, paramList, body, isReference.booleanValue());
+	AspectInterTypeMethodDeclaration interTypeMethodDeclaration = new AspectInterTypeMethodDeclaration(methodStart, bodyright, modifier.intValue(), interType, functionDeclaration, true);
+	RESULT = interTypeMethodDeclaration;	
+:}
+;
+
+aspect_inter_type_field_declaration ::=
+	aspect_inter_type_field_declaration:list T_COMMA aspect_inter_type_declaration:interType T_PAAMAYIM_NEKUDOTAYIM T_VARIABLE:var
+{:
+	Variable varId = new Variable(varleft, varright, var);
+	list.add(new AspectInterTypeFieldDeclaration(interTypeleft, varright, interType, varId, null));
+	RESULT = list;		
+:}
+|	aspect_inter_type_field_declaration:list T_COMMA aspect_inter_type_declaration:interType T_PAAMAYIM_NEKUDOTAYIM T_VARIABLE:var T_EQUAL static_scalar:expr
+{:
+	Variable varId = new Variable(varleft, varright, var);
+	list.add(new AspectInterTypeFieldDeclaration(interTypeleft, exprright, interType, varId, expr));
+	RESULT = list;
+:}	
+|	aspect_inter_type_declaration:interType T_PAAMAYIM_NEKUDOTAYIM T_VARIABLE:var
+{:
+	List list = new LinkedList();
+	Variable varId = new Variable(varleft, varright, var);
+	list.add(new AspectInterTypeFieldDeclaration(interTypeleft, varright, interType, varId, null));
+	RESULT = list;	
+:}	
+|	aspect_inter_type_declaration:interType T_PAAMAYIM_NEKUDOTAYIM T_VARIABLE:var T_EQUAL static_scalar:expr
+{:
+	List list = new LinkedList();
+	Variable varId = new Variable(varleft, varright, var);
+	list.add(new AspectInterTypeFieldDeclaration(interTypeleft, exprright, interType, varId, expr));
+	RESULT = list;
+:}	
+;
+
+aspect_inter_type_declaration ::= aspect_inter_type_declaration:list T_COMMA aspect_inter_type_declaration_r:dec
+{:
+	list.add(dec);
+	RESULT = list;
+:}
+|	aspect_inter_type_declaration_r:dec
+{:
+	List list = new LinkedList();
+	list.add(dec);
+	RESULT = list;
+:}
+;
+
+aspect_inter_type_declaration_r ::= aspect_inter_type_signature:sign aspect_subtype_or_not:subtype
+{:
+	RESULT = new AspectInterTypeDeclaration(signleft, signright, sign, subtype);
+:}
+;
+
+aspect_inter_type_signature ::= aspect_signature:sign
+{:
+	RESULT = sign;
+:}
+|	T_RGREATER T_STRING:sign T_LGREATER
+{:
+	RESULT = sign;
+:} 
+;
+
+aspect_signature ::= aspect_signature:begin T_TIMES:end
+{:
+	RESULT = begin + end;
+:}
+|	aspect_signature:begin T_STRING:end
+{:
+	RESULT = begin + end;
+:}
+|	T_TIMES:times
+{:
+	RESULT = times.toString();
+:}
+|	T_STRING:str
+{:
+	RESULT = str.toString();
+:}
+;
+
+aspect_subtype_or_not ::=
+            T_PLUS			{: RESULT = Boolean.TRUE; :}
+        |   /* empty */		{: RESULT = Boolean.FALSE; :}
 ;
 /* end */
 
@@ -416,7 +629,6 @@ inner_statement_list:statementList inner_statement:statement
 	}		
 	RESULT = statementList;
 :}
-
 | /* empty */
 {: 
 	RESULT = new LinkedList(); 
