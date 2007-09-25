@@ -15,6 +15,8 @@ public class UIMessages extends NLS {
 	public static String NewAspectCreationWizard_title;
 	public static String NewAspectCreationWizardPage_title;
 	public static String NewAspectCreationWizardPage_description;
+	/* Preferences pages */
+	public static String PHPAspectInterpreterPreferencePage_title;
 	
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, UIMessages.class);

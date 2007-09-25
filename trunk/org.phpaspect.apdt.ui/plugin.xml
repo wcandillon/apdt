@@ -127,4 +127,24 @@
 	        id="org.phpaspect.apdt.ui.explorer.WeavedSourceFilter">
 	    </filter>
 	</extension>
+		<!--Property Pages:-->
+	<extension point="org.eclipse.ui.propertyPages">
+		<page
+			class="org.phpaspect.apdt.internal.ui.preferences.PHPAspectInterpreterPreferencePage"
+			id="org.phpaspect.apdt.ui.propertyPages.PHPAspectInterpreterPreferencePage"
+			name="PHPAspect Interpreter"
+			objectClass="org.eclipse.core.resources.IProject">
+			<filter
+				name="nature"
+				value="org.phpaspect.apdt.core.phpAspectNature" />
+		</page>
+	</extension>
+	<!--Preferences Pages:-->
+	<extension point="org.eclipse.ui.preferencePages">
+		<page
+			class="org.phpaspect.apdt.internal.ui.preferences.PHPAspectInterpreterPreferencePage"
+			id="org.phpaspect.apdt.ui.preferences.PHPAspectInterpreterPreferencePage"
+			name="PHPAspect">
+		</page>
+	</extension>
 </plugin>
