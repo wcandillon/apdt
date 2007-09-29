@@ -127,12 +127,12 @@
 	        id="org.phpaspect.apdt.ui.explorer.WeavedSourceFilter">
 	    </filter>
 	</extension>
-		<!--Property Pages:-->
+	<!--Property Pages:-->
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
 			class="org.phpaspect.apdt.internal.ui.preferences.PHPAspectInterpreterPreferencePage"
 			id="org.phpaspect.apdt.ui.propertyPages.PHPAspectInterpreterPreferencePage"
-			name="PHPAspect Interpreter"
+			name="PHPAspect Compiler"
 			objectClass="org.eclipse.core.resources.IProject">
 			<filter
 				name="nature"
@@ -144,7 +144,27 @@
 		<page
 			class="org.phpaspect.apdt.internal.ui.preferences.PHPAspectInterpreterPreferencePage"
 			id="org.phpaspect.apdt.ui.preferences.PHPAspectInterpreterPreferencePage"
-			name="PHPAspect">
+			name="PHPAspect Compiler">
 		</page>
 	</extension>
+	<!-- Views -->
+	<extension point="org.eclipse.ui.views">
+        <view id="org.eclipse.ui.articles.views.labelview"
+             name="Cross References"
+             category="org.phpaspect.apdt.ui.cat"
+          class="org.phpaspect.apdt.internal.ui.views.XReferenceView"
+          icon="icons/XRefIcon.gif"/>
+	</extension>
+	<!-- PHPAspect Search Page -->
+	<!--extension point="org.eclipse.search.searchPages">
+		<page
+			canSearchEnclosingProjects="true"
+			class="org.phpaspect.apdt.internal.ui.search.PHPAspectSearchPage"
+			extensions="php:90, inc:90"
+			icon="icons/full/obj16/php_search_obj.gif"
+			id="org.phpaspect.apdt.ui.PHPAspectSearchPage"
+			label="PHPAspect Search"
+			showScopeSection="true"
+			sizeHint="460,160" />
+	</extension-->
 </plugin>
