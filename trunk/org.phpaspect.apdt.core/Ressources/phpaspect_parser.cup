@@ -6,8 +6,8 @@ package org.phpaspect.apdt.internal.core.parser;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-import org.eclipse.php.internal.core.phpModel.javacup.runtime.Symbol;
 import java.util.*;
+import java_cup.runtime.*;
 import org.eclipse.php.internal.core.ast.nodes.*;
 import org.phpaspect.apdt.internal.core.nodes.*;
 import org.eclipse.php.internal.core.phpModel.parser.PHPCodeDataFactory;
@@ -226,6 +226,10 @@ terminal  T_CLASS;
 terminal  T_ASPECT;
 terminal  T_PERSESSION;
 terminal  T_FROM;
+terminal  T_BEFORE;
+terminal  T_AROUND;
+terminal  T_AFTER;
+terminal  T_POINTCUT;
 terminal  T_INTERFACE;
 terminal  T_EXTENDS;
 terminal  T_IMPLEMENTS;
@@ -306,6 +310,8 @@ non terminal AspectInterTypeDeclaration aspect_inter_type_declaration_r;
 non terminal String aspect_inter_type_signature;
 non terminal String aspect_signature;
 non terminal Boolean aspect_subtype_or_not;
+non terminal List aspect_pointcut_parameter_list;
+non terminal AspectPointcutParameter aspect_pointcut_parameter;
 
 non terminal List unset_variables;
 non terminal VariableBase unset_variable;
@@ -367,6 +373,8 @@ non terminal Expression internal_functions_in_yacc;
 non terminal String string_st;
 non terminal Integer interface_entry;
 non terminal List interface_extends_list;
+non terminal Expression aspect_pointcut;
+non terminal Expression aspect_joinpoint;
 
 non terminal VariableBase w_variable;
 non terminal Identifier fully_qualified_class_name;
@@ -535,6 +543,83 @@ aspect_statement ::= class_statement:classStatement
 	FunctionDeclaration functionDeclaration = new FunctionDeclaration(startleft, bodyright, functionId, paramList, body, isReference.booleanValue());
 	AspectInterTypeMethodDeclaration interTypeMethodDeclaration = new AspectInterTypeMethodDeclaration(methodStart, bodyright, modifier.intValue(), interType, functionDeclaration, true);
 	RESULT = interTypeMethodDeclaration;	
+:}
+|	method_modifiers:modifier T_POINTCUT T_STRING:ptName T_OPEN_PARENTHESE aspect_pointcut_parameter_list:args T_CLOSE_PARENTHESE T_NEKUDOTAIM aspect_pointcut:expr T_SEMICOLON:end
+{:
+	AspectPointcutDeclaration aspectPointcutDeclaration = new AspectPointcutDeclaration(modifierleft, endright, ptName, args, expr);
+:}
+|	T_BEFORE:start T_OPEN_PARENTHESE parameter_list:list T_CLOSE_PARENTHESE T_NEKUDOTAIM T_CURLY_OPEN:blockStart inner_statement_list:statementList T_CURLY_CLOSE:end
+{:
+	Block block = new Block(blockStartleft, endright, statementList);
+	AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration = new AspectCodeAdviceDeclaration(startleft, endright, AspectCodeAdviceDeclaration.BEFORE, list, block);
+	RESULT = aspectCodeAdviceDeclaration;
+:}
+|	T_AROUND:start T_OPEN_PARENTHESE parameter_list:list T_CLOSE_PARENTHESE T_NEKUDOTAIM T_CURLY_OPEN:blockStart inner_statement_list:statementList T_CURLY_CLOSE:end
+{:
+	Block block = new Block(blockStartleft, endright, statementList);
+	AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration = new AspectCodeAdviceDeclaration(startleft, endright, AspectCodeAdviceDeclaration.BEFORE, list, block);
+	RESULT = aspectCodeAdviceDeclaration;
+:}
+|	T_AFTER:start T_OPEN_PARENTHESE parameter_list:list T_CLOSE_PARENTHESE T_NEKUDOTAIM T_CURLY_OPEN:blockStart inner_statement_list:statementList T_CURLY_CLOSE:end
+{:
+	Block block = new Block(blockStartleft, endright, statementList);
+	AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration = new AspectCodeAdviceDeclaration(startleft, endright, AspectCodeAdviceDeclaration.BEFORE, list, block);
+	RESULT = aspectCodeAdviceDeclaration;
+:}
+;
+
+aspect_pointcut_parameter_list ::=
+	aspect_pointcut_parameter:ptArg
+{:
+	List list = new LinkedList();
+	list.add(ptArg);
+	RESULT = list;
+:}
+|	aspect_pointcut_parameter_list:list T_COMMA aspect_pointcut_parameter:ptArg
+{:
+	list.add(ptArg);
+	RESULT = list;
+:}
+|	/* empty */
+;
+
+aspect_pointcut_parameter ::=
+	aspect_inter_type_declaration_r:interType T_VARIABLE:var
+{:
+	Variable v = new Variable(varleft, varright, var);
+	AspectPointcutParameter aspectPointcutParameter = new AspectPointcutParameter(interTypeleft, varright, interType, v);
+	RESULT = aspectPointcutParameter;
+:}
+;
+
+aspect_pointcut ::=
+	aspect_pointcut:pt1 T_BOOLEAN_OR aspect_pointcut:pt2
+{:
+	RESULT = new InfixExpression(pt1left, pt2right, pt1, InfixExpression.OP_BOOL_OR, pt2); 
+:}
+|	aspect_pointcut:pt1 T_BOOLEAN_AND aspect_pointcut:pt2
+{:
+	RESULT = new InfixExpression(pt1left, pt2right, pt1 , InfixExpression.OP_BOOL_AND, pt2);
+:}
+|	T_OPEN_PARENTHESE:start aspect_pointcut:pt T_CLOSE_PARENTHESE:end
+{:
+	ParenthesisExpression parenthesisExpression = new ParenthesisExpression(startleft, endright, pt);
+	RESULT = parenthesisExpression; 
+:}
+|	T_NOT:token aspect_pointcut:pt
+{:
+	RESULT = new UnaryOperation(tokenleft, ptright, pt, UnaryOperation.OP_NOT); 
+:}
+|	aspect_joinpoint:pt
+{:
+	RESULT = pt;
+:}
+;
+
+aspect_joinpoint ::=
+	T_STRING:ptName T_OPEN_PARENTHESE T_CLOSE_PARENTHESE
+{:
+	RESULT = new AspectPointcutReference(ptNameleft, ptNameright, ptName);
 :}
 ;
 

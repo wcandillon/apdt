@@ -11,8 +11,7 @@
 
 package org.phpaspect.apdt.internal.core.parser;
 
-import org.eclipse.php.internal.core.phpModel.javacup.runtime.Symbol;
-import org.eclipse.php.internal.core.phpModel.javacup.sym;
+import java_cup.runtime.*;
 import org.eclipse.php.internal.core.phpModel.parser.StateStack;
 import org.eclipse.php.internal.core.ast.nodes.Comment;
 import java.io.IOException;
@@ -26,11 +25,11 @@ import java.util.*;
 %line
 
 /* %cup */
-%implements org.eclipse.php.internal.core.ast.parser.AstLexer
+%implements org.phpaspect.apdt.core.parser.PHPAspectAstLexer
 %function next_token
-%type org.eclipse.php.internal.core.phpModel.javacup.runtime.Symbol
+%type java_cup.runtime.Symbol
 %eofval{
-    return createSymbol(sym.EOF);
+    return createSymbol(0);
 %eofval}
 %eofclose
 
@@ -287,6 +286,21 @@ NEWLINE=("\r"|"\n"|"\r\n")
 	return createSymbol(PHPAspectSymbols.T_FROM);
 }
 
+<ST_IN_SCRIPTING>"before" {
+	return createSymbol(PHPAspectSymbols.T_BEFORE);
+}
+
+<ST_IN_SCRIPTING>"around" {
+	return createSymbol(PHPAspectSymbols.T_AROUND);
+}
+
+<ST_IN_SCRIPTING>"after" {
+	return createSymbol(PHPAspectSymbols.T_AFTER);
+}
+
+<ST_IN_SCRIPTING>"pointcut" {
+	return createSymbol(PHPAspectSymbols.T_POINTCUT);
+}
 
 <ST_IN_SCRIPTING>"interface" {
 	return createSymbol(PHPAspectSymbols.T_INTERFACE);

@@ -16,24 +16,16 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.content.IContentTypeManager;
-import org.eclipse.php.internal.core.phpModel.parser.PHPCodeDataFactory;
-import org.eclipse.php.internal.core.phpModel.phpElementData.IPHPMarker;
 import org.eclipse.php.internal.core.phpModel.phpElementData.PHPMarker;
-import org.eclipse.php.internal.core.phpModel.phpElementData.UserData;
 import org.eclipse.php.internal.core.project.options.PHPProjectOptions;
 import org.eclipse.php.core.project.build.IPHPBuilderExtension;
 import org.phpaspect.apdt.internal.core.APDTCorePlugin;
 import org.phpaspect.apdt.internal.core.builder.PHPAspectNature;
 import org.phpaspect.apdt.internal.core.parser.PHPAspectLexer;
 import org.phpaspect.apdt.internal.core.parser.PHPAspectParser;
-import org.phpaspect.apdt.internal.core.parser.PHPAspectParserFactory;
-import org.phpaspect.apdt.internal.core.parser.PHPAspectSymbols;
-import org.phpaspect.apdt.internal.core.parser.PHPAspectSymbolsUtils;
 
 
 public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
-	
-	private static IFile workingFile = null;
 
 	public PHPAspectBuilderExtension() {
 	}
@@ -139,7 +131,6 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 		PHPAspectParser parser = null;
 		deleteMarkers(file);
 		try {
-			workingFile = file;
 			PHPAspectLexer scanner = new PHPAspectLexer(file.getContents());
 			parser = new PHPAspectParser(scanner);
 			parser.parse();

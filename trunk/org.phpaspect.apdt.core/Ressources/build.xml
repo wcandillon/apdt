@@ -15,15 +15,22 @@
 		<java jar="${jflex_home}" fork="true" failonerror="true">
 			<arg value="${lexer}" />
 		</java>
-		<java classname="org.eclipse.php.internal.core.phpModel.javacup.Main" classpath="${javacup_home}" input="${parser}"
+		<!--java classname="org.eclipse.php.internal.core.phpModel.javacup.Main" classpath="${javacup_home}" input="${parser}"
 				fork="true" failonerror="true">
 			<arg line="-expect 2" />
 			<arg line="-parser ${parserName}" />
 			<arg line="-symbols ${symbolsName}" />
+		</java-->
+		<java jar="java-cup-11a.jar" input="${parser}" fork="true" failonerror="true">
+			<arg line="-progress" />
+			<arg line="-expect 2" />
+			<arg line="-compact_red" />
+			<arg line="-parser ${parserName}" />
+			<arg line="-symbols ${symbolsName}" />			
 		</java>
-		<replace file="${parserName}.java">
+		<!--replace file="${parserName}.java">
 			<replacefilter token="java_cup." value="org.eclipse.php.internal.core.phpModel.javacup."/>
-		</replace>
+		</replace-->
 		<move file="${parserName}.java" todir="${output_dir}" />
  		<move file="${symbolsName}.java" todir="${output_dir}" />
 		<move file="${lexerName}.java" todir="${output_dir}" />
