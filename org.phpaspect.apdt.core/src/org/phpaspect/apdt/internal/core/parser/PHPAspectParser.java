@@ -2644,7 +2644,7 @@ public class PHPAspectParser extends java_cup.runtime.lr_parser {
      * @param cur_token the current lookahead Symbol.
      */
     public void syntax_error(Symbol cur_token){
-        System.out.println("syntax_error:"+cur_token);
+        //System.out.println("syntax_error:"+cur_token);
         //super.syntax_error(cur_token,info);
         int state = ((Symbol) stack.peek()).parse_state;
         short[] rowOfProbe = action_tab[state];
