@@ -123,9 +123,6 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 		}
 		return false;
 	}
- 	
-	
-
 	
 	private void validate(IFile file) {
 		PHPAspectParser parser = null;

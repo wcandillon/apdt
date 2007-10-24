@@ -21,3 +21,5 @@ Export-Package: org.phpaspect.apdt.core.visitor,
  org.phpaspect.apdt.internal.core.parser,
  org.phpaspect.apdt.internal.core.visitors
 Bundle-Vendor: phpAspect.org
+Bundle-ClassPath: Ressources/java-cup-11a-runtime.jar,
+ .
