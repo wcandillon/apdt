@@ -9,13 +9,15 @@
  *   Zend and IBM - Initial implementation
  *******************************************************************************/
 
-package org.eclipse.php.internal.core.documentModel.parser;
+package org.phpaspect.apdt.internal.core.documentModel.parser;
+
+import org.eclipse.php.internal.core.documentModel.parser.PhpLexer;
 
 
 %%
 
 %public
-%class PhpLexer5
+%class PHPAspectLexer
 %extends PhpLexer
 %type String
 %unicode
@@ -38,7 +40,7 @@ package org.eclipse.php.internal.core.documentModel.parser;
 
 
 %{
-    public PhpLexer5(int state){
+    public PHPAspectLexer(int state){
         initialize(state);
     }
     public void reset(char array[], int offset, int length) {

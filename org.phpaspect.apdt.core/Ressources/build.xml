@@ -7,30 +7,35 @@
 	<property name="parserName" value="PHPAspectParser" />
 	<property name="symbolsName" value="PHPAspectSymbols" />
 	<property name="jflex_home" value="jflex-1.3.5/lib/JFlex.jar" />
-	<property name="javacup_home" value="../../org.eclipse.php.core/bin" />
+	<property name="jflex_home_122" value="JFlex-1.2.2.jar" />
+	<property name="javacup_home" value="java-cup-11a.jar" />
 	<property name="output_dir" value="../src/org/phpaspect/apdt/internal/core/parser" />
-	<property name="classpath" value="../../org.eclipse.php.core/bin" />
+	<!--property name="classpath" value="../../org.eclipse.php.core/bin" /-->
 
 	<target name="build">
+		<!-- Generating the PHPAspect syntax highlighter Lexer -->
+		<java jar="${jflex_home_122}" fork="true" failonerror="true">
+			<arg value="highlighting/PHPAspectTokenizer.jflex" />
+			<arg line="-skel highlighting/skeleton.sse" />
+		</java>
+		<java jar="${jflex_home}" fork="true" failonerror="true">
+			<arg value="highlighting/PHPAspectLexer.jflex" />
+		</java>
+		<move file="highlighting/PHPAspectTokenizer.java" todir="../src/org/phpaspect/apdt/internal/core/documentModel/parser" />
+		<move file="highlighting/PHPAspectLexer.java" todir="../src/org/phpaspect/apdt/internal/core/documentModel/parser" />
+		<!-- Generating the PHPAspect Lexer -->
 		<java jar="${jflex_home}" fork="true" failonerror="true">
 			<arg value="${lexer}" />
 		</java>
-		<!--java classname="org.eclipse.php.internal.core.phpModel.javacup.Main" classpath="${javacup_home}" input="${parser}"
-				fork="true" failonerror="true">
-			<arg line="-expect 2" />
-			<arg line="-parser ${parserName}" />
-			<arg line="-symbols ${symbolsName}" />
-		</java-->
-		<java jar="java-cup-11a.jar" input="${parser}" fork="true" failonerror="true">
+		<!-- Generating the PHPAspect Parser -->
+		<java jar="${javacup_home}" input="${parser}" fork="true" failonerror="true">
 			<arg line="-progress" />
 			<arg line="-expect 2" />
 			<arg line="-compact_red" />
 			<arg line="-parser ${parserName}" />
 			<arg line="-symbols ${symbolsName}" />			
 		</java>
-		<!--replace file="${parserName}.java">
-			<replacefilter token="java_cup." value="org.eclipse.php.internal.core.phpModel.javacup."/>
-		</replace-->
+		<!-- Coying to the right APDT package -->
 		<move file="${parserName}.java" todir="${output_dir}" />
  		<move file="${symbolsName}.java" todir="${output_dir}" />
 		<move file="${lexerName}.java" todir="${output_dir}" />
