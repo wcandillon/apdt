@@ -548,22 +548,22 @@ aspect_statement ::= class_statement:classStatement
 {:
 	AspectPointcutDeclaration aspectPointcutDeclaration = new AspectPointcutDeclaration(modifierleft, endright, ptName, args, expr);
 :}
-|	T_BEFORE:start T_OPEN_PARENTHESE parameter_list:list T_CLOSE_PARENTHESE T_NEKUDOTAIM T_CURLY_OPEN:blockStart inner_statement_list:statementList T_CURLY_CLOSE:end
+|	T_BEFORE:start T_OPEN_PARENTHESE parameter_list:list T_CLOSE_PARENTHESE T_NEKUDOTAIM aspect_pointcut:pt T_CURLY_OPEN:blockStart inner_statement_list:statementList T_CURLY_CLOSE:end
 {:
 	Block block = new Block(blockStartleft, endright, statementList);
-	AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration = new AspectCodeAdviceDeclaration(startleft, endright, AspectCodeAdviceDeclaration.BEFORE, list, block);
+	AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration = new AspectCodeAdviceDeclaration(startleft, endright, AspectCodeAdviceDeclaration.BEFORE, list, pt, block);
 	RESULT = aspectCodeAdviceDeclaration;
 :}
-|	T_AROUND:start T_OPEN_PARENTHESE parameter_list:list T_CLOSE_PARENTHESE T_NEKUDOTAIM T_CURLY_OPEN:blockStart inner_statement_list:statementList T_CURLY_CLOSE:end
+|	T_AROUND:start T_OPEN_PARENTHESE parameter_list:list T_CLOSE_PARENTHESE T_NEKUDOTAIM aspect_pointcut:pt T_CURLY_OPEN:blockStart inner_statement_list:statementList T_CURLY_CLOSE:end
 {:
 	Block block = new Block(blockStartleft, endright, statementList);
-	AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration = new AspectCodeAdviceDeclaration(startleft, endright, AspectCodeAdviceDeclaration.BEFORE, list, block);
+	AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration = new AspectCodeAdviceDeclaration(startleft, endright, AspectCodeAdviceDeclaration.BEFORE, list, pt, block);
 	RESULT = aspectCodeAdviceDeclaration;
 :}
-|	T_AFTER:start T_OPEN_PARENTHESE parameter_list:list T_CLOSE_PARENTHESE T_NEKUDOTAIM T_CURLY_OPEN:blockStart inner_statement_list:statementList T_CURLY_CLOSE:end
+|	T_AFTER:start T_OPEN_PARENTHESE parameter_list:list T_CLOSE_PARENTHESE T_NEKUDOTAIM aspect_pointcut:pt T_CURLY_OPEN:blockStart inner_statement_list:statementList T_CURLY_CLOSE:end
 {:
 	Block block = new Block(blockStartleft, endright, statementList);
-	AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration = new AspectCodeAdviceDeclaration(startleft, endright, AspectCodeAdviceDeclaration.BEFORE, list, block);
+	AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration = new AspectCodeAdviceDeclaration(startleft, endright, AspectCodeAdviceDeclaration.BEFORE, list, pt, block);
 	RESULT = aspectCodeAdviceDeclaration;
 :}
 ;

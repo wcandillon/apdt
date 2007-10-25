@@ -81,6 +81,7 @@
             <contentTypeBinding contentTypeId="org.phpaspect.apdt.core.phpaspectsource" />
       </editor>
    </extension>
+   <!-- PHPAspect Wizards -->
    <extension
          point="org.eclipse.ui.newWizards">
       <category
@@ -89,18 +90,18 @@
       </category>
       <wizard
             category="org.phpaspect.apdt.ui"
-            class="org.phpaspect.apdt.internal.ui.wizards.AspectCreationWizard"
-            icon="icons/new_aspect_wizard.gif"
-            id="org.phpaspect.apdt.ui.wizards.AspectCreationWizard"
-            name="Aspect"
+            class="org.phpaspect.apdt.internal.ui.wizards.PHPAspectProjectCreationWizard"
+            icon="icons/newphpaspectprj_wiz.gif"
+            id="org.phpaspect.apdt.internal.ui.wizards.PHPAspectProjectCreationWizard"
+            name="PHPAspect project"
             project="true">
       </wizard>
       <wizard
             category="org.phpaspect.apdt.ui"
-            class="org.phpaspect.apdt.internal.ui.wizards.PHPAspectProjectCreationWizard"
-            icon="icons/newphpaspectprj_wiz.gif"
-            id="org.phpaspect.apdt.internal.ui.wizards.PHPAspectProjectCreationWizard"
-            name="New PHPAspect project"
+            class="org.phpaspect.apdt.internal.ui.wizards.AspectCreationWizard"
+            icon="icons/new_aspect_wizard.gif"
+            id="org.phpaspect.apdt.ui.wizards.AspectCreationWizard"
+            name="Aspect"
             project="true">
       </wizard>
    </extension>

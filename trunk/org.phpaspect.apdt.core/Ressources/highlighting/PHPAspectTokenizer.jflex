@@ -9,7 +9,7 @@
  *   Zend and IBM - Initial implementation
  *******************************************************************************/
 /*nlsXXX*/
-package org.eclipse.php.internal.core.documentModel.parser;
+package org.phpaspect.apdt.internal.core.documentModel.parser;
 
 import java.io.CharArrayReader;
 import java.io.IOException;
@@ -18,6 +18,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.php.internal.core.documentModel.parser.PhpLexer;
+import org.eclipse.php.internal.core.documentModel.parser.PHPRegionContext;
 import org.eclipse.php.internal.core.documentModel.parser.regions.PhpScriptRegion;
 import org.eclipse.php.internal.core.project.properties.handlers.UseAspTagsHandler;
 import org.eclipse.wst.sse.core.internal.ltk.parser.BlockMarker;
@@ -370,11 +372,18 @@ private final String doScanEndPhp(boolean isAsp, String searchContext, int exitS
 	int[] currentParameters = getParamenters();
 	currentParameters[6] = PhpLexer.ST_PHP_IN_SCRIPTING;
 	
-	final PhpLexer phpLexer = PhpScriptRegion.getPhpLexer(project, yy_reader, yy_buffer, currentParameters); 
+	//final PhpLexer phpLexer = PhpScriptRegion.getPhpLexer(project, yy_reader, yy_buffer, currentParameters); 
+
+	final PhpLexer phpLexer = new PHPAspectLexer(yy_reader);
+	phpLexer.initialize(currentParameters[6]);
+	phpLexer.reset(yy_reader, yy_buffer, currentParameters);
+	phpLexer.setPatterns(project);
+	phpLexer.setAspTags(UseAspTagsHandler.useAspTagsAsPhp(project));
+	
 	bufferedTextRegion = new PhpScriptRegion(searchContext, yychar, project, phpLexer);
 
 	// restore the locations / states
-	reset(yy_reader, phpLexer.getYy_buffer(), phpLexer.getParamenters());
+	reset(yy_reader, ((PHPAspectLexer)phpLexer).getYy_buffer(), phpLexer.getParamenters());
 	
 	yybegin(exitState);
 	return searchContext;
@@ -704,11 +713,11 @@ public final ITextRegion getNextToken() throws IOException {
 }
 
 /* user method */
-public PHPTokenizer(){
+public PHPAspectTokenizer(){
 	super();
 }
 /* user method */
-public PHPTokenizer(char[] charArray){
+public PHPAspectTokenizer(char[] charArray){
 		this(new CharArrayReader(charArray));
 }
 /* user method */
@@ -815,7 +824,7 @@ public void reset(java.io.Reader in, int newOffset) {
 	 *
 	 */
 	public BlockTokenizer newInstance() {
-		PHPTokenizer newInstance = new PHPTokenizer();
+		PHPAspectTokenizer newInstance = new PHPAspectTokenizer();
 		// global tagmarkers can be shared; they have no state and 
 		// are never destroyed (e.g. 'release')
 		for(int i = 0; i < fBlockMarkers.size(); i++) {
@@ -840,7 +849,7 @@ private final String scanXMLCommentText() throws IOException {
 %eof}
 
 %public
-%class PHPTokenizer
+%class PHPAspectTokenizer
 %implements BlockTokenizer, PHPRegionContext, DOMRegionContext
 %function primGetNextToken
 %type String

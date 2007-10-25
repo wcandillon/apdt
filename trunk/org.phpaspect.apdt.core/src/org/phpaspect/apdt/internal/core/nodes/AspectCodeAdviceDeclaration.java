@@ -3,6 +3,7 @@ package org.phpaspect.apdt.internal.core.nodes;
 import java.util.List;
 
 import org.eclipse.php.internal.core.ast.nodes.Block;
+import org.eclipse.php.internal.core.ast.nodes.Expression;
 import org.eclipse.php.internal.core.ast.nodes.Statement;
 import org.eclipse.php.internal.core.ast.visitor.Visitor;
 
@@ -15,11 +16,13 @@ public class AspectCodeAdviceDeclaration extends Statement {
 	private int identifier;
 	private List args;
 	private Block body;
+	private Expression pointcut;
 	
-	public AspectCodeAdviceDeclaration(int start, int end, Integer identifier, List args, Block body) {
+	public AspectCodeAdviceDeclaration(int start, int end, Integer identifier, List args, Expression pointcut, Block body) {
 		super(start, end);
 		this.identifier = identifier;
 		this.args = args;
+		this.pointcut = pointcut;
 		this.body = body;
 	}
 
@@ -76,6 +79,14 @@ public class AspectCodeAdviceDeclaration extends Statement {
 
 	public void setBody(Block body) {
 		this.body = body;
+	}
+
+	public Expression getPointcut() {
+		return pointcut;
+	}
+
+	public void setPointcut(Expression pointcut) {
+		this.pointcut = pointcut;
 	}
 
 }
