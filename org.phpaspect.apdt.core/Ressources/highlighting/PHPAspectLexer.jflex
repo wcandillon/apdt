@@ -12,13 +12,14 @@
 package org.phpaspect.apdt.internal.core.documentModel.parser;
 
 import org.eclipse.php.internal.core.documentModel.parser.PhpLexer;
-
+import org.phpaspect.apdt.internal.core.documentModel.parser.regions.PHPAspectRegionTypes;
 
 %%
 
 %public
 %class PHPAspectLexer
 %extends PhpLexer
+%implements PHPAspectRegionTypes
 %type String
 %unicode
 %caseless
@@ -257,6 +258,30 @@ PHP_OPERATOR=       "=>"|"++"|"--"|"==="|"!=="|"=="|"!="|"<>"|"<="|">="|"+="|"-=
 
 <ST_PHP_IN_SCRIPTING>"class" {
     return PHP_CLASS;
+}
+
+<ST_PHP_IN_SCRIPTING>"aspect" {
+    return PHP_ASPECT;
+}
+
+<ST_PHP_IN_SCRIPTING>"persession" {
+    return PHP_PERSESSION;
+}
+
+<ST_PHP_IN_SCRIPTING>"before" {
+    return PHP_BEFORE;
+}
+
+<ST_PHP_IN_SCRIPTING>"around" {
+    return PHP_AROUND;
+}
+
+<ST_PHP_IN_SCRIPTING>"after" {
+    return PHP_AFTER;
+}
+
+<ST_PHP_IN_SCRIPTING>"pointcut" {
+    return PHP_POINTCUT;
 }
 
 <ST_PHP_IN_SCRIPTING>"interface" {
