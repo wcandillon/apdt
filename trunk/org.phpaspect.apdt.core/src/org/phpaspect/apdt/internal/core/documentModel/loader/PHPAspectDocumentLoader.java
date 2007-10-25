@@ -1,9 +1,8 @@
 package org.phpaspect.apdt.internal.core.documentModel.loader;
 
 import org.eclipse.php.internal.core.documentModel.loader.PHPDocumentLoader;
-import org.eclipse.php.internal.core.documentModel.parser.PhpSourceParser;
 import org.eclipse.wst.sse.core.internal.ltk.parser.RegionParser;
-import org.phpaspect.apdt.internal.core.parser.PHPAspectSourceParser;
+import org.phpaspect.apdt.internal.core.documentModel.parser.PHPAspectSourceParser;
 
 public class PHPAspectDocumentLoader extends PHPDocumentLoader {
 	public RegionParser getParser() {

@@ -11,6 +11,15 @@
             id="org.phpaspect.apdt.core.documentModel.handler">
       </modelHandler>
    </extension>
+	<!-- DocumentFactory extension for PHPAspect: This is needed in order to bootstrap the lookup of the ModelHandler -->
+	<extension point="org.eclipse.core.filebuffers.documentCreation"
+         id="org.phpaspect.apdt.core.documentfactories"
+         name="PHPAspect Document Creation Factory">
+         <!-- This is a base factory class included in WST -->
+      <factory
+            contentTypeId="org.phpaspect.apdt.core.phpaspectsource"
+            class="org.eclipse.wst.sse.core.internal.filebuffers.BasicStructuredDocumentFactory"/>
+   </extension>
    <extension
          id="PHPAspectBuilderExtension"
          name="PHPAspect Builder"
