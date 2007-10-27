@@ -2,7 +2,7 @@
 <feature
       id="org.phpaspect.apdt.sdk_feature"
       label="APDT SDK Feature"
-      version="1.0.0"
+      version="1.0.0.qualifier"
       provider-name="phpAspect.org">
 
    <description url="http://www.example.com/description">
