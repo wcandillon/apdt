@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: APDT Ui Plug-in
 Bundle-SymbolicName: org.phpaspect.apdt.ui; singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.phpaspect.apdt.internal.ui.APDTUiPlugin
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
@@ -13,16 +13,23 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.browser,
  org.eclipse.php.core,
  org.eclipse.wst.sse.ui,
- org.eclipse.php.ui,
  org.eclipse.ui.ide,
  org.eclipse.wst.validation,
  org.eclipse.search,
- org.phpaspect.apdt.core
+ org.phpaspect.apdt.core,
+ org.eclipse.wst.html.ui,
+ org.eclipse.wst.sse.core,
+ org.eclipse.php.ui
 Eclipse-LazyStart: true
 Export-Package: org.phpaspect.apdt.internal.ui,
  org.phpaspect.apdt.internal.ui.actions,
  org.phpaspect.apdt.internal.ui.editor,
+ org.phpaspect.apdt.internal.ui.editor.configuration,
+ org.phpaspect.apdt.internal.ui.filters,
  org.phpaspect.apdt.internal.ui.icons,
+ org.phpaspect.apdt.internal.ui.preferences,
  org.phpaspect.apdt.internal.ui.text,
+ org.phpaspect.apdt.internal.ui.treecontent,
+ org.phpaspect.apdt.internal.ui.views,
  org.phpaspect.apdt.internal.ui.wizards
 Bundle-Vendor: phpAspect.org
