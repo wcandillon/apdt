@@ -20,7 +20,6 @@ import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.php.internal.core.documentModel.parser.PhpLexer;
 import org.eclipse.php.internal.core.documentModel.parser.PHPRegionContext;
-import org.eclipse.php.internal.core.documentModel.parser.regions.PhpScriptRegion;
 import org.eclipse.php.internal.core.project.properties.handlers.UseAspTagsHandler;
 import org.eclipse.wst.sse.core.internal.ltk.parser.BlockMarker;
 import org.eclipse.wst.sse.core.internal.ltk.parser.BlockTokenizer;
@@ -33,6 +32,8 @@ import org.eclipse.wst.xml.core.internal.parser.ContextRegionContainer;
 import org.eclipse.wst.xml.core.internal.parser.regions.XMLParserRegionFactory;
 import org.eclipse.wst.xml.core.internal.parser.IntStack;
 import org.eclipse.wst.xml.core.internal.regions.DOMRegionContext;
+import org.phpaspect.apdt.internal.core.documentModel.parser.regions.PHPAspectRegion;
+
 
 %%
 
@@ -372,15 +373,9 @@ private final String doScanEndPhp(boolean isAsp, String searchContext, int exitS
 	int[] currentParameters = getParamenters();
 	currentParameters[6] = PhpLexer.ST_PHP_IN_SCRIPTING;
 	
-	//final PhpLexer phpLexer = PhpScriptRegion.getPhpLexer(project, yy_reader, yy_buffer, currentParameters); 
+	final PhpLexer phpLexer = PHPAspectRegion.getPhpLexer(project, yy_reader, yy_buffer, currentParameters); 
 
-	final PhpLexer phpLexer = new PHPAspectLexer(yy_reader);
-	phpLexer.initialize(currentParameters[6]);
-	phpLexer.reset(yy_reader, yy_buffer, currentParameters);
-	phpLexer.setPatterns(project);
-	phpLexer.setAspTags(UseAspTagsHandler.useAspTagsAsPhp(project));
-	
-	bufferedTextRegion = new PhpScriptRegion(searchContext, yychar, project, phpLexer);
+	bufferedTextRegion = new PHPAspectRegion(searchContext, yychar, project, phpLexer);
 
 	// restore the locations / states
 	reset(yy_reader, ((PHPAspectLexer)phpLexer).getYy_buffer(), phpLexer.getParamenters());
