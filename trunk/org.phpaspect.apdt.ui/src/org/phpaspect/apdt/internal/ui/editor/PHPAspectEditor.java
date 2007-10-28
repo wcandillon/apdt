@@ -6,7 +6,7 @@ import org.eclipse.ui.IEditorInput;
 
 public class PHPAspectEditor extends PHPStructuredEditor {
 
-	public static final String EDITOR_ID = "org.phpaspect.apdt.internal.ui.editor.PHPAspectEditor"; //$NON-NLS-1$
+	public static final String EDITOR_ID = "org.phpaspect.apdt.ui.editor.PHPAspectEditor"; //$NON-NLS-1$
 
 	public PHPAspectEditor(){
 		super();
