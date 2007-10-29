@@ -11,6 +11,7 @@ import org.eclipse.php.internal.core.documentModel.parser.PhpLexer;
 import org.eclipse.php.internal.core.documentModel.parser.Scanner.LexerState;
 import org.phpaspect.apdt.internal.core.APDTCorePlugin;
 import org.phpaspect.apdt.internal.core.documentModel.parser.regions.PHPAspectRegion;
+import org.eclipse.php.internal.core.documentModel.parser.regions.IPhpScriptRegion;
 import org.eclipse.php.internal.core.documentModel.parser.regions.PhpTokenContainer;
 import org.eclipse.php.internal.core.project.properties.handlers.UseAspTagsHandler;
 import org.eclipse.wst.sse.core.internal.parser.ForeignRegion;
@@ -22,7 +23,7 @@ import org.eclipse.wst.xml.core.internal.Logger;
 
 import org.phpaspect.apdt.internal.core.documentModel.parser.PHPAspectLexer;
 
-public class PHPAspectRegion extends ForeignRegion {
+public class PHPAspectRegion extends ForeignRegion implements IPhpScriptRegion{
 
 	private static final String PHP_SCRIPT = "PHP Script";
 	private final PhpTokenContainer tokensContaier = new PhpTokenContainer();
@@ -150,7 +151,8 @@ public class PHPAspectRegion extends ForeignRegion {
 			// 2. adjust next regions start location
 			// 3. update state changes
 			final int size = length - lengthToReplace;
-			final int end = newContainer.getLastToken().getEnd();
+			final int end = newContainer.getPhpTokens()[newContainer.getPhpTokens().length-1].getEnd();
+			//final int end = newContainer.getLastToken().getEnd();
 
 			if (!state.equals(endState) || tokenEnd.getEnd() + size != end) {
 				return null;
