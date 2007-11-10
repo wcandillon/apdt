@@ -84,7 +84,7 @@ import org.phpaspect.apdt.internal.core.documentModel.parser.regions.PHPAspectRe
         return yy_endRead;
     }
 
-    protected char[] getYy_buffer() {
+    public char[] getYy_buffer() {
         return yy_buffer;
     }
     

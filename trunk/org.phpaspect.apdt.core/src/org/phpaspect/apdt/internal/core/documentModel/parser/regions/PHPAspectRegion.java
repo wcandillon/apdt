@@ -457,4 +457,18 @@ public class PHPAspectRegion extends ForeignRegion implements IPhpScriptRegion{
 		lexer.setAspTags(UseAspTagsHandler.useAspTagsAsPhp(project));
 		return lexer;
 	}
+
+	/**
+	 * @see IPhpScriptRegion#isFullReparsed()
+	 */
+	public boolean isFullReparsed() {
+		return isFullReparsed;
+	}
+
+	/**
+	 * @see IPhpScriptRegion#setFullReparsed(boolean)
+	 */
+	public void setFullReparsed(boolean isFullReparse) {
+		isFullReparsed = isFullReparse;
+	}
 }
