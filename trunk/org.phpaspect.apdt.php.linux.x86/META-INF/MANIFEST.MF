@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: PHP 5.2.10 Linux x86
-Bundle-SymbolicName: org.phpaspect.apdt.php.linux.x86
-Eclipse-PlatformFilter: (& (osgi.os=linux)(osgi.arch=x86))
-Bundle-Version: 5.2.30.qualifier
