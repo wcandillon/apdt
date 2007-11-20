@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: PHP 5.2.3 Linux x86
+Bundle-SymbolicName: org.phpaspect.apdt.php.linux.x86
+Bundle-Version: 5.2.30.qualifier
+Fragment-Host: org.phpaspect.apdt.core;bundle-version="1.0.0"
+Eclipse-PlatformFilter: (& (osgi.os=linux)(osgi.arch=x86))
