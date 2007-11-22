@@ -11,7 +11,7 @@
  *   Zend and IBM - Initial implementation
  *******************************************************************************/
 
-package org.phpaspect.internal.weaver.parser;
+package org.phpaspect.weaver.parser;
 
 import java_cup.runtime.*;
 import org.eclipse.php.internal.core.phpModel.parser.StateStack;
