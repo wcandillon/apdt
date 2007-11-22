@@ -21,12 +21,15 @@ Export-Package: java_cup.runtime,
  org.phpaspect.apdt.internal.core.documentModel.parser,
  org.phpaspect.apdt.internal.core.documentModel.parser.regions,
  org.phpaspect.apdt.internal.core.documentModel.provisional.contenttype,
- org.phpaspect.apdt.internal.core.nodes,
  org.phpaspect.apdt.internal.core.preferences,
- org.phpaspect.internal.weaver.parser,
- org.phpaspect.internal.weaver.parser.nodes,
+ org.phpaspect.weaver.parser,
+ org.phpaspect.weaver.parser.nodes,
+ org.phpaspect.weaver,
  org.phpaspect.weaver.parser,
  org.phpaspect.weaver.parser.visitor
 Bundle-Vendor: phpAspect.org
-Bundle-ClassPath: Resources/java-cup-11a-runtime.jar, Resources/phpaspect.jar, .
+Bundle-ClassPath: Resources/phpaspect.jar,
+ Resources/java-cup-11a-runtime.jar,
+ .
+ 
 
