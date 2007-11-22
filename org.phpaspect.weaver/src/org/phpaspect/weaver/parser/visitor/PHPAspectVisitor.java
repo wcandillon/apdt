@@ -1,7 +1,7 @@
 package org.phpaspect.weaver.parser.visitor;
 
 import org.eclipse.php.internal.core.ast.visitor.Visitor;
-import org.phpaspect.internal.weaver.parser.nodes.*;
+import org.phpaspect.weaver.parser.nodes.*;
 import org.phpaspect.weaver.parser.nodes.AspectDeclaration;
 import org.phpaspect.weaver.parser.nodes.AspectInterTypeDeclaration;
 import org.phpaspect.weaver.parser.nodes.AspectInterTypeFieldDeclaration;

@@ -1,4 +1,4 @@
-package org.phpaspect.internal.weaver.parser;
+package org.phpaspect.weaver.parser;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -9,7 +9,7 @@ package org.phpaspect.internal.weaver.parser;
 import java.util.*;
 import java_cup.runtime.*;
 import org.eclipse.php.internal.core.ast.nodes.*;
-import org.phpaspect.internal.weaver.parser.nodes.*;
+import org.phpaspect.weaver.parser.nodes.*;
 import org.eclipse.php.internal.core.phpModel.parser.PHPCodeDataFactory;
 import org.eclipse.php.internal.core.phpModel.phpElementData.IPHPMarker;
 import org.eclipse.php.internal.core.phpModel.phpElementData.PHPMarker;
