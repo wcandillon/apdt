@@ -21,8 +21,8 @@ import org.eclipse.php.internal.core.project.options.PHPProjectOptions;
 import org.eclipse.php.core.project.build.IPHPBuilderExtension;
 import org.phpaspect.apdt.internal.core.APDTCorePlugin;
 import org.phpaspect.apdt.internal.core.builder.PHPAspectNature;
-import org.phpaspect.internal.weaver.parser.PHPAspectLexer;
-import org.phpaspect.internal.weaver.parser.PHPAspectParser;
+import org.phpaspect.weaver.parser.PHPAspectLexer;
+import org.phpaspect.weaver.parser.PHPAspectParser;
 
 public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 
