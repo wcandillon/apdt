@@ -13,8 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.xml.core,
  org.eclipse.wst.validation
 Eclipse-LazyStart: true
-Export-Package: org.phpaspect.apdt.core.parser,
- org.phpaspect.apdt.core.visitor,
+Export-Package: java_cup.runtime,
  org.phpaspect.apdt.internal.core,
  org.phpaspect.apdt.internal.core.builder,
  org.phpaspect.apdt.internal.core.documentModel.handler,
@@ -23,9 +22,11 @@ Export-Package: org.phpaspect.apdt.core.parser,
  org.phpaspect.apdt.internal.core.documentModel.parser.regions,
  org.phpaspect.apdt.internal.core.documentModel.provisional.contenttype,
  org.phpaspect.apdt.internal.core.nodes,
- org.phpaspect.apdt.internal.core.parser,
  org.phpaspect.apdt.internal.core.preferences,
- org.phpaspect.apdt.internal.core.visitors
+ org.phpaspect.internal.weaver.parser,
+ org.phpaspect.internal.weaver.parser.nodes,
+ org.phpaspect.weaver.parser,
+ org.phpaspect.weaver.parser.visitor
 Bundle-Vendor: phpAspect.org
-Bundle-ClassPath: Ressources/java-cup-11a-runtime.jar,
- .
+Bundle-ClassPath: Resources/java-cup-11a-runtime.jar, Resources/phpaspect.jar, .
+
