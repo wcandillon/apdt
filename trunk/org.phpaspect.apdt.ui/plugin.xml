@@ -163,6 +163,12 @@
           class="org.phpaspect.apdt.internal.ui.views.XReferenceView"
           icon="icons/XRefIcon.gif"/>
 	</extension>
+	<!-- PHP Explorer providers-->
+	<extension point="org.eclipse.php.ui.phpTreeContentProviders">
+		<provider
+			class="org.phpaspect.apdt.internal.ui.treecontent.PHPAspectTreeContent"
+			targetId="org.eclipse.php.ui.explorer" />
+ 	</extension>
 	<!-- PHPAspect Search Page -->
 	<!--extension point="org.eclipse.search.searchPages">
 		<page
