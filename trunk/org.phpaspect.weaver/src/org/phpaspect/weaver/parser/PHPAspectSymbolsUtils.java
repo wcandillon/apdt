@@ -1,4 +1,4 @@
-package org.phpaspect.internal.weaver.parser;
+package org.phpaspect.weaver.parser;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

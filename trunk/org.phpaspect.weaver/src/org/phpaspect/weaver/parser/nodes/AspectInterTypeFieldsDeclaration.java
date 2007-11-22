@@ -1,4 +1,4 @@
-package org.phpaspect.internal.weaver.parser.nodes;
+package org.phpaspect.weaver.parser.nodes;
 
 import java.util.*;
 

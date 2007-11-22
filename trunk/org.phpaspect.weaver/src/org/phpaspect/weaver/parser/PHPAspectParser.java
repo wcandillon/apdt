@@ -4,12 +4,21 @@
 // Wed Nov 21 20:20:22 GMT+01:00 2007
 //----------------------------------------------------
 
-package org.phpaspect.internal.weaver.parser;
+package org.phpaspect.weaver.parser;
 
 import java.util.*;
 import java_cup.runtime.*;
 import org.eclipse.php.internal.core.ast.nodes.*;
 import org.phpaspect.internal.weaver.parser.nodes.*;
+import org.phpaspect.weaver.parser.nodes.AspectCodeAdviceDeclaration;
+import org.phpaspect.weaver.parser.nodes.AspectDeclaration;
+import org.phpaspect.weaver.parser.nodes.AspectInterTypeDeclaration;
+import org.phpaspect.weaver.parser.nodes.AspectInterTypeFieldDeclaration;
+import org.phpaspect.weaver.parser.nodes.AspectInterTypeFieldsDeclaration;
+import org.phpaspect.weaver.parser.nodes.AspectInterTypeMethodDeclaration;
+import org.phpaspect.weaver.parser.nodes.AspectPointcutDeclaration;
+import org.phpaspect.weaver.parser.nodes.AspectPointcutParameter;
+import org.phpaspect.weaver.parser.nodes.AspectPointcutReference;
 import org.eclipse.php.internal.core.phpModel.parser.PHPCodeDataFactory;
 import org.eclipse.php.internal.core.phpModel.phpElementData.IPHPMarker;
 import org.eclipse.php.internal.core.phpModel.phpElementData.PHPMarker;

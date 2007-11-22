@@ -4,7 +4,7 @@
 // Wed Nov 21 20:20:22 GMT+01:00 2007
 //----------------------------------------------------
 
-package org.phpaspect.internal.weaver.parser;
+package org.phpaspect.weaver.parser;
 
 /** CUP generated class containing symbol constants. */
 public class PHPAspectSymbols {
