@@ -9,6 +9,7 @@ public class PHPAspectWeaver implements Weaver {
 
 	private List<URI> aspects  = new ArrayList<URI>();
 	private List<URI> phpFiles = new ArrayList<URI>();
+	
 	private URI runtimePath;
 	
 	private boolean verbose = false;
