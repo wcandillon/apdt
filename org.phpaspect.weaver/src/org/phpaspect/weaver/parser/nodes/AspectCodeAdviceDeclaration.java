@@ -9,18 +9,14 @@ import org.eclipse.php.internal.core.ast.visitor.Visitor;
 
 public class AspectCodeAdviceDeclaration extends Statement {
 
-	public static final Integer BEFORE = 0;
-	public static final Integer AROUND = 1;
-	public static final Integer AFTER  = 2;
-	
-	private int identifier;
+	private AdviceType adviceType;
 	private List args;
 	private Block body;
 	private Expression pointcut;
 	
-	public AspectCodeAdviceDeclaration(int start, int end, Integer identifier, List args, Expression pointcut, Block body) {
+	public AspectCodeAdviceDeclaration(int start, int end, AdviceType adviceType, List args, Expression pointcut, Block body) {
 		super(start, end);
-		this.identifier = identifier;
+		this.adviceType = adviceType;
 		this.args = args;
 		this.pointcut = pointcut;
 		this.body = body;
@@ -57,12 +53,12 @@ public class AspectCodeAdviceDeclaration extends Statement {
 
 	}
 
-	public int getIdentifier() {
-		return identifier;
+	public AdviceType getAdviceType() {
+		return adviceType;
 	}
 
-	public void setIdentifier(int identifier) {
-		this.identifier = identifier;
+	public void setAdviceType(AdviceType adviceType) {
+		this.adviceType = adviceType;
 	}
 
 	public List getArgs() {
