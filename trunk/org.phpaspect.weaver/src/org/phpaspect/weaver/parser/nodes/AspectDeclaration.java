@@ -6,6 +6,8 @@ import org.eclipse.php.internal.core.ast.nodes.ASTNode;
 import org.eclipse.php.internal.core.ast.nodes.Block;
 import org.eclipse.php.internal.core.ast.nodes.ClassDeclaration;
 import org.eclipse.php.internal.core.ast.nodes.Identifier;
+import org.eclipse.php.internal.core.ast.visitor.Visitor;
+import org.phpaspect.weaver.parser.visitor.PHPAspectVisitor;
 
 public class AspectDeclaration extends ClassDeclaration {
 
@@ -45,5 +47,9 @@ public class AspectDeclaration extends ClassDeclaration {
 	
 	public int getType() {
 		return PHPAspectASTNode.ASPECT_DECLARATION;
+	}
+	
+	public void accept(Visitor visitor){
+		((PHPAspectVisitor)visitor).visit(this);
 	}
 }
