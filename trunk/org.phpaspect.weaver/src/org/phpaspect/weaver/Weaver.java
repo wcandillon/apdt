@@ -24,4 +24,6 @@ public interface Weaver {
 	public List<URI> getPHPFiles();
 	
 	public List<URI> getAspects();
+	
+	public Weaver weave();
 }
