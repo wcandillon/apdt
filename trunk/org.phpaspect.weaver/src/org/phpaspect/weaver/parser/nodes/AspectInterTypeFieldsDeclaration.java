@@ -4,7 +4,7 @@ import java.util.*;
 
 import org.eclipse.php.internal.core.ast.nodes.BodyDeclaration;
 import org.eclipse.php.internal.core.ast.visitor.Visitor;
-import org.phpaspect.weaver.parser.visitors.PHPAspectVisitor;
+import org.phpaspect.weaver.visitor.PHPAspectVisitor;
 
 public class AspectInterTypeFieldsDeclaration extends BodyDeclaration{
 

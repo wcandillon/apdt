@@ -1,4 +1,4 @@
-package org.phpaspect.weaver.parser.visitors;
+package org.phpaspect.weaver.visitor.impl;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -15,7 +15,7 @@ public class GeneratePHPAspectVisitor {
 		final String VISITOR_PATH = args[1];
 		
 		StringBuffer generatedCode = new StringBuffer();
-		generatedCode.append("package org.phpaspect.weaver.parser.visitors;\n\n");
+		generatedCode.append("package org.phpaspect.weaver.visitor;\n\n");
 		generatedCode.append("import org.eclipse.php.internal.core.ast.visitor.Visitor;\n");
 		generatedCode.append("import org.phpaspect.weaver.parser.nodes.*;\n\n");
 		generatedCode.append("public interface PHPAspectVisitor extends Visitor {\n");

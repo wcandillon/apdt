@@ -19,10 +19,10 @@
 	
 	<target name="build_parser">
 		<!-- Generating the PHPAspect Visitor -->
-		<java classname="org.phpaspect.weaver.parser.visitors.GeneratePHPAspectVisitor"
+		<java classname="org.phpaspect.weaver.visitor.impl.GeneratePHPAspectVisitor"
 				classpath="../bin">
 			<arg value="../src/org/phpaspect/weaver/parser/nodes" />
-			<arg value="../src/org/phpaspect/weaver/parser/visitors/PHPAspectVisitor.java" />
+			<arg value="../src/org/phpaspect/weaver/visitor/PHPAspectVisitor.java" />
 		</java>
 		<!-- Generating the PHPAspect Lexer -->
 		<java jar="${jflex_home}" fork="true" failonerror="true">

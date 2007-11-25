@@ -1,8 +1,10 @@
-package org.phpaspect.weaver;
+package org.phpaspect.weaver.impl;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.phpaspect.weaver.Weaver;
 
 public class PHPAspectWeaver implements Weaver {
 
