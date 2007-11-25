@@ -5,7 +5,7 @@ import java.util.List;
 import org.eclipse.php.internal.core.ast.nodes.FunctionDeclaration;
 import org.eclipse.php.internal.core.ast.nodes.MethodDeclaration;
 import org.eclipse.php.internal.core.ast.visitor.Visitor;
-import org.phpaspect.weaver.parser.visitors.PHPAspectVisitor;
+import org.phpaspect.weaver.visitor.PHPAspectVisitor;
 
 public class AspectInterTypeMethodDeclaration extends MethodDeclaration {
 

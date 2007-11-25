@@ -6,7 +6,7 @@ import org.eclipse.php.internal.core.ast.nodes.Block;
 import org.eclipse.php.internal.core.ast.nodes.Expression;
 import org.eclipse.php.internal.core.ast.nodes.Statement;
 import org.eclipse.php.internal.core.ast.visitor.Visitor;
-import org.phpaspect.weaver.parser.visitors.PHPAspectVisitor;
+import org.phpaspect.weaver.visitor.PHPAspectVisitor;
 
 public class AspectCodeAdviceDeclaration extends Statement {
 

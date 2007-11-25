@@ -1,4 +1,4 @@
-package org.phpaspect.weaver.parser.visitors;
+package org.phpaspect.weaver.visitor;
 
 import org.eclipse.php.internal.core.ast.visitor.Visitor;
 import org.phpaspect.weaver.parser.nodes.*;

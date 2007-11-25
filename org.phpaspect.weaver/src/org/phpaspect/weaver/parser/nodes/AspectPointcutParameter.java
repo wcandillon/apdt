@@ -3,7 +3,7 @@ package org.phpaspect.weaver.parser.nodes;
 import org.eclipse.php.internal.core.ast.nodes.ASTNode;
 import org.eclipse.php.internal.core.ast.nodes.Variable;
 import org.eclipse.php.internal.core.ast.visitor.Visitor;
-import org.phpaspect.weaver.parser.visitors.PHPAspectVisitor;
+import org.phpaspect.weaver.visitor.PHPAspectVisitor;
 
 public class AspectPointcutParameter extends ASTNode {
 

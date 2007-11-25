@@ -2,7 +2,7 @@ package org.phpaspect.weaver.parser.nodes;
 
 import org.eclipse.php.internal.core.ast.nodes.Identifier;
 import org.eclipse.php.internal.core.ast.visitor.Visitor;
-import org.phpaspect.weaver.parser.visitors.PHPAspectVisitor;
+import org.phpaspect.weaver.visitor.PHPAspectVisitor;
 
 public class AspectInterTypeDeclaration extends Identifier{
 
