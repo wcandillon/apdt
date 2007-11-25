@@ -18,7 +18,7 @@ import org.phpaspect.weaver.visitor.PHPAspectVisitor;
 
 import com.thoughtworks.xstream.XStream;
 
-public class AST{
+public class ASTGenerator{
 	
 	public static enum XMLEncoding {UTF8, UTF16, ISO_8859_1, UNICODE};
 	
