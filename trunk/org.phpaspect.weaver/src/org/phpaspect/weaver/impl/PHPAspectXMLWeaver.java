@@ -8,7 +8,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
 import org.phpaspect.weaver.XMLWeaver;
-import org.phpaspect.weaver.parser.AST;
+import org.phpaspect.weaver.parser.ASTGenerator;
 
 public class PHPAspectXMLWeaver implements XMLWeaver{
 	
@@ -38,7 +38,7 @@ public class PHPAspectXMLWeaver implements XMLWeaver{
 	
 	
 	public String transformAspecttoClass(URI aspect) throws Exception{
-		return transformAspectToClass(AST.getXMLAstFromPHPAspect(aspect));
+		return transformAspectToClass(ASTGenerator.getXMLAstFromPHPAspect(aspect));
 	}
 
 	public String transformAspectToClass(String aspect){
@@ -46,7 +46,7 @@ public class PHPAspectXMLWeaver implements XMLWeaver{
 	}
 	
 	public String transformAspectToXSLT(URI aspect) throws Exception{
-		return transformAspectToXSLT(AST.getXMLAstFromPHPAspect(aspect));
+		return transformAspectToXSLT(ASTGenerator.getXMLAstFromPHPAspect(aspect));
 	}
 	
 	public String transformAspectToXSLT(String aspect){
