@@ -1,0 +1,14 @@
+<program start="0" length="29">
+  <statements>
+    <aspectDeclaration modifier="0" start="6" length="20">
+      <name name="Singleton" start="13" length="9"/>
+      <interfaces/>
+      <body isCurly="true" start="22" length="4">
+        <statements/>
+      </body>
+    </aspectDeclaration>
+  </statements>
+  <comments class="tree-map">
+    <no-comparator/>
+  </comments>
+</program>
