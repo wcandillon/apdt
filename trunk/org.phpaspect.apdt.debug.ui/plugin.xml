@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="org.phpaspect.apdt.debug.core.launching.PHPExeLaunchConfigurationType"
+            description="PHPAspect"
+            class="org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchConfigurationTabGroup"
+            id="org.phpaspect.apdt.debug.ui.launching.launchConfigurationTabGroup.phpexe">
+      </launchConfigurationTabGroup>
+    </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.phpaspect.apdt.debug.ui.launching.launchConfigurationTabGroup.phpexe"
+            icon="icon/full/obj16/php_exec.gif"
+            id="org.phpaspect.apdt.debug.core.launching.PHPExeLaunchConfigurationType"/>
+   </extension>
+</plugin>
