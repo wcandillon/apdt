@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+<!-- PHPAspect application launcher -->
+	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+		<launchConfigurationType
+			name="PHPAspect Application"
+			delegate="org.phpaspect.apdt.internal.debug.core.launching.PHPAspectLaunchConfigurationDelegate"
+			modes="run"
+			id="org.phpaspect.apdt.debug.core.launching.PHPAspectLaunchConfigurationType">
+		</launchConfigurationType>
+	</extension>
+</plugin>
