@@ -1,20 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension
-         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
-      <launchConfigurationTabGroup
-            type="org.phpaspect.apdt.debug.core.launching.PHPExeLaunchConfigurationType"
-            description="PHPAspect"
-            class="org.eclipse.php.internal.debug.ui.launching.PHPExeLaunchConfigurationTabGroup"
-            id="org.phpaspect.apdt.debug.ui.launching.launchConfigurationTabGroup.phpexe">
-      </launchConfigurationTabGroup>
-    </extension>
-   <extension
-         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
-      <launchConfigurationTypeImage
-            configTypeID="org.phpaspect.apdt.debug.ui.launching.launchConfigurationTabGroup.phpexe"
-            icon="icon/full/obj16/php_exec.gif"
-            id="org.phpaspect.apdt.debug.core.launching.PHPExeLaunchConfigurationType"/>
+<!-- PHPAspect launch configuration type icon -->
+	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+		<launchConfigurationTypeImage
+			icon="icon">
+		</launchConfigurationTypeImage>
+	</extension>
+<!--  PHPAspect application shortcut -->
+	<extension point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="org.phpaspect.apdt.internal.debug.ui.launching.PHPAspectLaunchShortcut"
+            description="PHPAspect internal"
+            icon="icon/full/obj16/phpaspect_exec.gif"
+            id="org.phpaspect.apdt.debug.ui.phpaspectShortcut"
+            label="PHPAspect application"
+            modes="run">
+		 <contextualLaunch>
+		 	<contextLabel mode="run" label="PHPAspect application"/>
+		 	<enablement>
+		 		<count value="1"/>
+	 <!-- Pass a 'script' argument for the enablement test -->
+     <test
+           args="script"
+           property="org.eclipse.php.debug.ui.launchablePHP"
+           value="true"/>
+		 	</enablement>
+		 </contextualLaunch>
+         <perspective
+               id="org.eclipse.ui.resourcePerspective">
+         </perspective>
+         <perspective
+         	   id="org.eclipse.php.perspective">
+         </perspective>
+         <perspective
+               id="org.eclipse.debug.ui.DebugPerspective">
+         </perspective>
+         <configurationType
+    		id="org.eclipse.php.debug.core.launching.PHPExeLaunchConfigurationType">
+  		 </configurationType>
+      </shortcut>
    </extension>
 </plugin>
