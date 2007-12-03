@@ -7,5 +7,6 @@ Bundle-Activator: org.phpaspect.apdt.debug.core.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.debug.core,
- org.eclipse.php.debug.core
+ org.eclipse.php.debug.core,
+ org.eclipse.php.core
 Eclipse-LazyStart: true

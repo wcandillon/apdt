@@ -4,8 +4,18 @@
 <!-- PHPAspect launch configuration type icon -->
 	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
 		<launchConfigurationTypeImage
-			icon="icon">
+			icon="icons/full/obj16/phpaspect_exec.gif"
+			configTypeID="org.phpaspect.apdt.debug.core.launching.PHPAspectLaunchConfigurationType"
+			id="org.phpaspect.apdt.debug.ui.launchConfigurationTypeImage.phpaspect">
 		</launchConfigurationTypeImage>
+	</extension>
+<!-- PHPAspect tab group -->
+	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+		<launchConfigurationTabGroup
+			type="org.phpaspect.apdt.debug.core.launching.PHPAspectLaunchConfigurationType"
+			class="org.phpaspect.apdt.internal.debug.ui.launching.PHPAspectLaunchConfigurationTabGroup"
+			id="org.phpaspect.apdt.debug.ui.launchConfigurationTabGroup.phpaspect">
+		</launchConfigurationTabGroup>
 	</extension>
 <!--  PHPAspect application shortcut -->
 	<extension point="org.eclipse.debug.ui.launchShortcuts">
