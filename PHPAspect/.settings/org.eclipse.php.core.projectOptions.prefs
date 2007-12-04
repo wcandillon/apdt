@@ -1,0 +1,6 @@
+#Mon Oct 22 21:30:44 GMT+01:00 2007
+eclipse.preferences.version=1
+instance/org.eclipse.core.net/org.eclipse.core.net.hasMigrated=true
+org.eclipse.php.core.contextRoot=
+org.eclipse.php.core.defaultEncoding=
+org.eclipse.php.core.includePath=<?xml version\="1.0" encoding\="UTF-8"?>\n<includepath>\n\t<includepathentry kind\="var" path\="PEAR_HOME" createdReference\="false" contentKind\="source">\n</includepathentry>\n</includepath>\n
