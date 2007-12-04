@@ -2,7 +2,7 @@ package org.phpaspect.apdt.internal.core.builder;
 
 import java.util.*;
 
-import org.eclipse.core.internal.resources.Resource;
+import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IMarker;
@@ -19,11 +19,13 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.content.IContentTypeManager;
+import org.eclipse.php.internal.core.PHPCorePlugin;
 import org.eclipse.php.internal.core.phpModel.phpElementData.PHPMarker;
 import org.eclipse.php.internal.core.project.options.PHPProjectOptions;
 import org.eclipse.php.core.project.build.IPHPBuilderExtension;
 import org.phpaspect.apdt.internal.core.APDTCorePlugin;
 import org.phpaspect.apdt.internal.core.builder.PHPAspectNature;
+import org.phpaspect.weaver.impl.PHPAspectWeaver;
 import org.phpaspect.weaver.parser.PHPAspectLexer;
 import org.phpaspect.weaver.parser.PHPAspectParser;
 
@@ -78,14 +80,15 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 
 	private void cleanBuild(IProject project) {
 		try {
-			if (!project.hasNature(PHPAspectNature.NATURE_ID)) {
-				return;
+			if (project.hasNature(PHPAspectNature.NATURE_ID)) {
+				project.getFolder("weaved").delete(true, null);
+				project.getFolder("weaved").create(true, true, null);
+				getWeaver(project).clear();
 			}
 		} catch (CoreException e) {
 			APDTCorePlugin.log(e);
 			return;
 		}
-
 	}
 	
 	public static final String BUILDER_ID = "org.phpaspect.apdt.core.PHPAspectBuilderExtension";
@@ -93,6 +96,7 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 	// used to examine if a file is php associated
 	private static final IContentTypeManager CONTENT_TYPE_MANAGER = Platform.getContentTypeManager();
 	//private static final String MARKER_TYPE = "org.phpaspect.apdt.core.aspectProblem";
+	private static Map<String, PHPAspectWeaver> weavers = new HashMap<String, PHPAspectWeaver>();
 	
 	private void addMarker(IFile file, String message, int lineNumber,
 			int severity) {
@@ -126,6 +130,39 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 		return false;
 	}
 	
+	private boolean isPHPFile(IFile file){
+		final int numSegments = file.getFullPath().segmentCount();
+		final String filename = file.getFullPath().segment(numSegments - 1);
+		final IContentType contentType = CONTENT_TYPE_MANAGER.getContentType(PHPCorePlugin.ID + ".phpsource");
+		if (contentType.isAssociatedWith(filename)) {
+			return true;
+		}
+		return false;		
+	}
+	
+	private void weave(IFile file){
+		PHPAspectWeaver weaver = getWeaver(file);
+		if(isPHPAspectFile(file)){
+			weaver.addAspect(file.getLocationURI());
+		}else if(isPHPFile(file)){
+			IPath targetFile = copyToWeavedDirectory(file);
+			weaver.weave(URIUtil.toURI(targetFile));
+		}
+	}
+	
+	public PHPAspectWeaver getWeaver(IResource resource) {
+		IProject project = resource.getProject();
+		String projectName = project.getName();
+		IPath aspectPath = project.getFolder("weaved")
+									.getFolder("_aspects")
+									.getFullPath();
+		if(weavers.get(projectName) == null){
+			weavers.put(projectName,
+							new PHPAspectWeaver(URIUtil.toURI(aspectPath)));
+		}
+		return weavers.get(projectName);
+	}
+
 	private void validate(IFile file) {
 		PHPAspectParser parser = null;
 		deleteMarkers(file);
@@ -142,6 +179,34 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 				addMarker(file, marker.getDescription(), marker.getUserData().getStopLine(), IMarker.SEVERITY_ERROR);
 			}
 		}
+	}
+	
+	private IPath copyToWeavedDirectory(IResource resource){
+		IPath binPath = resource.getProject().getFolder("weaved").getFullPath();
+		IPath destination = binPath.append(resource.getProjectRelativePath());
+		try {
+			resource.copy(destination, true, null);
+		} catch (CoreException e) {
+			e.getMessage();
+		}
+		return destination;
+	}
+	
+	private void removeFromWeavedDirectory(IResource resource){
+		IProject project = resource.getProject();
+		IResource destination;
+		
+		if(resource instanceof IFolder){
+			destination = project.getFolder("weaved").getFolder(resource.getProjectRelativePath());
+		}else{
+			destination = project.getFolder("weaved").getFile(resource.getProjectRelativePath());
+		}
+		
+		try {
+			destination.delete(true, null);
+		} catch (CoreException e) {
+			e.getMessage();
+		}			
 	}
 	
 	class PHPAspectDeltaVisitor implements IResourceDeltaVisitor {
@@ -192,7 +257,8 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 					break;
 				case IResourceDelta.CHANGED:
 					if (isPHPAspectFile(file)){
-						validate(file);
+						weave(file);
+						//validate(file);
 					}else{
 						
 					}
@@ -201,33 +267,6 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 					removeFromWeavedDirectory(file);
 					break;
 			}
-		}
-		
-		private void copyToWeavedDirectory(IResource resource){
-			IPath binPath = resource.getProject().getFolder("weaved").getFullPath();
-			IPath destination = binPath.append(resource.getProjectRelativePath());
-			try {
-				resource.copy(destination, true, null);
-			} catch (CoreException e) {
-				e.getMessage();
-			}
-		}
-		
-		private void removeFromWeavedDirectory(IResource resource){
-			IProject project = resource.getProject();
-			IResource destination;
-			
-			if(resource instanceof IFolder){
-				destination = project.getFolder("weaved").getFolder(resource.getProjectRelativePath());
-			}else{
-				destination = project.getFolder("weaved").getFile(resource.getProjectRelativePath());
-			}
-			
-			try {
-				destination.delete(true, null);
-			} catch (CoreException e) {
-				e.getMessage();
-			}			
 		}
 		
 		private boolean processProjectDelta(IResourceDelta projectDelta) {
@@ -290,8 +329,8 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 				return;
 			}
 			monitor.subTask(NLS.bind("Parsing: {0} ...", file.getFullPath().toPortableString()));
-
-			validate(file); 
+			weave(file);
+			//validate(file); 
 
 		}
 	}

@@ -18,9 +18,10 @@ public class TestXMLGeneration {
 		try {
 			Reader aspect = new FileReader(args[0]);
 			BufferedWriter writer = new BufferedWriter(new FileWriter(args[1]));
-			String xml = ASTGenerator.getXMLAstFromPHPAspect(aspect);
+			String xml = ASTGenerator.getXMLAstFromPHP(aspect);
 		    writer.write(xml);
 		    writer.close();
+		    System.err.println("done");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (Exception e) {

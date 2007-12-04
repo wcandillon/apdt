@@ -1,5 +1,5 @@
 <?php
 aspect Singleton{
-
+	private static Foo::$instance;
 }
 ?>

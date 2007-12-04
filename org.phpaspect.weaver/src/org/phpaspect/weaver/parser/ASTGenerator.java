@@ -20,7 +20,7 @@ import com.thoughtworks.xstream.XStream;
 
 public class ASTGenerator{
 	
-	public static enum XMLEncoding {UTF8, UTF16, ISO_8859_1, UNICODE};
+	private static final String XML_DECLARATION = " <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 	
 	private static XStream xstream = new XStream();
 	
@@ -82,7 +82,7 @@ public class ASTGenerator{
 	
 	public static String getXMLAstFromPHP(Reader phpSource) throws Exception{
 		Program ast = getAstFromPHP(phpSource);
-		return xstream.toXML(ast);
+		return XML_DECLARATION+xstream.toXML(ast);
 	}
 	
 	public static Program getAstFromPHP(Reader phpSource) throws Exception{
@@ -131,7 +131,7 @@ public class ASTGenerator{
 	
 	public static String getXMLAstFromPHPAspect(Reader aspect) throws Exception{
 		Program ast = getAstFromPHPAspect(aspect);
-		return xstream.toXML(ast);
+		return XML_DECLARATION+xstream.toXML(ast);
 	}
 	
 	public static Program getAstFromPHPAspect(Reader aspect) throws Exception{
@@ -153,6 +153,6 @@ public class ASTGenerator{
 	}
 	
 	public static String getXMLAstFromAst(Program ast){
-		return xstream.toXML(ast);
+		return XML_DECLARATION+xstream.toXML(ast);
 	}
 }

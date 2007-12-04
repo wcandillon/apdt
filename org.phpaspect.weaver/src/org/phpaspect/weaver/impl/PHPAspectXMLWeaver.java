@@ -7,6 +7,10 @@ import java.util.List;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
+import net.sf.saxon.s9api.Processor;
+import net.sf.saxon.s9api.SaxonApiException;
+import net.sf.saxon.s9api.XsltExecutable;
+
 import org.phpaspect.weaver.XMLWeaver;
 import org.phpaspect.weaver.parser.ASTGenerator;
 
@@ -14,15 +18,25 @@ public class PHPAspectXMLWeaver implements XMLWeaver{
 	
 	private List<Source> aspects = new ArrayList<Source>();
 	
-	public static final Source TO_CLASS = new StreamSource("XSLT/toClass.xsl");
+	public static final XsltExecutable TO_CLASS = newXsltExecutable("XSLT/toClass.xsl");
 	
 	public PHPAspectXMLWeaver(){
 		
 	}
 	
+	private static XsltExecutable newXsltExecutable(String filename) {
+		try {
+			return new Processor(false).newXsltCompiler()
+						.compile(new StreamSource(filename));
+		} catch (SaxonApiException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public XMLWeaver loadAspect(URI aspect){
 		//String xslt = transfromAspecToXSLT(aspect);
-		aspects.add(new StreamSource(aspect.toString()));
+		//aspects.add(new StreamSource(aspect.toString()));
 		return this;
 	}
 	

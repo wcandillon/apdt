@@ -13,6 +13,14 @@ public interface Weaver {
 	
 	public Weaver addPHPFile(URI phpFile);
 	
+	public Weaver removeAspect(URI aspect);
+	
+	public Weaver removeAspects(List<URI> aspects);
+	
+	public Weaver removePHPFiles(List<URI> phpFiles);
+	
+	public Weaver removePHPFile(URI phpFile);
+	
 	public Weaver setRuntimePath(URI runtimePath);
 	
 	public Weaver setVerbose(boolean verbose);
@@ -26,4 +34,12 @@ public interface Weaver {
 	public List<URI> getAspects();
 	
 	public Weaver weave();
+	
+	public Weaver weave(URI phpFile);
+	
+	public Weaver clear();
+	
+	public Weaver generateAspectEntities(URI runtimePath);
+	
+	public Weaver generateAspectEntities();
 }
