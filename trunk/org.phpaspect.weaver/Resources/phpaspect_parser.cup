@@ -312,6 +312,7 @@ non terminal String aspect_signature;
 non terminal Boolean aspect_subtype_or_not;
 non terminal List aspect_pointcut_parameter_list;
 non terminal AspectPointcutParameter aspect_pointcut_parameter;
+non terminal List aspect_joinpoint_parameters;
 
 non terminal List unset_variables;
 non terminal VariableBase unset_variable;
@@ -472,13 +473,13 @@ top_statement_list:statementList top_statement:statement
 :}
 ;
 
+/* start */
 top_statement ::= aspect_declaration_statement:statement
 {: 
 	RESULT = statement; 
 :}
 ;
 
-/* start */
 aspect_declaration_statement ::= unticked_aspect_declaration_statement:aspectDeclaration
 {:
 	RESULT = aspectDeclaration;
@@ -620,6 +621,35 @@ aspect_joinpoint ::=
 	T_STRING:ptName T_OPEN_PARENTHESE T_CLOSE_PARENTHESE
 {:
 	RESULT = new AspectPointcutReference(ptNameleft, ptNameright, ptName);
+:}
+|	T_NEW:start T_OPEN_PARENTHESE aspect_inter_type_declaration:interType T_OPEN_PARENTHESE aspect_joinpoint_parameters:params T_CLOSE_PARENTHESE T_CLOSE_PARENTHESE:end
+{:
+	RESULT = new AspectConstructionJoinpoint(startleft, endright, interType, params);
+:}
+;
+
+aspect_joinpoint_parameters ::=
+non_empty_aspect_joinpoint_parameters_list:paramsList
+{:
+	RESULT = paramsList;
+:}
+|	/* empty */
+{:
+	RESULT = new LinkedList();
+:}
+;
+
+non_empty_aspect_joinpoint_parameters_list ::=
+aspect_inter_type_declaration:interType
+{:
+	List paramsList = new LinkedList();
+	paramsList.add(interType);	
+	RESULT = paramsList;
+:}
+| non_empty_function_call_parameter_list:paramsList T_COMMA aspect_inter_type_declaration:interType
+{:
+	paramsList.add(interType);	
+	RESULT = paramsList;
 :}
 ;
 

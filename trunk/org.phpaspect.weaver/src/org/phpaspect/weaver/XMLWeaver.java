@@ -1,5 +1,7 @@
 package org.phpaspect.weaver;
 
-public interface XMLWeaver {	
-	
+import java.net.URI;
+
+public interface XMLWeaver {
+	public String transformAspecttoClass(URI aspect) throws Exception;
 }

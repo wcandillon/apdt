@@ -9,23 +9,21 @@ public class PHPAspectApplicationFileViewerFilter extends ViewerFilter {
 
 	@Override
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
-		return isValidParent(parentElement, element)
+		return isWeavedRessource(parentElement, element)
 				&& isNotAspectDirectory(parentElement, element);
 	}
 
 	private boolean isNotAspectDirectory(Object parentElement, Object element) {
-		// TODO Auto-generated method stub
-		return true;
+		return !(element instanceof IContainer
+					&& ((IContainer)element).getName().equals("_aspects")
+					&& ((IContainer)parentElement).getName().equals("weaved"));
 	}
 
-	private boolean isValidParent(Object parentElement, Object element) {
-		if(parentElement instanceof IProject
-				&& element instanceof IContainer
-				&& ((IContainer)element).getName() == "weaved"){
-			IContainer parent = (IContainer)parentElement;
-			System.err.println(parent.getName());
-			return true;
-		}
-		return false;
+	private boolean isWeavedRessource(Object parentElement, Object element) {
+		return 	element instanceof IProject
+				||(parentElement instanceof IProject
+						&& element instanceof IContainer
+						&& ((IContainer)element).getName().equals("weaved"))
+				|| !(parentElement instanceof IProject);
 	}
 }

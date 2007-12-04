@@ -7,10 +7,12 @@ import org.phpaspect.weaver.visitor.PHPAspectVisitor;
 public class AspectPointcutReference extends Expression {
 
 	private String pointcutName;
+	private String xpath;
 	
 	public AspectPointcutReference(int start, int end, String pointcutName) {
 		super(start, end);
 		this.pointcutName = pointcutName;
+		xpath = "//aspectPointcutReference[@name="+pointcutName+"]";
 	}
 
 	@Override

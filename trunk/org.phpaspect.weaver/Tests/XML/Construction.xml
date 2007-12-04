@@ -1,0 +1,80 @@
+<program start="0" length="106">
+  <statements>
+    <expressionStatement start="6" length="17">
+      <expr class="assignment" operator="0" start="6" length="16">
+        <variable class="variable" isDollared="true" start="6" length="4">
+          <variableName class="identifier" name="foo" start="7" length="3"/>
+        </variable>
+        <value class="classInstanceCreation" start="13" length="9">
+          <className start="17" length="3">
+            <className class="identifier" name="Foo" start="17" length="3"/>
+          </className>
+          <ctorParams/>
+        </value>
+      </expr>
+    </expressionStatement>
+    <expressionStatement start="24" length="13">
+      <expr class="assignment" operator="0" start="24" length="12">
+        <variable class="variable" isDollared="true" start="24" length="4">
+          <variableName class="identifier" name="bar" start="25" length="3"/>
+        </variable>
+        <value class="scalar" stringValue="&apos;Bar&apos;" scalarType="2" start="31" length="5"/>
+      </expr>
+    </expressionStatement>
+    <expressionStatement start="38" length="46">
+      <expr class="assignment" operator="0" start="38" length="45">
+        <variable class="variable" isDollared="true" start="38" length="4">
+          <variableName class="identifier" name="bar" start="39" length="3"/>
+        </variable>
+        <value class="classInstanceCreation" start="45" length="38">
+          <className start="49" length="3">
+            <className class="identifier" name="Bar" start="49" length="3"/>
+          </className>
+          <ctorParams>
+            <classInstanceCreation start="53" length="7">
+              <className start="57" length="3">
+                <className class="identifier" name="Foo" start="57" length="3"/>
+              </className>
+              <ctorParams/>
+            </classInstanceCreation>
+            <classInstanceCreation start="62" length="20">
+              <className start="66" length="3">
+                <className class="identifier" name="Bar" start="66" length="3"/>
+              </className>
+              <ctorParams>
+                <scalar stringValue="1" scalarType="0" start="70" length="1"/>
+                <classInstanceCreation start="73" length="8">
+                  <className start="77" length="4">
+                    <className class="variable" isDollared="true" start="77" length="4">
+                      <variableName class="identifier" name="bar" start="78" length="3"/>
+                    </className>
+                  </className>
+                  <ctorParams/>
+                </classInstanceCreation>
+              </ctorParams>
+            </classInstanceCreation>
+          </ctorParams>
+        </value>
+      </expr>
+    </expressionStatement>
+    <expressionStatement start="85" length="18">
+      <expr class="assignment" operator="0" start="85" length="17">
+        <variable class="variable" isDollared="true" start="85" length="4">
+          <variableName class="identifier" name="foo" start="86" length="3"/>
+        </variable>
+        <value class="classInstanceCreation" start="92" length="10">
+          <className start="96" length="4">
+            <className class="variable" isDollared="true" start="96" length="4">
+              <variableName class="identifier" name="bar" start="97" length="3"/>
+            </className>
+          </className>
+          <ctorParams/>
+        </value>
+      </expr>
+    </expressionStatement>
+    <emptyStatement start="104" length="2"/>
+  </statements>
+  <comments class="tree-map">
+    <no-comparator/>
+  </comments>
+</program>

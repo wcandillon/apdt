@@ -148,13 +148,13 @@
 		</page>
 	</extension>
 	<!--Preferences Pages:-->
-	<extension point="org.eclipse.ui.preferencePages">
+	<!--extension point="org.eclipse.ui.preferencePages">
 		<page
 			class="org.phpaspect.apdt.internal.ui.preferences.PHPAspectInterpreterPreferencePage"
 			id="org.phpaspect.apdt.ui.preferences.PHPAspectInterpreterPreferencePage"
 			name="PHPAspect Compiler">
 		</page>
-	</extension>
+	</extension-->
 	<!-- Views -->
 	<extension point="org.eclipse.ui.views">
         <view id="org.eclipse.ui.articles.views.labelview"
