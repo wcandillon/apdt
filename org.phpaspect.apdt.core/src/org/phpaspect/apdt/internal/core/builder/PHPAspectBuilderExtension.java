@@ -1,5 +1,6 @@
 package org.phpaspect.apdt.internal.core.builder;
 
+import java.net.URI;
 import java.util.*;
 
 import org.eclipse.core.filesystem.URIUtil;
@@ -39,7 +40,7 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 	}
 
 	public void startupOnInitialize(IncrementalProjectBuilder builder) {
-		
+		//Initialization logic...
 	}
 
 	public void clean(IncrementalProjectBuilder builder, IProgressMonitor monitor) throws CoreException {
@@ -143,7 +144,14 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 	private void weave(IFile file){
 		PHPAspectWeaver weaver = getWeaver(file);
 		if(isPHPAspectFile(file)){
+			validate(file);
 			weaver.addAspect(file.getLocationURI());
+			try {
+				weaver.generateAspectEntities();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}else if(isPHPFile(file)){
 			IPath targetFile = copyToWeavedDirectory(file);
 			weaver.weave(URIUtil.toURI(targetFile));
@@ -153,12 +161,11 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 	public PHPAspectWeaver getWeaver(IResource resource) {
 		IProject project = resource.getProject();
 		String projectName = project.getName();
-		IPath aspectPath = project.getFolder("weaved")
-									.getFolder("_aspects")
-									.getFullPath();
 		if(weavers.get(projectName) == null){
+			URI aspectPath = project.getFolder("weaved")
+									.getFolder("_aspects").getLocationURI();
 			weavers.put(projectName,
-							new PHPAspectWeaver(URIUtil.toURI(aspectPath)));
+							new PHPAspectWeaver(aspectPath));
 		}
 		return weavers.get(projectName);
 	}
@@ -182,6 +189,9 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 	}
 	
 	private IPath copyToWeavedDirectory(IResource resource){
+		if(resource instanceof IFile && isPHPAspectFile((IFile)resource)){
+			return null;
+		}
 		IPath binPath = resource.getProject().getFolder("weaved").getFullPath();
 		IPath destination = binPath.append(resource.getProjectRelativePath());
 		try {
@@ -314,7 +324,7 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 			if (PHPWorkspaceModelManager.getInstance().getModelForProject(project, true) == null) {
 				return false;
 			}
-			*/ 
+			*/
 			PHPProjectOptions projectOptions = PHPProjectOptions.forProject(project);
 			projectOptions.validateIncludePath();
 			return true;
@@ -328,6 +338,7 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 			if (!isPHPAspectFile(file)) {
 				return;
 			}
+			
 			monitor.subTask(NLS.bind("Parsing: {0} ...", file.getFullPath().toPortableString()));
 			weave(file);
 			//validate(file); 

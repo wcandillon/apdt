@@ -6,7 +6,7 @@ import org.eclipse.php.internal.core.ast.nodes.Expression;
 import org.eclipse.php.internal.core.ast.visitor.Visitor;
 
 
-class AspectConstructionJoinpoint extends Expression{
+public class AspectConstructionJoinpoint extends Expression{
 
 	private AspectInterTypeDeclaration interType;
 	private List parameters;

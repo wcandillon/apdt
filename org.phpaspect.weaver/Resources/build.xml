@@ -13,7 +13,7 @@
 	<target name="build_jar">
 		 <jar destfile="../../org.phpaspect.apdt.core/Resources/phpaspect.jar">
 		 	<fileset dir="../bin" />
-		 	<!--fileset file="../Resources/java-cup-11a.jar" /-->
+		 	<fileset dir="../src" />
 		 </jar>
 	</target>
 	

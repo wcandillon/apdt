@@ -1,4 +1,5 @@
-<program start="0" length="106">
+ <?xml version="1.0" encoding="UTF-8"?>
+<program start="0" length="144">
   <statements>
     <expressionStatement start="6" length="17">
       <expr class="assignment" operator="0" start="6" length="16">
@@ -72,7 +73,23 @@
         </value>
       </expr>
     </expressionStatement>
-    <emptyStatement start="104" length="2"/>
+    <functionDeclaration isReference="false" start="105" length="36">
+      <functionName name="foo" start="114" length="3"/>
+      <formalParameters/>
+      <body isCurly="true" start="119" length="22">
+        <statements>
+          <returnStatement start="122" length="17">
+            <expr class="classInstanceCreation" start="129" length="9">
+              <className start="133" length="3">
+                <className class="identifier" name="Foo" start="133" length="3"/>
+              </className>
+              <ctorParams/>
+            </expr>
+          </returnStatement>
+        </statements>
+      </body>
+    </functionDeclaration>
+    <emptyStatement start="142" length="2"/>
   </statements>
   <comments class="tree-map">
     <no-comparator/>

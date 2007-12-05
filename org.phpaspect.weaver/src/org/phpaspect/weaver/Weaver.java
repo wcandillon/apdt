@@ -39,7 +39,7 @@ public interface Weaver {
 	
 	public Weaver clear();
 	
-	public Weaver generateAspectEntities(URI runtimePath);
+	public Weaver generateAspectEntities(URI runtimePath) throws Exception;
 	
-	public Weaver generateAspectEntities();
+	public Weaver generateAspectEntities() throws Exception;
 }
