@@ -1,15 +1,17 @@
 package org.phpaspect.weaver.impl;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.Reader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.phpaspect.weaver.Weaver;
-import org.phpaspect.weaver.XMLWeaver;
+import org.phpaspect.weaver.parser.ASTGenerator;
+import org.phpaspect.weaver.xslt.XSLTProcessor;
 
 public class PHPAspectWeaver implements Weaver {
-
-	private XMLWeaver xmlWeaver = new PHPAspectXMLWeaver();
 	
 	private List<URI> aspects  = new ArrayList<URI>();
 	private List<URI> phpFiles = new ArrayList<URI>();
@@ -100,25 +102,23 @@ public class PHPAspectWeaver implements Weaver {
 	}
 	
 	private boolean isAspect(URI aspect){
-		if(getFileExtension(aspect) == "ap"){
-			return true;
-		}else{
-			return false;
-		}
+		return getFileExtension(aspect).equals("ap");
 	}
 	
 	private boolean isPHPFile(URI phpFile){
-		if(getFileExtension(phpFile) == "php"){
-			return true;
-		}else{
-			return false;
-		}
+		return getFileExtension(phpFile).equals("php");
 	}
 	
 	private String getFileExtension(URI uri){
+		String filename = getAspectName(uri);
+		String extension = filename.substring(filename.lastIndexOf('.')+1);
+		return extension;
+	}
+	
+	private String getAspectName(URI uri){
 		String[] segments = uri.getPath().split("/");
 		String filename = segments[segments.length-1];
-		return filename.substring(filename.lastIndexOf('.')+1);
+		return filename;
 	}
 
 	public Weaver clear() {
@@ -152,14 +152,23 @@ public class PHPAspectWeaver implements Weaver {
 		return this;
 	}
 
-	public Weaver generateAspectEntities(URI runtimePath) {
+	public Weaver generateAspectEntities(URI runtimePath) throws Exception {
 		setRuntimePath(runtimePath);
 		return generateAspectEntities();
 	}
 
-	public Weaver generateAspectEntities() {
+	public Weaver generateAspectEntities() throws Exception {
 		for(URI aspect: aspects){
-			xmlWeaver.toString();
+			String aspectName = getAspectName(aspect);
+			String aspectFileName = aspectName.substring(0, aspectName.lastIndexOf('.'));
+			String path = runtimePath+"/"+aspectFileName+".php";
+			
+			XSLTProcessor xslt = new XSLTProcessor();
+			xslt.setSource(ASTGenerator.getXMLAstFromPHPAspect(aspect));
+			xslt.setStylesheet(XSLTProcessor.TO_CLASS);
+			xslt.setOutput(path);
+			xslt.setOutputMethod("text");
+			xslt.transform();
 		}
 		return this;
 	}	
