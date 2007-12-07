@@ -1,8 +1,18 @@
 package org.phpaspect.weaver.test;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.StringReader;
+import java.net.URI;
 
+import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
+
+import org.eclipse.php.internal.core.ast.nodes.Program;
+import org.eclipse.php.internal.core.ast.visitor.CodeBuilder;
+import org.phpaspect.weaver.parser.ASTGenerator;
+import org.phpaspect.weaver.xslt.XSLTProcessor;
 
 import net.sf.saxon.TransformerFactoryImpl;
 import net.sf.saxon.s9api.Processor;
@@ -15,29 +25,36 @@ import net.sf.saxon.s9api.XsltTransformer;
 
 public class Test {
 
-	private static TransformerFactoryImpl factory = new TransformerFactoryImpl();
 	/**
 	 * @param args
 	 * @throws SaxonApiException 
 	 */
 	public static void main(String[] args) throws SaxonApiException {			
-        Processor proc = new Processor(false);
-        XsltCompiler comp = proc.newXsltCompiler();
-        XsltExecutable exp = comp.compile(new StreamSource(new File("/home/wcandillon/workspace/org.phpaspect.weaver/XSLT/toDot.xsl")));
-        XdmNode source = proc.newDocumentBuilder().build(new StreamSource(new File("/home/wcandillon/workspace/org.phpaspect.weaver/Tests/Singleton.xml")));
-        Serializer out = new Serializer();
-        out.setOutputProperty(Serializer.Property.METHOD, "text");
-        out.setOutputProperty(Serializer.Property.INDENT, "yes");
-        out.setOutputFile(new File("Singleton.ap"));
-        XsltTransformer trans = exp.load();
-        trans.setInitialContextNode(source);
-        trans.setDestination(out);
-        trans.transform();
-        System.err.println("Output written to Singleton.ap");
-
+		XSLTProcessor xslt = new XSLTProcessor();
+		String xml = null;
+		try {
+			xml = ASTGenerator.getXMLAstFromPHPAspect(new URI("/home/wcandillon/workspace/org.phpaspect.weaver/Tests/Singleton.ap"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Source source = null;
+		//source = new StreamSource(new File("/home/wcandillon/workspace/org.phpaspect.weaver/Tests/Singleton.xml"));
+		source = new StreamSource(new StringReader(xml), "source");
+		xslt.setSource(source);
+		xslt.setStylesheet(XSLTProcessor.TO_CLASS);
+		xslt.setOutput("/home/wcandillon/workspace/org.phpaspect.weaver/Tests/Singleton.xml");
+		xslt.setOutputMethod("xml");
+		xslt.transform();
 		
-//		UnparseVisitor unparseVisitor = new UnparseVisitor();
-//		unparseVisitor.visit(newAst);
-//		System.out.println(UnparseVisitor.buffer);
+		try {
+			Program ast = ASTGenerator.getAstFromXML(new FileReader("/home/wcandillon/workspace/org.phpaspect.weaver/Tests/Singleton.xml"));
+			CodeBuilder unparser = new CodeBuilder();
+			unparser.visit(ast);
+			System.err.println(unparser.buffer);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

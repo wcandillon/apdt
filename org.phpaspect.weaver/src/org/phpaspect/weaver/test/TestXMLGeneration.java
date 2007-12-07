@@ -16,9 +16,9 @@ public class TestXMLGeneration {
 	 */
 	public static void main(String[] args) {
 		try {
-			File aspect = new File("/home/wcandillon/runtime-EclipseApplication/test/Singleton.ap");
+			File aspect = new File("Tests/Singleton.php");
 			BufferedWriter writer = new BufferedWriter(new FileWriter(args[1]));
-			String xml = ASTGenerator.getXMLAstFromPHPAspect(aspect);
+			String xml = ASTGenerator.getXMLAstFromPHP(aspect);
 		    writer.write(xml);
 		    writer.close();
 		    System.err.println("done");

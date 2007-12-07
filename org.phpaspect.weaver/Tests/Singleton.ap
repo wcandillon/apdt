@@ -1,11 +1,5 @@
 <?php
 aspect Singleton{
-	private static Foo::$instance;
-	
-	public function foo(){
-		return "foo";
-	}
-	
-	private $foo;
+
 }
 ?>

@@ -1,11 +1,23 @@
 package org.phpaspect.weaver.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
 
 import org.phpaspect.weaver.Weaver;
 import org.phpaspect.weaver.parser.ASTGenerator;
@@ -161,14 +173,22 @@ public class PHPAspectWeaver implements Weaver {
 		for(URI aspect: aspects){
 			String aspectName = getAspectName(aspect);
 			String aspectFileName = aspectName.substring(0, aspectName.lastIndexOf('.'));
-			String path = runtimePath+"/"+aspectFileName+".php";
+			String path = runtimePath.getPath()+"/"+aspectFileName+".php";
+			//OutputStream target = new FileOutputStream(path, false);
+			
+			//target.createNewFile();
 			
 			XSLTProcessor xslt = new XSLTProcessor();
-			xslt.setSource(ASTGenerator.getXMLAstFromPHPAspect(aspect));
+			String xml = ASTGenerator.getXMLAstFromPHPAspect(aspect);
+			
+			xslt.setSource(new StringReader(xml));
 			xslt.setStylesheet(XSLTProcessor.TO_CLASS);
-			xslt.setOutput(path);
-			xslt.setOutputMethod("text");
+			Writer output = new StringWriter();
+			xslt.setOutput(output);
+			xslt.setOutputMethod("xml");
 			xslt.transform();
+
+			ASTGenerator.printPHPFromAst(path, ASTGenerator.getAstFromXML(output.toString()));
 		}
 		return this;
 	}	
