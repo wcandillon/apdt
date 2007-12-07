@@ -1,4 +1,4 @@
-package org.phpaspect.weaver.visitor;
+package org.phpaspect.weaver.visitor.impl;
 
 import java.io.*;
 import java.util.Collection;

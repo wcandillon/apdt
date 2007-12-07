@@ -19,8 +19,8 @@ import org.eclipse.php.internal.core.ast.nodes.Program;
 import org.eclipse.php.internal.core.ast.parser.AstLexer;
 import org.eclipse.php.internal.core.ast.parser.PhpAstLexer5;
 import org.eclipse.php.internal.core.ast.parser.PhpAstParser5;
-import org.phpaspect.weaver.visitor.CodeBuilder;
 import org.phpaspect.weaver.visitor.PHPAspectVisitor;
+import org.phpaspect.weaver.visitor.impl.CodeBuilder;
 
 import com.thoughtworks.xstream.XStream;
 
