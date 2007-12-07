@@ -1,15 +1,18 @@
 <?php
-class Foo{
+require_once "PHPAspect/Runtime/Aspect.php";
+require_once "PHPAspect/Runtime/Aspects.php";
 
+class Singleton extends AbstractSingleton implements DesignPattern{
+	
 	private static $instance;
 	
 	private function __construct(){
-		//..
+	
 	}
 	
 	public static function getInstance(){
 		if(self::$instance == null){
-			return new self;
+			self::$instance = new self();
 		}
 		return self::$instance;
 	}

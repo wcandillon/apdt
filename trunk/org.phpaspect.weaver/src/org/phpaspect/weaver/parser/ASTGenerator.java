@@ -1,11 +1,16 @@
 package org.phpaspect.weaver.parser;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.io.Writer;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URI;
 
@@ -14,13 +19,14 @@ import org.eclipse.php.internal.core.ast.nodes.Program;
 import org.eclipse.php.internal.core.ast.parser.AstLexer;
 import org.eclipse.php.internal.core.ast.parser.PhpAstLexer5;
 import org.eclipse.php.internal.core.ast.parser.PhpAstParser5;
+import org.phpaspect.weaver.visitor.CodeBuilder;
 import org.phpaspect.weaver.visitor.PHPAspectVisitor;
 
 import com.thoughtworks.xstream.XStream;
 
 public class ASTGenerator{
 	
-	private static final String XML_DECLARATION = " <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+	private static final String XML_DECLARATION = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 	
 	private static XStream xstream = new XStream();
 	
@@ -47,12 +53,12 @@ public class ASTGenerator{
 	}
 	
 	public static String getXMLAstFromPHP(URI phpSource) throws Exception{
-		Reader phpSourceReader = new FileReader(phpSource.toString());
+		Reader phpSourceReader = new FileReader(phpSource.getPath());
 		return getXMLAstFromPHP(phpSourceReader);
 	}
 
 	public static Program getAstFromPHP(URI phpSource) throws Exception{
-		Reader phpSourceReader = new FileReader(phpSource.toString());
+		Reader phpSourceReader = new FileReader(phpSource.getPath());
 		return getAstFromPHP(phpSourceReader);
 	}
 	
@@ -96,12 +102,12 @@ public class ASTGenerator{
 	}
 	
 	public static String getXMLAstFromPHPAspect(URI aspect) throws Exception{
-		Reader aspectReader = new FileReader(aspect.toString());
+		Reader aspectReader = new FileReader(aspect.getPath());
 		return getXMLAstFromPHPAspect(aspectReader);
 	}
 
 	public static Program getAstFromPHPAspect(URI aspect) throws Exception{
-		Reader aspectReader = new FileReader(aspect.toString());
+		Reader aspectReader = new FileReader(aspect.getPath());
 		return getAstFromPHPAspect(aspectReader);
 	}
 	
@@ -154,5 +160,35 @@ public class ASTGenerator{
 	
 	public static String getXMLAstFromAst(Program ast){
 		return XML_DECLARATION+xstream.toXML(ast);
+	}
+	
+	public static String getPHPFromAst(Program ast){
+		CodeBuilder unparser = new CodeBuilder();
+		unparser.visit(ast);
+		String phpSource = unparser.buffer.toString();
+		return phpSource;
+	}
+	
+	public static String getPHPFromAst(String xml){
+		return getPHPFromAst(getAstFromXML(xml));
+	}
+	
+	public static String getPHPFromAst(Reader xml){
+		return getPHPFromAst(getAstFromXML(xml));
+	}
+	
+	public static String getPHPFromAst(InputStream xml){
+		return getPHPFromAst(getAstFromXML(xml));
+	}
+	
+	public static void printPHPFromAst(String filename, Program ast){
+		try {
+			Writer outFile = new FileWriter(filename, false);
+			outFile.write(getPHPFromAst(ast));
+			outFile.close();
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

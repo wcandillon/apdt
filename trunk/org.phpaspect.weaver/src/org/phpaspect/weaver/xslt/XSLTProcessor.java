@@ -50,7 +50,7 @@ public class XSLTProcessor{
 	
 	public XSLTProcessor setSource(Source source){
 		try {
-			XSLT_PROC.newDocumentBuilder().build(source);
+			setSource(XSLT_PROC.newDocumentBuilder().build(source));
 		} catch (SaxonApiException e) {
 			e.printStackTrace();
 		}
@@ -59,7 +59,7 @@ public class XSLTProcessor{
 	
 	public XSLTProcessor setSource(URI source){
 		try {
-			setSource(new FileReader(source.toString()));
+			setSource(new FileReader(source.getPath()));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -71,7 +71,7 @@ public class XSLTProcessor{
 	}
 	
 	public XSLTProcessor setSource(Reader source){
-		return setSource(new StreamSource(source));
+		return setSource(new StreamSource(source, "xmlsource"));
 	}
 	
 	public XdmNode getSource(){
