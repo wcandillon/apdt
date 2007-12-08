@@ -1,10 +1,16 @@
 = APDT - Items =
 
-|| *Item* || *Progress* || *Open issues* ||
-|| Runtime Library ||  ||  ||
-|| Grammar & AST ||  ||  ||
-|| Wizards ||  ||  ||
-|| Builder ||  ||  ||
-|| Launcher ||  ||  ||
-|| Weaver ||  ||  ||
-|| Tests ||  ||  ||
+This page describe the advancement of the project.
+
+|| *Item* || *Progress* || *TODOs* || *Done* || *Open issues* ||
+|| Runtime Library ||  ||  || || ||
+|| Grammar & AST ||  ||  || || ||
+|| Wizards ||  ||  || || ||
+|| Builder ||  ||  || || ||
+|| Launcher ||  ||  || || ||
+|| Weaver ||  ||  || || ||
+|| Tests ||  ||  || || ||
+|| Documentation ||  ||  || || ||
+|| Release engineering ||  ||  || || ||
+|| UI ||  ||  || || ||
+|| Internationalization || || || || ||
