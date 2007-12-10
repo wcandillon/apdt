@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<chapter id="joinpoints">
+    <title>Joinpoints</title>
+    <section id="joinpoints.kinds">
+        <para>
+        The current implementation of phpAspect counts
+        3 kinded joinpoints, a lot more will come very soon:
+        <itemizedlist>
+            <listitem>Method execution</listitem>
+            <listitem>Method call</listitem>
+            <listitem>Object construction</listitem>
+        </itemizedlist>
+        </para>
+        <para>
+        There is also 3 non-kinded joinpoints:
+        <itemizedlist>
+            <listitem>File</listitem>
+            <listitem>Within</listitem>
+            <listitem>This</listitem>
+        </itemizedlist>
+        </para>
+        <para>
+        Kinded joinpoints match a specific type of joinpoint 
+        using a signature and non-kinded joinpoints match all type 
+        of joinpoints using variety of properties. 
+        </para>
+    </section>
+    <section id="joinpoints.exec">
+        <title>Method execution joinpoint</title>
+        <para>
+        The method execution joinpoint identifies certains method executions
+        in the program call graph.
+        The signature of this joinpoint is the following:
+        </para>
+        <userinput>exec(<replaceable>method_modifiers</replaceable>  <replaceable>ClassName</replaceable>::<replaceable>MethodName</replaceable>(<replaceable>ParametersNumber</replaceable>))</userinput>
+        <example id="exec-joinpoint.php">
+            <title>Exemples of the method execution joinpoint.</title>
+            <programlisting><![CDATA[<?php
+aspect BankTransfer{
+    /*Identify all the execution of the public withdraw method
+      in the Account class taking one parameter.*/
+    poincut withdraw:exec(public Account::withdraw(1));
+    /*Identify all the execution of the public deposit method
+      in the Account class taking one parameter.*/
+    poincut deposit:exec(public Account::deposit(1));
+}
+?>]]></programlisting>
+        </example>
+    </section>
+    <section id="joinpoints.call">
+        <title>Method call joinpoint</title>
+        <para>
+            The method execution joinpoint identifies certains method calls
+            in the program call graph.
+            The difference with the method execution joinpoint is the context:
+            this joinpoint access the calling context and doesn't see the execution
+            context.
+            The signature of this joinpoint is the following:
+        </para>
+        <userinput>call( <replaceable>ClassName</replaceable>-&#62;<replaceable>MethodName</replaceable>(<replaceable>ParametersNumber</replaceable>))</userinput>
+        <example id="call-joinpoint.php">
+            <title>Exemples of the method call joinpoint.</title>
+            <programlisting><![CDATA[<?php
+aspect Chekchout{
+    /*Identify all the call of the addItem method
+    of the Cart class taking two parameters.*/
+    poincut addItem:call(Cart->AddItem(2));
+    /*Identify all the call of the checkout method
+    of the Cart class with any parameters.*/
+    poincut checkout:call(Cart->checkout(0));
+}
+?>]]></programlisting>
+            </example>
+    </section>
+    <section id="joinpoints.new">
+        <title>Construction joinpoint</title>
+        <para>
+        The construction joinpoint identifies object constructions
+        the program call graph.
+        The signature of this joinpoint is the following:
+        </para>
+        <userinput>new(<replaceable>ClassName</replaceable>(<replaceable>ParametersNumber</replaceable>))</userinput>
+        <example id="new-joinpoint.php">
+            <title>Exemples of the construction joinpoint.</title>
+            <programlisting><![CDATA[<?php
+aspect Singleton{
+    /*Identify all the construction of Foo objects with any parameters.*/
+    poincut newFoo:new(Foo(*));
+    /*Identify all the construction of Bar objects with any parameters.*/
+    poincut newBar:new(Bar(*));
+}
+?>]]></programlisting>
+            </example>
+    </section>
+    <section id="joinpoints.file">
+        <title>File joinpoint</title>
+        <para>
+            This joinpoint is a predicate on the filename where
+            kinded joinpoints can be matched.
+            The signature of this joinpoint is the following:
+        </para>
+        <userinput>file(<replaceable>ClassName</replaceable>)</userinput>
+        <example id="file-joinpoint.php">
+            <title>Exemples of the file joinpoint.</title>
+            <programlisting><![CDATA[<?php
+aspect Context{
+   //Match all the foo() calls in the Bar.php filename
+   pointcut fooInBar:call(*->bar(*)) && file('Bar.php');
+}
+?>]]></programlisting>
+            </example>
+    </section>
+    <section id="joinpoints.within">
+        <title>Within joinpoint</title>
+        <para>
+            This joinpoint is a predicate on the class where
+            kinded joinpoints can be matched.
+            The signature of this joinpoint is the following:
+        </para>
+        <userinput>within(<replaceable>ClassName</replaceable>)</userinput>
+        <example id="with-joinpoint.php">
+            <title>Exemples of the within joinpoint.</title>
+            <programlisting><![CDATA[<?php
+aspect Context{
+    //Match all the foo() calls in the Bar class.
+    pointcut fooInBar:call(*->bar(*)) && within(Bar);
+}
+?>]]></programlisting>
+            </example>
+    </section>
+</chapter>

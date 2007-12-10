@@ -29,7 +29,15 @@
             id="org.phpaspect.apdt.core.builder">
       </builder>
    </extension>
-
+   <extension
+         id="PHPBeautifierExtension"
+         name="PHPBeautifier Extension"
+         point="org.eclipse.php.core.phpBuilderExtensions">
+      <builder
+            class="org.phpaspect.apdt.internal.core.builder.PHPBeautifierExtension"
+            id="org.phpaspect.apdt.core.beautifier">
+      </builder>
+   </extension>
    <extension
          id="phpAspectNature"
          name="PHPAspect Project Nature"

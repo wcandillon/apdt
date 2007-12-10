@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="DocumentationBuild" default="build" basedir=".">
+
+	<property name="lang" value="en" />
+
+	<!-- Building the documentation -->
+	<target name="build">
+		<!-- Cleanning the directory -->
+		<delete>
+			<fileset dir="${lang}/" includes="**/*" />
+		</delete>
+		<!-- Processing the docbook files -->
+		<exec executable="xsltproc">
+			<arg line="--stringparam base.dir ${lang}/" />
+			<arg line="--stringparam l10n.gentext.language ${lang}" />
+			<arg value="html-chunked.xsl" />
+			<arg value="src/${lang}/book.xml" />
+		</exec>
+		<!-- Processing the syntax highlighting -->
+		<exec executable="php">
+			<arg value="highlight.php" />
+			<arg value="${lang}" />
+		</exec>
+		<!-- Copying the css and logo file -->
+		<copy todir="${lang}/">
+			<fileset file="docbook.css" />
+			<fileset file="phpaspect.png" />
+		</copy>
+		<!-- Copying figures -->
+		<copy todir="${lang}/figures">
+			<fileset dir="src/${lang}/figures" />
+		</copy>
+	</target>
+	
+	<!-- Building the documentation -->
+	<target name="clean">
+		<delete>
+			<fileset dir="${lang}" includes="**/*" />
+		</delete>
+	</target>
+</project>
