@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<chapter id="helloworld">
+  <title>Hello world</title>
+  <para>
+    Consider a virtual cart application : There is only two classes:
+    the Order which contains items and the Catalog class which contains
+    all purchasable items. The following code is very simple.
+  </para>
+  
+  <example id="intro.examples.virtual-cart1.php">
+    <title>A virtual cart</title>
+    <programlisting><![CDATA[<?php
+class Order{
+    private $items = array();  
+    private $amount = 0;
+    
+    public function addItem($reference, $quantity){
+      $this->items[] = array($reference, $quantity);
+      $this->amount += $quantity*Catalog::getPrice($reference);
+    }
+    
+    public function getAmount(){
+      return $this->amount;
+    }
+}
+
+class Catalog{
+  private static $priceList = array('Largo Winch' => 9.31,
+                          'Asterix' => 8.46, 'XIII' => 8.70);
+
+  public static function getPrice($reference){
+    return self::$priceList[$reference];
+  }
+}
+
+$myOrder = new Order;
+$myOrder->addItem('Largo Winch', 1);
+$myOrder->addItem('Asterix', 2);
+?>]]></programlisting>
+    </example>
+    
+    <para>
+      However, in a real-world shopping application, this transfer method
+      seems far from adequate. The cart need to be persistent, we must check
+      if the entered references are correct, if the user is properly authenticated.
+      Finally, we must log the operation to the system log. And so on.
+      Not only all these crosscutting concerns would polluate our previous source code 
+      in term of code modularization but it also would make code evolution
+      very diffucult: If you want to add a crosscutting concerns into a small
+      php application (about 200 classes for instance), you would have to review
+      manually each method from your 200 classes. 
+    </para>
+
+      <para>
+      So we want to add crosscutting concerns to our virtual cart without touching
+      the previous listing. First technical
+        concern a logging aspect : we would like to log every item added and then the total
+        amound of the command. 
+      </para>
+      
+      <example id="intro.examples.logging-aspect.php">
+        <title>A Logging aspect</title>
+        <programlisting><![CDATA[<?php
+aspect TraceOrder{
+
+  pointcut logAddItem:exec(public Order::addItem(2));
+  pointcut logTotalAmount:call(Order->addItem(2));
+
+  after($quantity, $reference): logAddItem{
+    printf("%d %s added to the cart\n", $quantity, $reference);
+  }
+
+  after(): logTotalAmount{
+    printf("Total amount of the cart : %.2f euros\n",
+    $thisJoinPoint->getObject()->getAmount());
+  }
+}
+?>]]></programlisting>
+        </example>
+
+        <para>
+          After weaving, the execution result is the following :
+        </para>
+
+        <example id="intro.examples.logging-aspect.php">
+          <title>The result</title>
+          <programlisting><![CDATA[
+2 Largo Winch added to the cart.
+Total amount of the cart: 18.62 euros
+1 Asterix added to the cart.
+Total amount of the cart: 27.08 euros
+]]></programlisting>
+        </example>
+      </chapter>

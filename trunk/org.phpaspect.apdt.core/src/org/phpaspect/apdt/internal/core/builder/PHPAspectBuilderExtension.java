@@ -60,7 +60,7 @@ public class PHPAspectBuilderExtension implements IPHPBuilderExtension {
 		}
 
 		buildDelta(delta, monitor);
-		
+		builder.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 		return null;
 	}
 
