@@ -69,7 +69,7 @@ public class TogglePHPAspectNatureAction implements IObjectActionDelegate {
 	 * @param project
 	 *            to have sample nature added or removed
 	 */
-	private void toggleNature(IProject project) {
+	public static void toggleNature(IProject project) {
 		try {
 			IProjectDescription description = project.getDescription();
 			String[] natures = description.getNatureIds();
@@ -103,15 +103,4 @@ public class TogglePHPAspectNatureAction implements IObjectActionDelegate {
 			e.printStackTrace();
 		}
 	}
-	
-	private void addPHPAspectNature(IProject project) throws CoreException{
-		//TODO: Implement
-		//TODO: Adding the runtime Library to the project.
-		//TODO: Check the version of PHP, generating an error popup for PHP 4 projects
-	}
-	
-	private void removePHPAspectNature(IProject project) throws CoreException{
-		//TODO:removeMarkerOnReferencingProjects (see AJDTUtils)
-	}
-
 }
