@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="runtime"
+    nsURI="http:///org/phpaspect/runtime.ecore" nsPrefix="org.phpaspect.runtime">
+  <eClassifiers xsi:type="ecore:EClass" name="Aspect">
+    <eOperations name="isPersistent" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBigDecimal"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JoinPoint">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="METHOD_CALL" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        changeable="false" defaultValueLiteral="method-call"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="METHOD_EXECUTION" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        changeable="false" defaultValueLiteral="method-execution"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="CONSTRUCTION_CALL" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        changeable="false" defaultValueLiteral="construction-call"/>
+  </eClassifiers>
+</ecore:EPackage>
