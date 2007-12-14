@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="PHPAspectRuntime" default="generate_php5" basedir=".">
+	<target name="generate_php5">
+		
+	</target>
+</project>

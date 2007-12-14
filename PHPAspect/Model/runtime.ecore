@@ -1,17 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="runtime"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="Runtime"
     nsURI="http:///org/phpaspect/runtime.ecore" nsPrefix="org.phpaspect.runtime">
   <eClassifiers xsi:type="ecore:EClass" name="Aspect">
     <eOperations name="isPersistent" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBigDecimal"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="JoinPoint">
+    <eOperations name="__toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="Returns a string representation of the join point."/>
+    </eOperations>
+    <eOperations name="toShortString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eOperations name="toLongString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eOperations name="getThis" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eOperations name="getTarget" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eOperations name="getArgs">
+      <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EEList">
+        <eTypeArguments/>
+      </eGenericType>
+    </eOperations>
+    <eOperations name="getSignature" eType="#//Signature"/>
+    <eOperations name="getSourceLocation" eType="#//SourceLocation"/>
+    <eOperations name="getKind" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eOperations name="getStaticPart" eType="#//JoinPointStaticPart"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="METHOD_CALL" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         changeable="false" defaultValueLiteral="method-call"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="METHOD_EXECUTION" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         changeable="false" defaultValueLiteral="method-execution"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="CONSTRUCTION_CALL" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         changeable="false" defaultValueLiteral="construction-call"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="FIELD_GET" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        changeable="false" defaultValueLiteral="field-get"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="FIELD_SET" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        changeable="false" defaultValueLiteral="field-set"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="EXCEPTION_HANDLER" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        changeable="false" defaultValueLiteral="exception-handler"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Signature"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SourceLocation"/>
+  <eClassifiers xsi:type="ecore:EClass" name="JoinPointStaticPart"/>
 </ecore:EPackage>

@@ -1,8 +1,3 @@
-<%
-metamodel http://www.eclipse.org/emf/2002/Ecore
-%>
-
-<%script type="ecore.EClass" name="php5_interface" file="<%name%>.php"%>
 <?php
 /*******************************************************************************
  * Copyright (c) 2006-2007 William Candillon.
@@ -14,21 +9,12 @@ metamodel http://www.eclipse.org/emf/2002/Ecore
  *
  * @author William Candillon <wcandillon@elv.telecom-lille1.eu>
  * @category   PHP
- * @package    PHPAspect/<%ePackage.name%>
+ * @package    PHPAspect/Runtime
  * @author     William Candillon <wcandillon@elv.telecom-lille1.eu>
  * @license    http://eclipse.org/legal/epl-v10.html EPL
  * @version    1.0.0
  * @link       http://phpaspect.org
  *******************************************************************************/
-interface <%name%>{
-<%for (eAllOperations){%>
-
-    /**
-     * <%eAnnotations.source%>
-     * @return <%eType.name%>
-     */
-    public function <%name%>(<%for(eParameters){%><%name%><%if(i()==(eParameters.length()-1)){%>,<%}%><%}%>);
-<%}%>
+interface Signature{
 }
 ?>
-
