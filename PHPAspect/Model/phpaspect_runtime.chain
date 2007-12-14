@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ASCII"?>
+<chain:Chain xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:chain="http://www.obeo.fr/acceleo/chain">
+  <repository>
+    <files xsi:type="chain:Model" path="/PHPAspect/Model/runtime.ecore"/>
+    <files xsi:type="chain:Folder" path="/PHPAspect"/>
+    <files xsi:type="chain:Log" path="/PHPAspect/phpaspect_runtime.log.txt"/>
+    <files xsi:type="chain:EmfMetamodel" path="http://www.eclipse.org/emf/2002/Ecore"/>
+    <files xsi:type="chain:Generator" path="/PHPAspect/Model/php5_type.mt"/>
+  </repository>
+  <actions>
+    <actions xsi:type="chain:Generate" documentation="php5_type" log="//@repository/@files.2" model="//@repository/@files.0" metamodel="//@repository/@files.3" generator="//@repository/@files.4" folder="//@repository/@files.1"/>
+  </actions>
+</chain:Chain>
