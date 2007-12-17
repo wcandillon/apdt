@@ -279,6 +279,10 @@ PHP_OPERATOR=       "=>"|"++"|"--"|"==="|"!=="|"=="|"!="|"<>"|"<="|">="|"+="|"-=
     return PHP_PERSESSION;
 }
 
+<ST_PHP_IN_SCRIPTING>"parents" {
+    return PHP_PARENTS;
+}
+
 <ST_PHP_IN_SCRIPTING>"before" {
     return PHP_BEFORE;
 }

@@ -33,6 +33,7 @@ public class LineStyleProviderForPHPAspect extends LineStyleProviderForPhp{
 		super.getColorTypesMap().put(PHPAspectRegionTypes.PHP_AROUND, PreferenceConstants.EDITOR_KEYWORD_COLOR);
 		super.getColorTypesMap().put(PHPAspectRegionTypes.PHP_AFTER, PreferenceConstants.EDITOR_KEYWORD_COLOR);
 		super.getColorTypesMap().put(PHPAspectRegionTypes.PHP_POINTCUT, PreferenceConstants.EDITOR_KEYWORD_COLOR);
+		super.getColorTypesMap().put(PHPAspectRegionTypes.PHP_PARENTS, PreferenceConstants.EDITOR_KEYWORD_COLOR);
 	}
 	
 	/**
