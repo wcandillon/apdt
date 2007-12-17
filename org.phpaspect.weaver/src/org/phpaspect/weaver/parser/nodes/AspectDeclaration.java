@@ -11,10 +11,13 @@ import org.phpaspect.weaver.visitor.PHPAspectVisitor;
 
 public class AspectDeclaration extends ClassDeclaration {
 
+	private boolean persistent = false;
+	
 	public AspectDeclaration(int start, int end, int modifier,
 			Identifier className, Identifier superClass, List interfaces,
-			Block body) {
+			boolean persistent, Block body) {
 		super(start, end, modifier, className, superClass, interfaces, body);
+		this.persistent = persistent;
 	}
 	
 	public void toString(StringBuffer buffer, String tab) {

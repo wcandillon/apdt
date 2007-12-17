@@ -14,4 +14,5 @@ public interface PHPAspectVisitor extends Visitor {
     public void visit(AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration);
     public void visit(AspectInterTypeMethodDeclaration aspectInterTypeMethodDeclaration);
     public void visit(AspectConstructionJoinpoint aspectConstructionJoinpoint);
+    public void visit(AspectInterTypeParentDeclaration aspectInterTypeParentDeclaration);
 }

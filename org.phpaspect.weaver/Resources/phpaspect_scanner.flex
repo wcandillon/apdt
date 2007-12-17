@@ -314,6 +314,10 @@ NEWLINE=("\r"|"\n"|"\r\n")
 	return createSymbol(PHPAspectSymbols.T_IMPLEMENTS);
 }
 
+<ST_IN_SCRIPTING>"parents" {
+	return createSymbol(PHPAspectSymbols.T_PARENTS);
+}
+
 <ST_IN_SCRIPTING,ST_DOUBLE_QUOTES,ST_BACKQUOTE,ST_HEREDOC>"->" {
     pushState(ST_LOOKING_FOR_PROPERTY);
     return createSymbol(PHPAspectSymbols.T_OBJECT_OPERATOR);
