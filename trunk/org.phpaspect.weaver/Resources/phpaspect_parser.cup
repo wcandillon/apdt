@@ -230,6 +230,7 @@ terminal  T_BEFORE;
 terminal  T_AROUND;
 terminal  T_AFTER;
 terminal  T_POINTCUT;
+terminal  T_PARENTS;
 terminal  T_INTERFACE;
 terminal  T_EXTENDS;
 terminal  T_IMPLEMENTS;
@@ -314,6 +315,7 @@ non terminal List aspect_pointcut_parameter_list;
 non terminal AspectPointcutParameter aspect_pointcut_parameter;
 non terminal List aspect_joinpoint_parameters;
 non terminal List non_empty_aspect_joinpoint_parameters_list;
+non terminal Boolean aspect_isPersistent;
 
 non terminal List unset_variables;
 non terminal VariableBase unset_variable;
@@ -490,14 +492,22 @@ aspect_declaration_statement ::= unticked_aspect_declaration_statement:aspectDec
 unticked_aspect_declaration_statement ::=
 aspect_entry_type:modifier T_STRING:aspectName
 extends_from:superClass implements_list:interfaces
+aspect_isPersistent:persistent
 T_CURLY_OPEN:blockStart aspect_statement_list:statementList T_CURLY_CLOSE:blockEnd T_SEMICOLON
 {:
 	Identifier classId = new Identifier(aspectNameleft, aspectNameright, aspectName);
 	Block block = new Block(blockStartleft, blockEndright, statementList);
 	//ClassDeclaration classDeclaration = new ClassDeclaration(modifierleft ,blockEndright, modifier.intValue(), classId, superClass, interfaces, block);
-	AspectDeclaration aspectDeclaration = new AspectDeclaration(modifierleft ,blockEndright, modifier.intValue(), classId, superClass, interfaces, block);
+	AspectDeclaration aspectDeclaration = new AspectDeclaration(modifierleft ,blockEndright, modifier.intValue(), classId, superClass, interfaces, persistent, block);
 	RESULT = aspectDeclaration;
 :}
+;
+
+aspect_isPersistent ::=
+	T_PERSESSION
+{: RESULT = true; :}
+|	/* empty */
+{: RESULT = false; :}
 ;
 
 aspect_entry_type ::=
@@ -531,7 +541,11 @@ aspect_statement_list ::= aspect_statement_list:list aspect_statement:aspectStat
 aspect_statement ::= class_statement:classStatement
 {:
 	RESULT = classStatement;
-:}     	
+:}
+|	T_DECLARE:start T_PARENTS T_NEKUDOTAIM fully_qualified_class_name:className extends_from:superClass implements_list:interfaces T_SEMICOLON:end
+{:
+	RESULT = new AspectInterTypeParentDeclaration(startleft, endright, className, superClass, interfaces);
+:}
 |   variable_modifiers:modifier aspect_inter_type_field_declaration:decList T_SEMICOLON:end
 {:
 	AspectInterTypeFieldsDeclaration aspectInterTypeFieldsDeclaration = new AspectInterTypeFieldsDeclaration(modifierleft, endright, modifier.intValue(), false, decList);
