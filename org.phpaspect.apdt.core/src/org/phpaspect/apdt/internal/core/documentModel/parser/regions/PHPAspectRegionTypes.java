@@ -9,4 +9,5 @@ public interface PHPAspectRegionTypes extends PHPRegionTypes {
 	static final public String PHP_AROUND = "PHP_AROUND";
 	static final public String PHP_AFTER = "PHP_AFTER";
 	static final public String PHP_POINTCUT = "PHP_POINTCUT";	
+	static final public String PHP_PARENTS = "PHP_PARENTS";
 }

@@ -22,7 +22,7 @@
       <shortcut
             class="org.phpaspect.apdt.internal.debug.ui.launching.PHPAspectLaunchShortcut"
             description="PHPAspect internal"
-            icon="icon/full/obj16/phpaspect_exec.gif"
+            icon="icons/full/obj16/phpaspect_exec.gif"
             id="org.phpaspect.apdt.debug.ui.phpaspectShortcut"
             label="PHPAspect application"
             modes="run">
