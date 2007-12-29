@@ -150,5 +150,14 @@ public class PHPAspectSymbolsUtils {
 		errorsTable.put("T_CURLY_OPEN", "{");
 		errorsTable.put("T_DOUBLE_ARROW", "=>");
 		errorsTable.put("T_DOLLAR_OPEN_CURLY_BRACES", "${");
+		
+		errorsTable.put("T_ASPECT", "aspect");
+		errorsTable.put("T_PERSESSION", "perSession");
+		errorsTable.put("T_FROM", "from");
+		errorsTable.put("T_BEFORE", "before");
+		errorsTable.put("T_AROUND", "around");
+		errorsTable.put("T_AFTER", "after");
+		errorsTable.put("T_POINTCUT", "pointcut");
+		errorsTable.put("T_PARENTS", "parents");
 	}
 }

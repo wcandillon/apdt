@@ -9,7 +9,9 @@ public interface PHPAspectVisitor extends Visitor {
     public void visit(AspectPointcutDeclaration aspectPointcutDeclaration);
     public void visit(AspectInterTypeFieldsDeclaration aspectInterTypeFieldsDeclaration);
     public void visit(AspectInterTypeFieldDeclaration aspectInterTypeFieldDeclaration);
+    public void visit(AspectAnnotations aspectAnnotations);
     public void visit(AspectPointcutParameter aspectPointcutParameter);
+    public void visit(AspectAnnotation aspectAnnotation);
     public void visit(AspectPointcutReference aspectPointcutReference);
     public void visit(AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration);
     public void visit(AspectInterTypeMethodDeclaration aspectInterTypeMethodDeclaration);

@@ -1,5 +1,23 @@
 <?php
 aspect Singleton{
 
+	public pointcut foo(): new(Foo());
+	
+	before(): new(Singleton(Foo, boolean)) && !(foo() || new(Bar())){
+		echo "Before construction of Foo";
+	}
+	
+	around(): foo(){
+		echo "Around the construction of Foo";
+	}
+	
+	after(): foo(){
+		echo "After the construction of Foo";
+	}
+	
+	public function codeAdvice(JoinPoint $thisJoinPoint){
+		echo "lol";
+		return false;
+	}
 }
 ?>

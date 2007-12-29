@@ -13,6 +13,8 @@ import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URI;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.eclipse.php.internal.core.ast.nodes.ASTNode;
 import org.eclipse.php.internal.core.ast.nodes.Program;
@@ -25,11 +27,11 @@ import org.phpaspect.weaver.visitor.impl.CodeBuilder;
 import com.thoughtworks.xstream.XStream;
 
 public class ASTGenerator{
-	
+
 	private static final String XML_DECLARATION = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-	
+
 	private static XStream xstream = new XStream();
-	
+
 	static{
 		Method[] methods = PHPAspectVisitor.class.getMethods();
 		for(int i=0; i<methods.length; i++){
@@ -113,7 +115,7 @@ public class ASTGenerator{
 	
 	public static String getXMLAstFromPHPAspect(File aspect) throws Exception{
 		Reader phpSourceReader = new FileReader(aspect.getPath());
-		return getXMLAstFromPHP(phpSourceReader);
+		return getXMLAstFromPHPAspect(phpSourceReader);
 	}
 	
 	public static Program getAstFromPHPAspect(InputStream aspect) throws Exception{

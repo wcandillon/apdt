@@ -1,17 +1,23 @@
 package org.phpaspect.weaver.parser.nodes;
 
-import org.eclipse.php.internal.core.ast.nodes.Expression;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.eclipse.php.internal.core.ast.nodes.Statement;
 import org.eclipse.php.internal.core.ast.visitor.Visitor;
 import org.phpaspect.weaver.visitor.PHPAspectVisitor;
 
-public class AspectPointcutReference extends Expression {
+public class AspectAnnotations extends Statement {
 
-	private String pointcutName;
-	private String xpath;
+	public AspectAnnotation[] annotations;
 	
-	public AspectPointcutReference(int start, int end, String pointcutName) {
+	public AspectAnnotations(int start, int end, AspectAnnotation[] annotations) {
 		super(start, end);
-		this.pointcutName = pointcutName;
+		this.annotations = annotations;
+	}
+	
+	public AspectAnnotation[] getAnnotations(){
+		return annotations;
 	}
 
 	@Override
@@ -20,7 +26,7 @@ public class AspectPointcutReference extends Expression {
 		return 0;
 	}
 
-	public void accept(Visitor visitor){
+	public void accept(Visitor visitor) {
 		((PHPAspectVisitor)visitor).visit(this);
 	}
 
@@ -41,15 +47,5 @@ public class AspectPointcutReference extends Expression {
 
 	public void traverseTopDown(Visitor visitor) {
 		// TODO Auto-generated method stub
-
 	}
-
-	public String getPointcutName() {
-		return pointcutName;
-	}
-
-	public void setPointcutName(String pointcutName) {
-		this.pointcutName = pointcutName;
-	}
-
 }

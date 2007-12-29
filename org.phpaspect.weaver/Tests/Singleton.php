@@ -1,4 +1,7 @@
 <?php
+/**
+ * @Aspect
+ */
 require_once "PHPAspect/Runtime/Aspect.php";
 require_once "PHPAspect/Runtime/Aspects.php";
 
@@ -10,6 +13,9 @@ class Singleton extends AbstractSingleton implements DesignPattern{
 	
 	}
 	
+	/**
+     * @advice
+     */
 	public static function getInstance(){
 		if(self::$instance == null){
 			self::$instance = new self();
