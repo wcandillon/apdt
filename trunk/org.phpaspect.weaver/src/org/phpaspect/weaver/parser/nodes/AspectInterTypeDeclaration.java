@@ -9,8 +9,12 @@ public class AspectInterTypeDeclaration extends Identifier{
 	private boolean subtype = false;
 	
 	public AspectInterTypeDeclaration(int start, int end, String name, boolean subtype) {
-		super(start, end, name);
+		this(start, end, name);
 		this.subtype = subtype;
+	}
+	
+	public AspectInterTypeDeclaration(int start, int end, String name){
+		super(start, end, name);
 	}
 	
 	public void toString(StringBuffer buffer, String tab) {

@@ -5,17 +5,29 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.eclipse.php.internal.core.ast.nodes.*;
-import org.eclipse.php.internal.core.ast.parser.ASTParser;
-import org.eclipse.php.internal.core.ast.visitor.Visitor;
-import org.phpaspect.weaver.parser.ASTGenerator;
+import org.phpaspect.weaver.parser.nodes.AspectAnnotation;
+import org.phpaspect.weaver.parser.nodes.AspectAnnotations;
+import org.phpaspect.weaver.parser.nodes.AspectCodeAdviceDeclaration;
+import org.phpaspect.weaver.parser.nodes.AspectConstructionJoinpoint;
+import org.phpaspect.weaver.parser.nodes.AspectDeclaration;
+import org.phpaspect.weaver.parser.nodes.AspectInterTypeDeclaration;
+import org.phpaspect.weaver.parser.nodes.AspectInterTypeFieldDeclaration;
+import org.phpaspect.weaver.parser.nodes.AspectInterTypeFieldsDeclaration;
+import org.phpaspect.weaver.parser.nodes.AspectInterTypeMethodDeclaration;
+import org.phpaspect.weaver.parser.nodes.AspectInterTypeParentDeclaration;
+import org.phpaspect.weaver.parser.nodes.AspectPointcutDeclaration;
+import org.phpaspect.weaver.parser.nodes.AspectPointcutParameter;
+import org.phpaspect.weaver.parser.nodes.AspectPointcutReference;
+import org.phpaspect.weaver.visitor.PHPAspectVisitor;
 
 /**
  * Sample visitor which get the AST and convert it to PHP code
  *  
  * @author Jackie
+ * @author William Candillon
  *
  */
-public class CodeBuilder implements Visitor {
+public class CodeBuilder implements PHPAspectVisitor {
 
 	public StringBuffer buffer = new StringBuffer();
 	
@@ -42,6 +54,17 @@ public class CodeBuilder implements Visitor {
 	private void acceptQuoteExpression(Expression[] expressions) {
 		for (int i = 0; i < expressions.length; i++) {
 			expressions[i].accept(this);
+		}
+	}
+	
+	public void visit(AspectAnnotations aspectAnnotations){
+		AspectAnnotation[] annotations = aspectAnnotations.getAnnotations();
+		if(annotations.length > 0){
+			buffer.append("/**\n");
+			for(int i=0; i < annotations.length; i++){
+				buffer.append(" * @"+annotations[i].getName()+"\n");
+			}
+			buffer.append(" */");			
 		}
 	}
 
@@ -204,7 +227,7 @@ public class CodeBuilder implements Visitor {
 	}
 
 	public void visit(Comment comment) {
-		buffer.append(this.str.substring(comment.getStart(), comment.getEnd()));
+		//buffer.append(this.str.substring(comment.getStart(), comment.getEnd()));
 	}
 
 	public void visit(ConditionalExpression conditionalExpression) {
@@ -303,6 +326,7 @@ public class CodeBuilder implements Visitor {
 	public void visit(FormalParameter formalParameter) {
 		if (formalParameter.getParameterType() != null) {
 			formalParameter.getParameterType().accept(this);
+			buffer.append(" ");
 		}
 		formalParameter.getParameterName().accept(this);
 		if (formalParameter.getDefaultValue() != null) {
@@ -635,7 +659,9 @@ public class CodeBuilder implements Visitor {
 	}
 
 	public void visit(ThrowStatement throwStatement) {
+		buffer.append("throw ");
 		throwStatement.getExpr().accept(this);
+		buffer.append(";");
 	}
 
 	public void visit(TryStatement tryStatement) {
@@ -662,5 +688,69 @@ public class CodeBuilder implements Visitor {
 		whileStatement.getCondition().accept(this);
 		buffer.append(")\n"); //$NON-NLS-1$
 		whileStatement.getAction().accept(this);
+	}
+
+	public void visit(AspectInterTypeDeclaration aspectInterTypeDeclaration) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void visit(AspectDeclaration aspectDeclaration) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void visit(AspectPointcutDeclaration aspectPointcutDeclaration) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void visit(
+			AspectInterTypeFieldsDeclaration aspectInterTypeFieldsDeclaration) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void visit(
+			AspectInterTypeFieldDeclaration aspectInterTypeFieldDeclaration) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void visit(AspectPointcutParameter aspectPointcutParameter) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void visit(AspectAnnotation aspectAnnotation) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void visit(AspectPointcutReference aspectPointcutReference) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void visit(AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void visit(
+			AspectInterTypeMethodDeclaration aspectInterTypeMethodDeclaration) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void visit(AspectConstructionJoinpoint aspectConstructionJoinpoint) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void visit(
+			AspectInterTypeParentDeclaration aspectInterTypeParentDeclaration) {
+		// TODO Auto-generated method stub
+		
 	}
 }

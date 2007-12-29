@@ -1,87 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<program start="0" length="377">
+<program start="0" length="390">
   <statements>
-    <expressionStatement start="6" length="44">
-      <expr class="include" includeType="1" start="6" length="43">
-        <expr class="scalar" stringValue="&quot;PHPAspect/Runtime/Aspect.php&quot;" scalarType="2" start="19" length="30"/>
-      </expr>
-    </expressionStatement>
-    <expressionStatement start="51" length="45">
-      <expr class="include" includeType="1" start="51" length="44">
-        <expr class="scalar" stringValue="&quot;PHPAspect/Runtime/Aspects.php&quot;" scalarType="2" start="64" length="31"/>
-      </expr>
-    </expressionStatement>
-    <classDeclaration modifier="0" start="98" length="276">
-      <superClass name="AbstractSingleton" start="122" length="17"/>
-      <name name="Singleton" start="104" length="9"/>
-      <interfaces>
-        <identifier name="DesignPattern" start="151" length="13"/>
-      </interfaces>
-      <body isCurly="true" start="164" length="210">
+    <aspectDeclaration persistent="false" modifier="0" start="6" length="381">
+      <name name="Singleton" start="13" length="9"/>
+      <interfaces/>
+      <body isCurly="true" start="22" length="365">
         <statements>
-          <fieldsDeclaration modifier="10" start="169" length="25">
-            <variableNames>
-              <variable isDollared="true" start="184" length="9">
-                <variableName class="identifier" name="instance" start="185" length="8"/>
-              </variable>
-            </variableNames>
-            <initialValues>
-              <null/>
-            </initialValues>
-          </fieldsDeclaration>
-          <methodDeclaration modifier="2" start="198" length="36">
-            <function isReference="false" start="206" length="28">
-              <functionName name="__construct" start="215" length="11"/>
-              <formalParameters/>
-              <body isCurly="true" start="228" length="6">
-                <statements/>
-              </body>
-            </function>
-          </methodDeclaration>
-          <methodDeclaration modifier="9" start="238" length="134">
-            <function isReference="false" start="252" length="120">
-              <functionName name="getInstance" start="261" length="11"/>
-              <formalParameters/>
-              <body isCurly="true" start="274" length="98">
+          <aspectPointcutDeclaration name="foo" start="26" length="34">
+            <expr class="aspectConstructionJoinpoint" xpath="(//*[@class=&apos;classInstanceCreation&apos;][*/className/variable] || //*[@class=&apos;classInstanceCreation&apos;][contains(Foo, */className/@name)])" start="49" length="10">
+              <interType subtype="false" name="Foo" start="53" length="3"/>
+              <parameters class="linked-list"/>
+            </expr>
+          </aspectPointcutDeclaration>
+          <aspectCodeAdviceDeclaration start="64" length="105">
+            <adviceType>Before</adviceType>
+            <args class="linked-list"/>
+            <body isCurly="true" start="128" length="41">
+              <statements>
+                <echoStatement start="132" length="34">
+                  <expressions>
+                    <scalar stringValue="&quot;Before construction of Foo&quot;" scalarType="2" start="137" length="28"/>
+                  </expressions>
+                </echoStatement>
+              </statements>
+            </body>
+            <pointcut class="infixExpression" operator="9" start="74" length="54">
+              <right class="unaryOperation" operator="2" start="106" length="22">
+                <expr class="parenthesisExpression" start="107" length="21">
+                  <expr class="infixExpression" operator="8" start="108" length="19">
+                    <right class="aspectConstructionJoinpoint" xpath="(//*[@class=&apos;classInstanceCreation&apos;][*/className/variable] || //*[@class=&apos;classInstanceCreation&apos;][contains(Bar, */className/@name)])" start="117" length="10">
+                      <interType subtype="false" name="Bar" start="121" length="3"/>
+                      <parameters class="linked-list"/>
+                    </right>
+                    <left class="aspectPointcutReference" pointcutName="foo" start="108" length="3"/>
+                  </expr>
+                </expr>
+              </right>
+              <left class="aspectConstructionJoinpoint" xpath="(//*[@class=&apos;classInstanceCreation&apos;][*/className/variable] || //*[@class=&apos;classInstanceCreation&apos;][contains(Singleton, */className/@name)])" start="74" length="28">
+                <interType subtype="false" name="Singleton" start="78" length="9"/>
+                <parameters class="linked-list">
+                  <aspectInterTypeDeclaration subtype="false" name="Foo" start="88" length="3"/>
+                  <aspectInterTypeDeclaration subtype="false" name="boolean" start="93" length="7"/>
+                </parameters>
+              </left>
+            </pointcut>
+          </aspectCodeAdviceDeclaration>
+          <aspectCodeAdviceDeclaration start="173" length="60">
+            <adviceType>Around</adviceType>
+            <args class="linked-list"/>
+            <body isCurly="true" start="188" length="45">
+              <statements>
+                <echoStatement start="192" length="38">
+                  <expressions>
+                    <scalar stringValue="&quot;Around the construction of Foo&quot;" scalarType="2" start="197" length="32"/>
+                  </expressions>
+                </echoStatement>
+              </statements>
+            </body>
+            <pointcut class="aspectPointcutReference" pointcutName="foo" start="183" length="3"/>
+          </aspectCodeAdviceDeclaration>
+          <aspectCodeAdviceDeclaration start="237" length="58">
+            <adviceType>After</adviceType>
+            <args class="linked-list"/>
+            <body isCurly="true" start="251" length="44">
+              <statements>
+                <echoStatement start="255" length="37">
+                  <expressions>
+                    <scalar stringValue="&quot;After the construction of Foo&quot;" scalarType="2" start="260" length="31"/>
+                  </expressions>
+                </echoStatement>
+              </statements>
+            </body>
+            <pointcut class="aspectPointcutReference" pointcutName="foo" start="246" length="3"/>
+          </aspectCodeAdviceDeclaration>
+          <methodDeclaration modifier="1" start="299" length="86">
+            <function isReference="false" start="306" length="79">
+              <functionName name="codeAdvice" start="315" length="10"/>
+              <formalParameters>
+                <formalParameter isMandatory="false" start="326" length="24">
+                  <parameterType name="JoinPoint" start="326" length="9"/>
+                  <parameterName class="variable" isDollared="true" start="336" length="14">
+                    <variableName class="identifier" name="thisJoinPoint" start="337" length="13"/>
+                  </parameterName>
+                </formalParameter>
+              </formalParameters>
+              <body isCurly="true" start="351" length="34">
                 <statements>
-                  <ifStatement start="278" length="65">
-                    <condition class="infixExpression" operator="2" start="281" length="23">
-                      <right class="scalar" stringValue="null" scalarType="2" start="300" length="4"/>
-                      <left class="staticFieldAccess" start="281" length="15">
-                        <field isDollared="true" start="287" length="9">
-                          <variableName class="identifier" name="instance" start="288" length="8"/>
-                        </field>
-                        <className name="self" start="281" length="4"/>
-                      </left>
-                    </condition>
-                    <trueStatement class="block" isCurly="true" start="305" length="38">
-                      <statements>
-                        <expressionStatement start="310" length="29">
-                          <expr class="assignment" operator="0" start="310" length="28">
-                            <variable class="staticFieldAccess" start="310" length="15">
-                              <field isDollared="true" start="316" length="9">
-                                <variableName class="identifier" name="instance" start="317" length="8"/>
-                              </field>
-                              <className name="self" start="310" length="4"/>
-                            </variable>
-                            <value class="classInstanceCreation" start="328" length="10">
-                              <className start="332" length="4">
-                                <className class="identifier" name="self" start="332" length="4"/>
-                              </className>
-                              <ctorParams/>
-                            </value>
-                          </expr>
-                        </expressionStatement>
-                      </statements>
-                    </trueStatement>
-                  </ifStatement>
-                  <returnStatement start="346" length="23">
-                    <expr class="staticFieldAccess" start="353" length="15">
-                      <field isDollared="true" start="359" length="9">
-                        <variableName class="identifier" name="instance" start="360" length="8"/>
-                      </field>
-                      <className name="self" start="353" length="4"/>
-                    </expr>
+                  <echoStatement start="355" length="11">
+                    <expressions>
+                      <scalar stringValue="&quot;lol&quot;" scalarType="2" start="360" length="5"/>
+                    </expressions>
+                  </echoStatement>
+                  <returnStatement start="369" length="13">
+                    <expr class="scalar" stringValue="false" scalarType="2" start="376" length="5"/>
                   </returnStatement>
                 </statements>
               </body>
@@ -89,8 +100,7 @@
           </methodDeclaration>
         </statements>
       </body>
-    </classDeclaration>
-    <emptyStatement start="375" length="2"/>
+    </aspectDeclaration>
   </statements>
   <comments class="tree-map">
     <no-comparator/>

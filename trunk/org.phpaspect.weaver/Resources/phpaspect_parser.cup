@@ -307,6 +307,7 @@ non terminal List aspect_statement_list;
 non terminal Statement aspect_statement;
 non terminal List aspect_inter_type_field_declaration;
 non terminal List aspect_inter_type_declaration;
+non terminal AspectInterTypeDeclaration aspect_inter_type_declaration_or_variable;
 non terminal AspectInterTypeDeclaration aspect_inter_type_declaration_r;
 non terminal String aspect_inter_type_signature;
 non terminal String aspect_signature;
@@ -515,12 +516,10 @@ T_ASPECT
 {:
 	RESULT = new Integer(AspectDeclaration.MODIFIER_NONE);
 :}
-               
 | T_ABSTRACT T_ASPECT
 {:
 	RESULT = new Integer(AspectDeclaration.MODIFIER_ABSTRACT);
-:}        
-
+:}
 | T_FINAL T_ASPECT   
 {:
 	RESULT = new Integer(AspectDeclaration.MODIFIER_FINAL);
@@ -563,23 +562,24 @@ aspect_statement ::= class_statement:classStatement
 |	method_modifiers:modifier T_POINTCUT T_STRING:ptName T_OPEN_PARENTHESE aspect_pointcut_parameter_list:args T_CLOSE_PARENTHESE T_NEKUDOTAIM aspect_pointcut:expr T_SEMICOLON:end
 {:
 	AspectPointcutDeclaration aspectPointcutDeclaration = new AspectPointcutDeclaration(modifierleft, endright, ptName, args, expr);
+	RESULT = aspectPointcutDeclaration;
 :}
 |	T_BEFORE:start T_OPEN_PARENTHESE parameter_list:list T_CLOSE_PARENTHESE T_NEKUDOTAIM aspect_pointcut:pt T_CURLY_OPEN:blockStart inner_statement_list:statementList T_CURLY_CLOSE:end
 {:
 	Block block = new Block(blockStartleft, endright, statementList);
-	AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration = new AspectCodeAdviceDeclaration(startleft, endright, AdviceType.BEFORE, list, pt, block);
+	AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration = new AspectCodeAdviceDeclaration(startleft, endright, AdviceType.Before, list, pt, block);
 	RESULT = aspectCodeAdviceDeclaration;
 :}
 |	T_AROUND:start T_OPEN_PARENTHESE parameter_list:list T_CLOSE_PARENTHESE T_NEKUDOTAIM aspect_pointcut:pt T_CURLY_OPEN:blockStart inner_statement_list:statementList T_CURLY_CLOSE:end
 {:
 	Block block = new Block(blockStartleft, endright, statementList);
-	AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration = new AspectCodeAdviceDeclaration(startleft, endright, AdviceType.AROUND, list, pt, block);
+	AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration = new AspectCodeAdviceDeclaration(startleft, endright, AdviceType.Around, list, pt, block);
 	RESULT = aspectCodeAdviceDeclaration;
 :}
 |	T_AFTER:start T_OPEN_PARENTHESE parameter_list:list T_CLOSE_PARENTHESE T_NEKUDOTAIM aspect_pointcut:pt T_CURLY_OPEN:blockStart inner_statement_list:statementList T_CURLY_CLOSE:end
 {:
 	Block block = new Block(blockStartleft, endright, statementList);
-	AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration = new AspectCodeAdviceDeclaration(startleft, endright, AdviceType.AFTER, list, pt, block);
+	AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration = new AspectCodeAdviceDeclaration(startleft, endright, AdviceType.After, list, pt, block);
 	RESULT = aspectCodeAdviceDeclaration;
 :}
 ;
@@ -637,9 +637,20 @@ aspect_joinpoint ::=
 {:
 	RESULT = new AspectPointcutReference(ptNameleft, ptNameright, ptName);
 :}
-|	T_NEW:start T_OPEN_PARENTHESE aspect_inter_type_declaration_r:interType T_OPEN_PARENTHESE /*aspect_joinpoint_parameters:params*/ T_CLOSE_PARENTHESE T_CLOSE_PARENTHESE:end
+|	T_NEW:start T_OPEN_PARENTHESE aspect_inter_type_declaration_r:interType T_OPEN_PARENTHESE aspect_joinpoint_parameters:params T_CLOSE_PARENTHESE T_CLOSE_PARENTHESE:end
 {:
-	RESULT = new AspectConstructionJoinpoint(startleft, endright, interType, null);
+	RESULT = new AspectConstructionJoinpoint(startleft, endright, interType, params);
+:}
+;
+
+aspect_inter_type_declaration_or_variable ::=
+	aspect_inter_type_declaration_r:interType
+{:
+	RESULT = interType;
+:}
+|	T_VARIABLE:var
+{:
+	RESULT = new AspectInterTypeDeclaration(varleft, varright, var);
 :}
 ;
 
@@ -655,13 +666,13 @@ non_empty_aspect_joinpoint_parameters_list:paramsList
 ;
 
 non_empty_aspect_joinpoint_parameters_list ::=
-aspect_inter_type_declaration:interType
+aspect_inter_type_declaration_r:interType
 {:
 	List paramsList = new LinkedList();
 	paramsList.add(interType);	
 	RESULT = paramsList;
 :}
-| non_empty_function_call_parameter_list:paramsList T_COMMA aspect_inter_type_declaration:interType
+| non_empty_aspect_joinpoint_parameters_list:paramsList T_COMMA aspect_inter_type_declaration_r:interType
 {:
 	paramsList.add(interType);	
 	RESULT = paramsList;

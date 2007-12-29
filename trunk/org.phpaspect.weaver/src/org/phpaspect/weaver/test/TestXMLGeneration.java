@@ -16,16 +16,15 @@ public class TestXMLGeneration {
 	 */
 	public static void main(String[] args) {
 		try {
-			File aspect = new File("Tests/Singleton.php");
+			File aspect = new File("Tests/Singleton.ap");
 			BufferedWriter writer = new BufferedWriter(new FileWriter(args[1]));
-			String xml = ASTGenerator.getXMLAstFromPHP(aspect);
+			String xml = ASTGenerator.getXMLAstFromPHPAspect(aspect);
 		    writer.write(xml);
 		    writer.close();
 		    System.err.println("done");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

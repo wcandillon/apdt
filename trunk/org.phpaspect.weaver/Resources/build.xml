@@ -41,5 +41,6 @@
 		<move file="${parserName}.java" todir="${output_dir}" />
  		<move file="${symbolsName}.java" todir="${output_dir}" />
 		<move file="${lexerName}.java" todir="${output_dir}" />
+		<antcall target="build_jar" />
 	</target>
 </project>
