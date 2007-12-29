@@ -4,6 +4,46 @@ error_reporting(E_ALL);
 set_time_limit(0);
 ob_implicit_flush(true);
 
+define('T_ASPECT', 600);
+define('T_PERSESSION', 601);
+define('T_FROM', 602);
+define('T_BEFORE', 603);
+define('T_AROUND', 604);
+define('T_AFTER', 605);
+define('T_POINTCUT', 606);
+define('T_PARENTS', 607);
+
+function get_all_tokens($source){
+	$tokens = token_get_all($source);
+	foreach($tokens as $id=>$token){
+		if(is_array($token) && $token[0] == T_STRING){
+			switch($token[1]){
+				case 'aspect':
+					$tokens[$id][0] = T_ASPECT;
+					break;
+				case 'perSession':
+					$tokens[$id][0] = T_PERSESSION;
+					break;
+				case 'before':
+					$tokens[$id][0] = T_BEFORE;
+					break;
+				case 'around':
+					$tokens[$id][0] = T_AROUND;
+					break;
+				case 'after':
+					$tokens[$id][0] = T_AFTER;
+					break;
+				case 'pointcut':
+					$tokens[$id][0] = T_POINTCUT;
+					break;
+				case 'parents':
+					$tokens[$id][0] = T_PARENTS;
+			}
+		}
+	}
+	return $tokens;
+}
+
 require_once 'PHP/Compat/Constant/T.php';
 
 /**
@@ -155,7 +195,7 @@ class PHP_Highlight
         }
 
         // Init
-        $tokens     = token_get_all($this->_source);
+        $tokens     = get_all_tokens($this->_source);
         $manual     = $this->manual;
         $span       = $this->span;
         $i          = 0;
@@ -394,6 +434,14 @@ class PHP_Highlight
             case T_UNSET_CAST:
             case T_VAR:
             case T_WHILE:
+            case T_ASPECT:
+            case T_PERSESSION:
+            case T_FROM:
+            case T_BEFORE:
+            case T_AROUND:
+            case T_AFTER:
+            case T_POINTCUT:
+            case T_PARENTS:
                 return $this->highlight['keyword'];
                 break;
 
