@@ -16,8 +16,6 @@ interface JoinPoint extends Reflector{
 
 	const EXCEPTION_HANDLER = 'exception-handler';
 
-	public function __toString();
-
 	public function toString();
 
 	public function toLongString();
