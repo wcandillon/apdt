@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<preface id="preface">
+  <title>Preface</title>
+
+  <para>
+  Since this project started, we never had the time to write a real documentation.
+  Thanks to the Google Summer of Code 2006, we finally had the time to write a proper 
+  documentation about this project. This isn't a final version yet, we are currently 
+  working on it.
+  </para>
+
+  <para>
+  If you are interested by editing or translating this documentation, you should
+  check the <ulink url="http://code.google.com/p/phpaspect-doc">phpAspect documentation project</ulink>.
+  </para>
+
+  <section id="preface.requirements">
+    <title>Requirements</title>
+
+    <para>
+      The topic of this documentation is phpAspect, an extension of the PHP programming language
+      which implement Aspect-Oriented Programming.
+    </para>
+
+    <para>
+      The reader should have a good understanding of object-oriented
+      programming with PHP 5. php.net has a documentation about it. A good English
+      book on the subject is <xref linkend="GuBaRe2005" /> by Andi Gutmans,
+      Stig Bakken, and Derick Rethans.
+    </para>
+
+    <para>
+        If you want to find out more about Aspect-Oriented Programming, there is two
+        excellent references: <xref linkend="Ramnivas2003" /> by Ramnivas Laddad and
+        <xref linkend="Lesiecki2003" /> by Nicholas Lesiecki and Joseph D Gradecki.
+    </para>
+  </section>
+
+  <section id="preface.acknowledgements">
+      <title>Acknowledgements</title>
+
+      <para>
+          We would like to acknowledge Yijun Yu for his very active work on
+          the Yaxx project.
+      </para>
+      <para>
+          We would like to thank Philippe Rochat for the ideas he brought to
+          this project and Fabien Nicollet who designed the phpAspect logo.
+      </para>
+      <para>
+          We also like would to thank the PHP community for all the help they gave
+          to us and Google for organizing the Google Summer of Code.
+          phpAspect has been designed and developed during the Google Summer of Code 2006.
+          This yearly event allows students to work on great and exciting open-source projects.
+      </para>
+  </section>
+
+  <section id="preface.conventions">
+    <title>Conventions Used in This Documentation</title>
+
+    <para>
+      The following is a list of typographical conventions used in this documentation:
+    </para>
+
+    <variablelist>
+      <varlistentry>
+        <term><emphasis>Italic</emphasis></term>
+        <listitem>
+          <para>
+            Indicates new terms, URLs, email addresses, filenames, file
+            extensions, pathnames, directories, and Unix utilities.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><literal>Constant width</literal></term>
+        <listitem>
+          <para>
+            Indicates commands, options, switches, variables, functions,
+            classes, namespaces, methods, modules, parameters, values,
+            objects, the contents of files, or the output from commands.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><userinput>Constant width bold</userinput></term>
+        <listitem>
+          <para>
+            Shows commands or other text that should be typed literally
+            by the user.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><replaceable>Constant width italic</replaceable></term>
+        <listitem>
+          <para>
+            Shows text that should be replaced with user-supplied values. 
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>
+      You should pay special attention to notes set apart from the text
+      with the following styles:
+    </para>
+
+    <note>
+      <para>
+        This is a tip, suggestion, or general note. It contains useful
+        supplementary information about the topic at hand.
+      </para>
+    </note>
+
+    <warning>
+      <para>
+        This is a warning or note of caution.
+      </para>
+    </warning>
+  </section>
+</preface>
