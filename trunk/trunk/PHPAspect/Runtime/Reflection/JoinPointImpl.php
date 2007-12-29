@@ -123,6 +123,10 @@ class JoinPointImpl implements JoinPoint{
 	public function __toString() {
 	
 	}
+	
+	public static function export(){
+		
+	}
 }
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-require_once 'annotations.php';
+require_once 'addendum/annotations.php';
 
 abstract class PHPAspectAnnotation extends Annotation {
 		/**
