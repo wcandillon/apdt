@@ -1,27 +1,57 @@
-package org.phpaspect.weaver.parser;
+package org.phpaspect.weaver.internal.core.compiler.ast.parser;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////    $Id: php_ast_parser.cup,v 1.1 2007/08/01 15:52:26 ggurfinke Exp $
+////    $Id: php_compiler_ast_parser.cup,v 1.8 2008/02/27 14:35:24 mspector Exp $
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 import java.util.*;
-import java_cup.runtime.*;
-import org.eclipse.php.internal.core.ast.nodes.*;
-import org.phpaspect.weaver.parser.nodes.*;
+
+import java_cup.runtime.Symbol;
+
+import org.eclipse.dltk.ast.*;
+import org.eclipse.dltk.ast.declarations.*;
+import org.eclipse.dltk.ast.expressions.*;
+import org.eclipse.dltk.ast.references.*;
+import org.eclipse.dltk.ast.statements.*;
+import org.eclipse.php.internal.core.compiler.ast.nodes.*;
+import org.phpaspect.weaver.internal.core.compiler.ast.nodes.*;
+
+import org.phpaspect.weaver.internal.core.ast.scanner.PHPAspectLexer;
+
 import org.eclipse.php.internal.core.phpModel.parser.PHPCodeDataFactory;
 import org.eclipse.php.internal.core.phpModel.phpElementData.IPHPMarker;
 import org.eclipse.php.internal.core.phpModel.phpElementData.PHPMarker;
 import org.eclipse.php.internal.core.phpModel.phpElementData.UserData;
 
 parser code {:
-	protected final static Integer PUBLIC = new Integer(BodyDeclaration.Modifier.PUBLIC);
-	protected final static Integer PRIVATE = new Integer(BodyDeclaration.Modifier.PRIVATE);
-	protected final static Integer PROTECTED = new Integer(BodyDeclaration.Modifier.PROTECTED);
-	protected final static Integer ABSTRACT = new Integer(BodyDeclaration.Modifier.ABSTRACT);
-	protected final static Integer FINAL = new Integer(BodyDeclaration.Modifier.FINAL);
-	protected final static Integer STATIC = new Integer(BodyDeclaration.Modifier.STATIC);
+
+	class ModifierDocPair {
+		public int modifier;
+		public PHPDocBlock doc;
+		
+		public ModifierDocPair(int modifier, PHPDocBlock doc) {
+			this.modifier = modifier;
+			this.doc = doc;
+		}
+	}
+	
+	public Expression createDispatch(Expression dispatcher, Expression property) {
+
+		if (property.getKind() == ASTNodeKinds.REFLECTION_CALL_EXPRESSION) {
+			((ReflectionCallExpression) property).setReceiver (dispatcher);
+			dispatcher = property;
+		} else if (property.getKind() == ASTNodeKinds.METHOD_INVOCATION) {
+			PHPCallExpression callExpression = (PHPCallExpression) property;
+			dispatcher = new PHPCallExpression(dispatcher.sourceStart(), callExpression.sourceEnd(), dispatcher, callExpression.getCallName(), callExpression.getArgs());
+		} else {
+			dispatcher =  new FieldAccess(dispatcher.sourceStart(), property.sourceEnd(), dispatcher, property);
+		}
+
+		return dispatcher;
+	}
 	
 	private List<PHPMarker> markers = new ArrayList<PHPMarker>();
 		
@@ -29,35 +59,6 @@ parser code {:
 		return markers;
 	}
 	
-	public Dispatch createDispatch(VariableBase dispatcher, VariableBase property) {
-		Dispatch dispatch = null;
-		if (property instanceof Variable) {
-			dispatch = new FieldAccess(dispatcher.getStart(), property.getEnd() ,dispatcher, (Variable)property);
-		} else if (property instanceof FunctionInvocation) {
-			dispatch = new MethodInvocation(dispatcher.getStart(), property.getEnd() ,dispatcher, (FunctionInvocation)property);
-		} else {
-			throw new IllegalArgumentException();
-		}
-		return dispatch;
-	}
-
-    /**
-     * Report a non fatal error (or warning).  This method takes a message
-     * string and an additional object (to be used by specializations implemented in subclasses).
-     * The super class prints the message to System.err.
-     * @param message an error message.
-     * @param info    an extra object reserved for use by specialized subclasses.
-     */
-    public void report_error(String message, Object info) {
-		// System.err.print(message);
-  		// if (info instanceof Symbol)
-		//	if (((Symbol)info).left != -1)
-		//		System.err.println(" at character " + ((Symbol)info).left + " of input");
-		//	else System.err.println("");
-	    // else 
-	   	//	System.err.println("");
-    }
-    
 	/**
      * This method is called when a syntax error has been detected and recovery is about to be invoked.
      * The super class just emit a "Syntax error" error message.
@@ -160,8 +161,6 @@ parser code {:
 		return null;
 	}
     
-	
-    
     public int getCurrentLine(){
         PHPAspectLexer lexer = (PHPAspectLexer)getScanner();
         //TODO: fix this bug
@@ -186,8 +185,6 @@ terminal  String T_STRING_VARNAME;
 terminal  String T_VARIABLE;
 terminal  String T_NUM_STRING;
 terminal  T_INLINE_HTML;
-terminal  String T_CHARACTER;
-terminal  String T_BAD_CHARACTER;
 terminal  String T_ENCAPSED_AND_WHITESPACE;
 terminal  String T_CONSTANT_ENCAPSED_STRING;
 terminal  T_ECHO;
@@ -209,29 +206,29 @@ terminal  T_CASE;
 terminal  T_DEFAULT;
 terminal  T_BREAK;
 terminal  T_CONTINUE;
-terminal  T_FUNCTION;
-terminal  T_CONST;
+terminal  PHPDocBlock T_FUNCTION;
+terminal  PHPDocBlock T_CONST;
 terminal  T_RETURN;
 terminal  T_TRY;
 terminal  T_CATCH;
 terminal  T_THROW;
 terminal  T_USE;
 terminal  T_GLOBAL;
-terminal  T_VAR;
+terminal  PHPDocBlock T_VAR;
 terminal  String T_UNSET;
 terminal  String T_ISSET;
 terminal  String T_EMPTY;
 terminal  T_HALT_COMPILER;
-terminal  T_CLASS;
-terminal  T_ASPECT;
+terminal  PHPDocBlock T_CLASS;
+terminal  PHPDocBlock T_ASPECT;
 terminal  T_PERSESSION;
 terminal  T_FROM;
-terminal  T_BEFORE;
-terminal  T_AROUND;
-terminal  T_AFTER;
-terminal  T_POINTCUT;
 terminal  T_PARENTS;
-terminal  T_INTERFACE;
+terminal  PHPDocBlock T_BEFORE;
+terminal  PHPDocBlock T_AROUND;
+terminal  PHPDocBlock T_AFTER;
+terminal  PHPDocBlock T_POINTCUT;
+terminal  PHPDocBlock T_INTERFACE;
 terminal  T_EXTENDS;
 terminal  T_IMPLEMENTS;
 terminal  T_OBJECT_OPERATOR;
@@ -256,7 +253,7 @@ terminal String T_DEFINE;
 terminal String T_INCLUDE,T_INCLUDE_ONCE,T_EVAL,T_REQUIRE,T_REQUIRE_ONCE;
 terminal T_COMMA;
 terminal String T_LOGICAL_OR,T_LOGICAL_XOR,T_LOGICAL_AND,T_PRINT;
-terminal T_EQUAL;
+terminal VarComment T_EQUAL;
 terminal T_PLUS_EQUAL,T_MINUS_EQUAL,T_MUL_EQUAL,T_DIV_EQUAL,T_CONCAT_EQUAL,T_MOD_EQUAL,T_AND_EQUAL,T_OR_EQUAL,T_XOR_EQUAL,T_SL_EQUAL,T_SR_EQUAL;
 terminal T_QUESTION_MARK;
 terminal T_SEMICOLON;
@@ -284,27 +281,20 @@ terminal T_NEW;
 terminal T_ENDIF;
 terminal T_ELSEIF;
 terminal T_ELSE;
-terminal T_STATIC, T_ABSTRACT, T_FINAL, T_PRIVATE, T_PROTECTED, T_PUBLIC;
+terminal PHPDocBlock T_STATIC, T_ABSTRACT, T_FINAL, T_PRIVATE, T_PROTECTED, T_PUBLIC;
 terminal T_OPEN_PARENTHESE,T_CLOSE_PARENTHESE;
 terminal T_NEKUDOTAIM;
 terminal T_DOLLAR;
-terminal T_QUATE,T_BACKQUATE,T_SINGLE_QUATE;
+terminal T_QUATE,T_BACKQUATE;
 
 /* Non terminals */
 
-non terminal Program thestart;
-non terminal List top_statement_list;
-non terminal Statement top_statement;
-non terminal Statement statement;
-non terminal List inner_statement_list;
-non terminal Statement inner_statement;
-non terminal Statement unticked_statement;
 /* PHPAspect */
 non terminal AspectDeclaration aspect_declaration_statement;
 non terminal AspectDeclaration unticked_aspect_declaration_statement;
-non terminal Integer aspect_entry_type;
+non terminal PHPAspectParser.ModifierDocPair aspect_entry_type;
 non terminal List aspect_statement_list;
-non terminal Statement aspect_statement;
+non terminal List aspect_statement;
 non terminal List aspect_inter_type_field_declaration;
 non terminal List aspect_inter_type_declaration;
 non terminal AspectInterTypeDeclaration aspect_inter_type_declaration_or_variable;
@@ -317,9 +307,18 @@ non terminal AspectPointcutParameter aspect_pointcut_parameter;
 non terminal List aspect_joinpoint_parameters;
 non terminal List non_empty_aspect_joinpoint_parameters_list;
 non terminal Boolean aspect_isPersistent;
+non terminal Expression aspect_pointcut;
+non terminal Expression aspect_joinpoint;
 
-non terminal List unset_variables;
-non terminal VariableBase unset_variable;
+non terminal ModuleDeclaration thestart;
+non terminal List top_statement_list;
+non terminal Statement top_statement;
+non terminal Statement statement;
+non terminal List inner_statement_list;
+non terminal Statement inner_statement;
+non terminal Statement unticked_statement;
+non terminal PHPCallArgumentsList unset_variables;
+non terminal Expression unset_variable;
 non terminal Expression use_filename;
 non terminal Expression foreach_optional_arg;
 non terminal Expression foreach_variable;
@@ -338,21 +337,21 @@ non terminal Statement new_else_single;
 non terminal List parameter_list;
 non terminal List non_empty_parameter_list;
 non terminal FormalParameter parameter;
-non terminal List function_call_parameter_list;
-non terminal List non_empty_function_call_parameter_list;
+non terminal PHPCallArgumentsList function_call_parameter_list;
+non terminal PHPCallArgumentsList non_empty_function_call_parameter_list;
 non terminal List global_var_list;
-non terminal VariableBase global_var;
+non terminal Expression global_var;
 non terminal List static_var_list;
 non terminal List class_statement_list;
-non terminal Statement class_statement;
+non terminal List class_statement;
 non terminal Boolean is_reference;
 non terminal List echo_expr_list;
 non terminal List for_expr;
 non terminal List non_empty_for_expr;
 non terminal Expression expr_without_variable;
-non terminal VariableBase function_call;
+non terminal Expression function_call;
 non terminal Expression exit_expr;
-non terminal List ctor_arguments;
+non terminal PHPCallArgumentsList ctor_arguments;
 non terminal Scalar common_scalar;
 non terminal Expression static_scalar;
 non terminal Expression scalar;
@@ -360,67 +359,65 @@ non terminal List static_array_pair_list;
 non terminal possible_comma;
 non terminal List non_empty_static_array_pair_list;
 non terminal Expression expr;
-non terminal Variable reference_variable;
-non terminal Variable compound_variable;
+non terminal Expression reference_variable;
+non terminal Expression compound_variable;
 non terminal Expression dim_offset;
-non terminal VariableBase object_property;
-non terminal VariableBase object_dim_list;
-non terminal VariableBase variable_name;
+non terminal Expression object_property;
+non terminal Expression object_dim_list;
+non terminal Expression variable_name;
 non terminal Integer simple_indirect_reference;
 non terminal List assignment_list;
-non terminal VariableBase assignment_list_element;
+non terminal Expression assignment_list_element;
 non terminal List array_pair_list;
 non terminal List non_empty_array_pair_list;
 non terminal List encaps_list;
-non terminal VariableBase encaps_var;
+non terminal Expression encaps_var;
 non terminal Expression encaps_var_offset;
 non terminal Expression internal_functions_in_yacc;
 non terminal String string_st;
-non terminal Integer interface_entry;
+non terminal PHPDocBlock interface_entry;
 non terminal List interface_extends_list;
-non terminal Expression aspect_pointcut;
-non terminal Expression aspect_joinpoint;
 
-non terminal VariableBase w_variable;
-non terminal Identifier fully_qualified_class_name;
+non terminal Expression w_variable;
+non terminal TypeReference fully_qualified_class_name;
 non terminal List class_variable_declaration;
 non terminal List class_constant_declaration;
-non terminal Integer method_modifiers;
+non terminal PHPAspectParser.ModifierDocPair method_modifiers;
 non terminal Block method_body;
 non terminal List non_empty_member_modifiers;
-non terminal Integer member_modifier;
-non terminal List method_or_not;
+non terminal PHPAspectParser.ModifierDocPair member_modifier;
+non terminal PHPCallArgumentsList method_or_not;
 non terminal List variable_properties;
-non terminal FunctionDeclaration function_declaration_statement;
+non terminal PHPMethodDeclaration function_declaration_statement;
 non terminal Statement class_declaration_statement;
-non terminal VariableBase variable;
+non terminal Expression variable;
 non terminal List additional_catches;
 non terminal List non_empty_additional_catches;
 non terminal CatchClause additional_catch;
-non terminal FunctionDeclaration unticked_function_declaration_statement;
+non terminal PHPMethodDeclaration unticked_function_declaration_statement;
 non terminal Statement unticked_class_declaration_statement;
-non terminal Integer class_entry_type;
-non terminal Identifier extends_from;
+non terminal PHPAspectParser.ModifierDocPair class_entry_type;
+non terminal TypeReference extends_from;
 non terminal List implements_list;
 non terminal List interface_list;
-non terminal Identifier optional_class_type;
-non terminal VariableBase r_variable;
-non terminal Integer variable_modifiers;
-non terminal VariableBase rw_variable;
-non terminal Variable variable_without_objects;
-non terminal VariableBase variable_property;
-non terminal VariableBase static_member;
-non terminal List isset_variables;
-non terminal Variable tracked_variable;
+non terminal TypeReference optional_class_type;
+non terminal Expression r_variable;
+non terminal PHPAspectParser.ModifierDocPair variable_modifiers;
+non terminal Expression rw_variable;
+non terminal Expression variable_without_objects;
+non terminal Expression variable_property;
+non terminal StaticFieldAccess static_member;
+non terminal PHPCallArgumentsList isset_variables;
+non terminal VariableReference tracked_variable;
 
-non terminal ClassName class_name_reference;
+non terminal Expression class_name_reference;
 non terminal StaticConstantAccess class_constant;
-non terminal ClassName dynamic_class_name_reference;
-non terminal VariableBase base_variable;
+non terminal Expression dynamic_class_name_reference;
+non terminal Expression base_variable;
 non terminal List dynamic_class_name_variable_properties;
-non terminal VariableBase dynamic_class_name_variable_property;
+non terminal Expression dynamic_class_name_variable_property;
 non terminal StaticConstantAccess static_class_constant;
-non terminal VariableBase base_variable_with_function_calls;
+non terminal Expression base_variable_with_function_calls;
 
 
 precedence left T_INCLUDE, T_INCLUDE_ONCE, T_EVAL, T_REQUIRE, T_REQUIRE_ONCE;
@@ -455,9 +452,7 @@ precedence right T_STATIC, T_ABSTRACT, T_FINAL, T_PRIVATE, T_PROTECTED, T_PUBLIC
 thestart ::=
 top_statement_list:statementList
 {:
-	PHPAspectLexer PHPAspectLexer = (PHPAspectLexer) parser.getScanner();
-	List commentList = PHPAspectLexer.getCommentList();
-	Program program = new Program(statementListleft, statementListright, statementList, commentList);
+	PHPModuleDeclaration program = new PHPModuleDeclaration(statementListleft, statementListright, statementList);
 	RESULT = program; 
 :}
 ;
@@ -496,10 +491,19 @@ extends_from:superClass implements_list:interfaces
 aspect_isPersistent:persistent
 T_CURLY_OPEN:blockStart aspect_statement_list:statementList T_CURLY_CLOSE:blockEnd T_SEMICOLON
 {:
-	Identifier classId = new Identifier(aspectNameleft, aspectNameright, aspectName);
+	Iterator statementIt = statementList.iterator();
+	while (statementIt.hasNext()) {
+		Statement statement = (Statement)statementIt.next();
+		if (statement.getKind() == Declaration.D_METHOD) {
+			MethodDeclaration methodDeclaration = (MethodDeclaration)statement;
+			methodDeclaration.setDeclaringTypeName(aspectName);
+		}
+	}
+
 	Block block = new Block(blockStartleft, blockEndright, statementList);
-	//ClassDeclaration classDeclaration = new ClassDeclaration(modifierleft ,blockEndright, modifier.intValue(), classId, superClass, interfaces, block);
-	AspectDeclaration aspectDeclaration = new AspectDeclaration(modifierleft ,blockEndright, modifier.intValue(), classId, superClass, interfaces, persistent, block);
+	AspectDeclaration aspectDeclaration = new AspectDeclaration(
+		modifierleft, blockEndright, aspectNameleft, aspectNameright, modifier.modifier,
+		aspectName, superClass, interfaces, persistent, block, modifier.doc);
 	RESULT = aspectDeclaration;
 :}
 ;
@@ -512,17 +516,19 @@ aspect_isPersistent ::=
 ;
 
 aspect_entry_type ::=
-T_ASPECT
+T_ASPECT:value
 {:
-	RESULT = new Integer(AspectDeclaration.MODIFIER_NONE);
+	RESULT = parser.new ModifierDocPair(Modifiers.AccDefault, value); 
 :}
-| T_ABSTRACT T_ASPECT
+               
+| T_ABSTRACT:value T_ASPECT
 {:
-	RESULT = new Integer(AspectDeclaration.MODIFIER_ABSTRACT);
-:}
-| T_FINAL T_ASPECT   
+	RESULT = parser.new ModifierDocPair(Modifiers.AccAbstract, value);
+:}        
+
+| T_FINAL:value T_ASPECT   
 {:
-	RESULT = new Integer(AspectDeclaration.MODIFIER_FINAL);
+	RESULT = parser.new ModifierDocPair(Modifiers.AccFinal, value);
 :}        
 ;
 
@@ -543,44 +549,73 @@ aspect_statement ::= class_statement:classStatement
 :}
 |	T_DECLARE:start T_PARENTS T_NEKUDOTAIM fully_qualified_class_name:className extends_from:superClass implements_list:interfaces T_SEMICOLON:end
 {:
-	RESULT = new AspectInterTypeParentDeclaration(startleft, endright, className, superClass, interfaces);
+	List s = new LinkedList();
+	s.add(new AspectInterTypeParentDeclaration(startleft, endright, className, superClass, interfaces));
+	RESULT = s;
 :}
 |   variable_modifiers:modifier aspect_inter_type_field_declaration:decList T_SEMICOLON:end
 {:
-	AspectInterTypeFieldsDeclaration aspectInterTypeFieldsDeclaration = new AspectInterTypeFieldsDeclaration(modifierleft, endright, modifier.intValue(), false, decList);
-	RESULT = aspectInterTypeFieldsDeclaration;
+	//List s = new LinkedList();
+	//AspectInterTypeFieldsDeclaration aspectInterTypeFieldsDeclaration = new AspectInterTypeFieldsDeclaration(modifierleft, endright, modifier.intValue(), false, decList);
+	//s.add(aspectInterTypeFieldsDeclaration);
+	//RESULT = s;
+	List constList = new LinkedList();
+	Iterator i = decList.iterator();
+	while (i.hasNext()) {
+		ASTNode[] decl = (ASTNode[]) i.next();
+		VariableReference variable = (VariableReference)decl[0];
+		Expression initializer = (Expression)decl[1];
+		int lstart = variable.sourceStart();
+		int lend = (initializer == null ? variable.sourceEnd() : initializer.sourceEnd());
+		constList.add (new PHPFieldDeclaration(variable, initializer, lstart, lend, modifier.modifier, modifier.doc));
+	}
+	RESULT = constList;
 :}
 |	method_modifiers:modifier T_FUNCTION:start is_reference:isReference aspect_inter_type_declaration:interType T_PAAMAYIM_NEKUDOTAYIM string_st:functionName T_OPEN_PARENTHESE parameter_list:paramList T_CLOSE_PARENTHESE method_body:body	
 {:
 	int methodStart = modifier == null ? startleft : modifierleft;
-	modifier = modifier == null ? PHPAspectParser.PUBLIC : modifier;
-	Identifier functionId = new Identifier(functionNameleft, functionNameright, functionName);
-	FunctionDeclaration functionDeclaration = new FunctionDeclaration(startleft, bodyright, functionId, paramList, body, isReference.booleanValue());
-	AspectInterTypeMethodDeclaration interTypeMethodDeclaration = new AspectInterTypeMethodDeclaration(methodStart, bodyright, modifier.intValue(), interType, functionDeclaration, true);
-	RESULT = interTypeMethodDeclaration;	
+	int modifierValue = modifier == null ? Modifiers.AccPublic : modifier.modifier;
+	PHPDocBlock docBlock = start;
+	if (modifier != null && modifier.doc != null) {
+		docBlock = modifier.doc;
+	}
+
+	AspectInterTypeMethodDeclaration interTypeMethodDeclaration =
+		new AspectInterTypeMethodDeclaration(startleft, bodyright, functionNameleft, functionNameright, interType, functionName, modifierValue, paramList, body, isReference, docBlock);
+	List methodDeclaration = new LinkedList();
+	methodDeclaration.add(methodDeclaration);
+	RESULT = methodDeclaration;	
 :}
 |	method_modifiers:modifier T_POINTCUT T_STRING:ptName T_OPEN_PARENTHESE aspect_pointcut_parameter_list:args T_CLOSE_PARENTHESE T_NEKUDOTAIM aspect_pointcut:expr T_SEMICOLON:end
 {:
 	AspectPointcutDeclaration aspectPointcutDeclaration = new AspectPointcutDeclaration(modifierleft, endright, ptName, args, expr);
-	RESULT = aspectPointcutDeclaration;
+	List s = new LinkedList();
+	s.add(aspectPointcutDeclaration);
+	RESULT = s;
 :}
 |	T_BEFORE:start T_OPEN_PARENTHESE parameter_list:list T_CLOSE_PARENTHESE T_NEKUDOTAIM aspect_pointcut:pt T_CURLY_OPEN:blockStart inner_statement_list:statementList T_CURLY_CLOSE:end
 {:
 	Block block = new Block(blockStartleft, endright, statementList);
 	AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration = new AspectCodeAdviceDeclaration(startleft, endright, AdviceType.Before, list, pt, block);
-	RESULT = aspectCodeAdviceDeclaration;
+	List s = new LinkedList();
+	s.add(aspectCodeAdviceDeclaration);
+	RESULT = s;
 :}
 |	T_AROUND:start T_OPEN_PARENTHESE parameter_list:list T_CLOSE_PARENTHESE T_NEKUDOTAIM aspect_pointcut:pt T_CURLY_OPEN:blockStart inner_statement_list:statementList T_CURLY_CLOSE:end
 {:
 	Block block = new Block(blockStartleft, endright, statementList);
 	AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration = new AspectCodeAdviceDeclaration(startleft, endright, AdviceType.Around, list, pt, block);
-	RESULT = aspectCodeAdviceDeclaration;
+	List s = new LinkedList();
+	s.add(aspectCodeAdviceDeclaration);
+	RESULT = s;
 :}
 |	T_AFTER:start T_OPEN_PARENTHESE parameter_list:list T_CLOSE_PARENTHESE T_NEKUDOTAIM aspect_pointcut:pt T_CURLY_OPEN:blockStart inner_statement_list:statementList T_CURLY_CLOSE:end
 {:
 	Block block = new Block(blockStartleft, endright, statementList);
 	AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration = new AspectCodeAdviceDeclaration(startleft, endright, AdviceType.After, list, pt, block);
-	RESULT = aspectCodeAdviceDeclaration;
+	List s = new LinkedList();
+	s.add(aspectCodeAdviceDeclaration);
+	RESULT = s;
 :}
 ;
 
@@ -602,7 +637,7 @@ aspect_pointcut_parameter_list ::=
 aspect_pointcut_parameter ::=
 	aspect_inter_type_declaration_r:interType T_VARIABLE:var
 {:
-	Variable v = new Variable(varleft, varright, var);
+	VariableReference v = new VariableReference(varleft, varright, var, PHPVariableKind.LOCAL);
 	AspectPointcutParameter aspectPointcutParameter = new AspectPointcutParameter(interTypeleft, varright, interType, v);
 	RESULT = aspectPointcutParameter;
 :}
@@ -619,8 +654,8 @@ aspect_pointcut ::=
 :}
 |	T_OPEN_PARENTHESE:start aspect_pointcut:pt T_CLOSE_PARENTHESE:end
 {:
-	ParenthesisExpression parenthesisExpression = new ParenthesisExpression(startleft, endright, pt);
-	RESULT = parenthesisExpression; 
+	//ParenthesisExpression parenthesisExpression = new ParenthesisExpression(startleft, endright, pt);
+	RESULT = pt; 
 :}
 |	T_NOT:token aspect_pointcut:pt
 {:
@@ -682,27 +717,27 @@ aspect_inter_type_declaration_r:interType
 aspect_inter_type_field_declaration ::=
 	aspect_inter_type_field_declaration:list T_COMMA aspect_inter_type_declaration:interType T_PAAMAYIM_NEKUDOTAYIM T_VARIABLE:var
 {:
-	Variable varId = new Variable(varleft, varright, var);
+	VariableReference varId = new VariableReference(varleft, varright, var, PHPVariableKind.LOCAL);
 	list.add(new AspectInterTypeFieldDeclaration(interTypeleft, varright, interType, varId, null));
 	RESULT = list;		
 :}
 |	aspect_inter_type_field_declaration:list T_COMMA aspect_inter_type_declaration:interType T_PAAMAYIM_NEKUDOTAYIM T_VARIABLE:var T_EQUAL static_scalar:expr
 {:
-	Variable varId = new Variable(varleft, varright, var);
+	VariableReference varId = new VariableReference(varleft, varright, var, PHPVariableKind.LOCAL);
 	list.add(new AspectInterTypeFieldDeclaration(interTypeleft, exprright, interType, varId, expr));
 	RESULT = list;
 :}	
 |	aspect_inter_type_declaration:interType T_PAAMAYIM_NEKUDOTAYIM T_VARIABLE:var
 {:
 	List list = new LinkedList();
-	Variable varId = new Variable(varleft, varright, var);
+	VariableReference varId = new VariableReference(varleft, varright, var, PHPVariableKind.LOCAL);
 	list.add(new AspectInterTypeFieldDeclaration(interTypeleft, varright, interType, varId, null));
 	RESULT = list;	
 :}	
 |	aspect_inter_type_declaration:interType T_PAAMAYIM_NEKUDOTAYIM T_VARIABLE:var T_EQUAL static_scalar:expr
 {:
 	List list = new LinkedList();
-	Variable varId = new Variable(varleft, varright, var);
+	VariableReference varId = new VariableReference(varleft, varright, var, PHPVariableKind.LOCAL);
 	list.add(new AspectInterTypeFieldDeclaration(interTypeleft, exprright, interType, varId, expr));
 	RESULT = list;
 :}	
@@ -770,6 +805,7 @@ inner_statement_list:statementList inner_statement:statement
 	}		
 	RESULT = statementList;
 :}
+
 | /* empty */
 {: 
 	RESULT = new LinkedList(); 
@@ -842,7 +878,7 @@ T_CURLY_OPEN:token inner_statement_list:statementList T_CURLY_CLOSE:end
 	 	int start = ((Integer)elseif[2].get(i)).intValue();
 		falseStatement = new IfStatement(start, iffalseright, innerCondition, trueStatement, falseStatement);
 	}
-	Block block = new Block(colonleft, ifTrueStatementListright, ifTrueStatementList, false);
+	Block block = new Block(colonleft, ifTrueStatementListright, ifTrueStatementList);
 	IfStatement ifStatement = new IfStatement(tokenleft, iffalseright, condition, block, falseStatement);		
 	
 	RESULT = ifStatement;
@@ -924,11 +960,7 @@ T_CURLY_OPEN:token inner_statement_list:statementList T_CURLY_CLOSE:end
 	RESULT = new EchoStatement(startleft, endright, exprList); 
 :}
 
-| T_INLINE_HTML:html
-{:
-	InLineHtml inLineHtml = new InLineHtml(htmlleft, htmlright);
-	RESULT = inLineHtml;
-:}
+| T_INLINE_HTML
 
 | expr:expr T_SEMICOLON:end
 {: 
@@ -938,22 +970,20 @@ T_CURLY_OPEN:token inner_statement_list:statementList T_CURLY_CLOSE:end
 
 | T_USE:start use_filename:expr T_SEMICOLON:end
 {:
-	List list = new LinkedList();
-	list.add(expr);
-	Identifier id = new Identifier(startleft, startright, "use");
-	FunctionName functionName = new FunctionName(startleft, startright, id);
-	FunctionInvocation functionInvocation = new FunctionInvocation(startleft, exprright, functionName, list);
+	PHPCallArgumentsList list = new PHPCallArgumentsList();
+	list.addNode(expr);
+	SimpleReference functionName = new SimpleReference(startleft, startright, "use");
+	PHPCallExpression functionInvocation = new PHPCallExpression(startleft, exprright, null, functionName, list);
 	ExpressionStatement expressionStatement = new ExpressionStatement(startleft, endright, functionInvocation);
 	RESULT = expressionStatement;	
 :}
 
 | T_UNSET:start T_OPEN_PARENTHESE unset_variables:list T_CLOSE_PARENTHESE:closePar T_SEMICOLON:end
 {:
-	Identifier id = new Identifier(startleft, startright, "unset");
-	FunctionName functionName = new FunctionName(startleft, startright, id);
-	FunctionInvocation functionInvocation = new FunctionInvocation(startleft, closeParright, functionName, list);
+	SimpleReference functionName = new SimpleReference(startleft, startright, "unset");
+	PHPCallExpression functionInvocation = new PHPCallExpression(startleft, closeParright, null, functionName, list);
 	ExpressionStatement expressionStatement = new ExpressionStatement(startleft, endright, functionInvocation);
-	RESULT = expressionStatement;	
+	RESULT = expressionStatement;
 :}
 
 | T_FOREACH:token T_OPEN_PARENTHESE variable:expr T_AS foreach_variable:var foreach_optional_arg:arg T_CLOSE_PARENTHESE foreach_statement:statement
@@ -1049,7 +1079,7 @@ T_CATCH:catch_word T_OPEN_PARENTHESE fully_qualified_class_name:className T_VARI
  T_CURLY_OPEN:catchBlockStart inner_statement_list:catchList T_CURLY_CLOSE:catchBlockEnd
 {:
 	Block catchBlock = new Block(catchBlockStartleft, catchBlockEndright, catchList);
-	Variable variable = new Variable(varleft, varright, var);
+	VariableReference variable = new VariableReference(varleft, varright, var, PHPVariableKind.LOCAL);
 	CatchClause catchClause = new CatchClause(catch_wordleft, catchBlockEndright, className, variable, catchBlock);
 	RESULT = catchClause;
 :}
@@ -1058,14 +1088,14 @@ T_CATCH:catch_word T_OPEN_PARENTHESE fully_qualified_class_name:className T_VARI
 unset_variables ::=
 unset_variable:var
 {:
-	List list = new LinkedList();
-	list.add(var);
+	PHPCallArgumentsList list = new PHPCallArgumentsList();
+	list.addNode(var);
 	RESULT = list;
 :}
 
 | unset_variables:list T_COMMA unset_variable:var
 {:
-	list.add(var);
+	list.addNode(var);
 	RESULT = list;
 :}
 ;
@@ -1122,9 +1152,8 @@ T_FUNCTION:start is_reference:isReference string_st:functionName
 T_OPEN_PARENTHESE parameter_list:paramList T_CLOSE_PARENTHESE
 T_CURLY_OPEN:blockStart inner_statement_list:statementList T_CURLY_CLOSE:blockEnd
 {:
-	Identifier functionId = new Identifier(functionNameleft, functionNameright, functionName);
 	Block block = new Block(blockStartleft, blockEndright, statementList);
-	FunctionDeclaration functionDeclaration = new FunctionDeclaration(startleft, blockEndright, functionId, paramList, block, isReference.booleanValue());
+	PHPMethodDeclaration functionDeclaration = new PHPMethodDeclaration(startleft, blockEndright, functionNameleft, functionNameright, functionName, Modifiers.AccDefault, paramList, block, isReference.booleanValue(), start);
 	RESULT = functionDeclaration;
 :}
 ;
@@ -1134,9 +1163,17 @@ class_entry_type:modifier T_STRING:className
 extends_from:superClass implements_list:interfaces
 T_CURLY_OPEN:blockStart class_statement_list:statementList T_CURLY_CLOSE:blockEnd
 {:
-	Identifier classId = new Identifier(classNameleft, classNameright, className);
+	Iterator statementIt = statementList.iterator();
+	while (statementIt.hasNext()) {
+		Statement statement = (Statement)statementIt.next();
+		if (statement.getKind() == Declaration.D_METHOD) {
+			MethodDeclaration methodDeclaration = (MethodDeclaration)statement;
+			methodDeclaration.setDeclaringTypeName(className);
+		}
+	}
+	
 	Block block = new Block(blockStartleft, blockEndright, statementList);
-	ClassDeclaration classDeclaration = new ClassDeclaration(modifierleft ,blockEndright, modifier.intValue(), classId, superClass, interfaces, block);
+	ClassDeclaration classDeclaration = new ClassDeclaration(modifierleft ,blockEndright, classNameleft, classNameright, modifier.modifier, className, superClass, interfaces, block, modifier.doc);
 	RESULT = classDeclaration;
 :}
 
@@ -1145,27 +1182,35 @@ interface_entry:start T_STRING:className
 interface_extends_list:interfaces
 T_CURLY_OPEN:blockStart class_statement_list:statementList T_CURLY_CLOSE:blockEnd
 {:
-	Identifier classId = new Identifier(classNameleft, classNameright, className);
+	Iterator statementIt = statementList.iterator();
+	while (statementIt.hasNext()) {
+		Statement statement = (Statement)statementIt.next();
+		if (statement.getKind() == Declaration.D_METHOD) {
+			MethodDeclaration methodDeclaration = (MethodDeclaration)statement;
+			methodDeclaration.setDeclaringTypeName(className);
+		}
+	}
+	
 	Block block = new Block(blockStartleft, blockEndright, statementList);
-	InterfaceDeclaration interfaceDeclaration = new InterfaceDeclaration(startleft ,blockEndright, classId, interfaces, block);
+	InterfaceDeclaration interfaceDeclaration = new InterfaceDeclaration(startleft ,blockEndright, classNameleft, classNameright, className, interfaces, block, start);
 	RESULT = interfaceDeclaration;
 :}
 ;
 
 class_entry_type ::=
-T_CLASS
+T_CLASS:value
 {:
-	RESULT = new Integer(ClassDeclaration.MODIFIER_NONE);
+	RESULT = parser.new ModifierDocPair(Modifiers.AccDefault, value); 
 :}
                
-| T_ABSTRACT T_CLASS
+| T_ABSTRACT:value T_CLASS
 {:
-	RESULT = new Integer(ClassDeclaration.MODIFIER_ABSTRACT);
+	RESULT = parser.new ModifierDocPair(Modifiers.AccAbstract, value);
 :}        
 
-| T_FINAL T_CLASS   
+| T_FINAL:value T_CLASS   
 {:
-	RESULT = new Integer(ClassDeclaration.MODIFIER_FINAL);
+	RESULT = parser.new ModifierDocPair(Modifiers.AccFinal, value);
 :}        
 ;
 
@@ -1183,7 +1228,10 @@ extends_from ::=
 
 /* do nothing */
 interface_entry ::=
-	T_INTERFACE            
+T_INTERFACE:value
+{:
+	RESULT = value;
+:}
 ;
 
 interface_extends_list ::=
@@ -1247,7 +1295,7 @@ variable:var
 
 | T_REFERENCE:start variable:var
 {: 
-	Reference reference = new Reference (startleft, varright, var);
+	ReferenceExpression reference = new ReferenceExpression (startleft, varright, var);
 	RESULT = reference;
 :}
 
@@ -1261,7 +1309,7 @@ statement:statement
 
 | T_NEKUDOTAIM:start inner_statement_list:statementList T_ENDFOR T_SEMICOLON
 {:
-	Block block = new Block(startleft, statementListright, statementList, false);
+	Block block = new Block(startleft, statementListright, statementList);
 	RESULT = block;
 :}
 ;
@@ -1274,7 +1322,7 @@ statement:statement
 
 | T_NEKUDOTAIM:start inner_statement_list:statementList T_ENDFOREACH T_SEMICOLON
 {:
-	Block block = new Block(startleft, statementListright, statementList, false);
+	Block block = new Block(startleft, statementListright, statementList);
 	RESULT = block;
 :}
 ;
@@ -1287,7 +1335,7 @@ statement:statement
 
 | T_NEKUDOTAIM:start inner_statement_list:statementList T_ENDDECLARE T_SEMICOLON
 {:
-	Block block = new Block(startleft, statementListright, statementList, false);
+	Block block = new Block(startleft, statementListright, statementList);
 	RESULT = block;
 :}
 ;
@@ -1299,8 +1347,7 @@ string_st:key T_EQUAL static_scalar:value
 	List listKeys = new LinkedList();
 	List listValues = new LinkedList();
 	
-	Identifier id = new Identifier(keyleft, keyright, key);
-	listKeys.add(id);
+	listKeys.add(key);
 	listValues.add(value);
 
 	List[] returnList = new List[] { listKeys, listValues };
@@ -1309,8 +1356,7 @@ string_st:key T_EQUAL static_scalar:value
 
 | declare_list:lists T_COMMA string_st:key T_EQUAL static_scalar:value
 {:
-	Identifier id = new Identifier(keyleft, keyright, key);
-	lists[0].add(id);
+	lists[0].add(key);
 	lists[1].add(value);
 	RESULT = lists;
 :}
@@ -1331,13 +1377,13 @@ T_CURLY_OPEN:start case_list:caseList T_CURLY_CLOSE:end
 
 | T_NEKUDOTAIM:start case_list:caseList T_ENDSWITCH T_SEMICOLON:end
 {:
-	Block block = new Block(startleft, endright, caseList, false);	
+	Block block = new Block(startleft, endright, caseList);	
 	RESULT = block; 
 :}
 
 | T_NEKUDOTAIM:start T_SEMICOLON case_list:caseList T_ENDSWITCH T_SEMICOLON:end
 {:
-	Block block = new Block(startleft, endright, caseList, false);	
+	Block block = new Block(startleft, endright, caseList);	
 	RESULT = block; 
 :}
 ;
@@ -1383,7 +1429,7 @@ statement:statement
 
 | T_NEKUDOTAIM:colon inner_statement_list:statementList T_ENDWHILE T_SEMICOLON
 {:
-	Block block = new Block(colonleft, statementListright, statementList, false);
+	Block block = new Block(colonleft, statementListright, statementList);
 	RESULT = block;
 :}
 ;
@@ -1424,7 +1470,7 @@ new_elseif_list ::=
 
 | new_elseif_list:elseifList T_ELSEIF:token T_OPEN_PARENTHESE expr:condition T_CLOSE_PARENTHESE T_NEKUDOTAIM:colon inner_statement_list:statementList
 {:	
-	Block block = new Block(colonleft, statementListright, statementList, false);
+	Block block = new Block(colonleft, statementListright, statementList);
 	((LinkedList)elseifList[0]).addFirst(condition);
 	((LinkedList)elseifList[1]).addFirst(block);
 	((LinkedList)elseifList[2]).addFirst(new Integer(tokenleft));
@@ -1453,7 +1499,7 @@ new_else_single ::=
 
 | T_ELSE T_NEKUDOTAIM:colon inner_statement_list:statementList
 {:
-	Block block = new Block(colonleft, statementListright, statementList, false);
+	Block block = new Block(colonleft, statementListright, statementList);
 	RESULT = block;
 :}
 ;
@@ -1490,7 +1536,7 @@ parameter ::=
 optional_class_type:classType T_VARIABLE:var
 {:
 	int start = classType == null ? varleft : classTypeleft;
-	Variable v = new Variable(varleft, varright, var);
+	VariableReference v = new VariableReference(varleft, varright, var, PHPVariableKind.LOCAL);
 	FormalParameter parameter = new FormalParameter(start, varright, classType, v);
 	RESULT = parameter;	
 :}
@@ -1498,16 +1544,15 @@ optional_class_type:classType T_VARIABLE:var
 | optional_class_type:classType T_REFERENCE:ref T_VARIABLE:var
 {:
 	int start = classType == null ? refleft : classTypeleft;
-	Variable v = new Variable(varleft, varright, var);
-	Reference ref_var = new Reference (refleft, varright, v);
-	FormalParameter parameter = new FormalParameter(start, varright, classType, ref_var);
+	VariableReference v = new VariableReference(varleft, varright, var, PHPVariableKind.LOCAL);
+	FormalParameter parameter = new FormalParameterByReference(start, varright, classType, v);
 	RESULT = parameter;	
 :}
 
 | optional_class_type:classType T_VARIABLE:var T_EQUAL static_scalar:scalar
 {:
 	int start = classType == null ? varleft : classTypeleft;
-	Variable v = new Variable(varleft, varright, var);
+	VariableReference v = new VariableReference(varleft, varright, var, PHPVariableKind.LOCAL);
 	FormalParameter parameter = new FormalParameter(start, scalarright, classType, v, scalar);
 	RESULT = parameter;	
 :}
@@ -1515,9 +1560,8 @@ optional_class_type:classType T_VARIABLE:var
 | optional_class_type:classType T_REFERENCE:ref T_VARIABLE:var T_EQUAL static_scalar:scalar
 {:
 	int start = classType == null ? refleft : classTypeleft;
-	Variable v = new Variable(varleft, varright, var);
-	Reference ref_var = new Reference (refleft, varright, v);
-	FormalParameter parameter = new FormalParameter(start, scalarright, classType, ref_var, scalar);
+	VariableReference v = new VariableReference(varleft, varright, var, PHPVariableKind.LOCAL);
+	FormalParameter parameter = new FormalParameterByReference(start, scalarright, classType, v, scalar);
 	RESULT = parameter;	
 :}
 ;
@@ -1530,14 +1574,14 @@ optional_class_type ::=
 
 | T_STRING:className
 {:
-	Identifier classId = new Identifier(classNameleft, classNameright, className);
-	RESULT = classId;
+	TypeReference reference = new TypeReference(classNameleft, classNameright, className);
+	RESULT = reference;
 :}
 
 | T_ARRAY:array
 {:
-	Identifier classId = new Identifier(arrayleft, arrayright, "array");
-	RESULT = classId;
+	TypeReference reference = new TypeReference(arrayleft, arrayright, "array");
+	RESULT = reference;
 :}
 ;
 
@@ -1549,49 +1593,50 @@ non_empty_function_call_parameter_list:paramsList
 
 | /* empty */
 {:
-	RESULT = new LinkedList();
+	PHPCallArgumentsList list = new PHPCallArgumentsList();
+	RESULT = list;
 :}
 ;
 
 non_empty_function_call_parameter_list ::=
 expr_without_variable:var
 {:
-	List paramsList = new LinkedList();
-	paramsList.add(var);	
+	PHPCallArgumentsList paramsList = new PHPCallArgumentsList();
+	paramsList.addNode(var);	
 	RESULT = paramsList;
 :}
 
 | variable:var
 {:
-	List paramsList = new LinkedList();
-	paramsList.add(var);	
+	PHPCallArgumentsList paramsList = new PHPCallArgumentsList();
+	paramsList.addNode(var);	
 	RESULT = paramsList;
 :}
 
 | T_REFERENCE:start w_variable:var
 {:
-	List paramsList = new LinkedList();
-	Expression var_ref = new Reference(startleft, varright, var);
-	paramsList.add(var_ref);	
+	PHPCallArgumentsList paramsList = new PHPCallArgumentsList();
+	Expression var_ref = new ReferenceExpression(startleft, varright, var);
+	paramsList.addNode(var_ref);	
 	RESULT = paramsList;
 :}
 
 | non_empty_function_call_parameter_list:paramsList T_COMMA expr_without_variable:var
 {:
-	paramsList.add(var);	
+	paramsList.addNode(var);
 	RESULT = paramsList;
 :}
 
 | non_empty_function_call_parameter_list:paramsList T_COMMA variable:var
 {:
-	paramsList.add(var);	
+	paramsList.addNode(var);	
 	RESULT = paramsList;
 :}
 
 | non_empty_function_call_parameter_list:paramsList T_COMMA T_REFERENCE:start w_variable:var
 {:
-	Expression var_ref = new Reference(startleft, varright, var);
-	paramsList.add(var_ref);	
+	Expression var_ref = new ReferenceExpression(startleft, varright, var);
+	paramsList.addNode(var_ref);
 	RESULT = paramsList;
 :}
 ;
@@ -1614,19 +1659,19 @@ global_var_list:list T_COMMA global_var:var
 global_var ::=
 T_VARIABLE:var
 {:
-	Variable variable = new Variable(varleft, varright, var);
+	VariableReference variable = new VariableReference(varleft, varright, var);
 	RESULT = variable;
 :}
 
 | T_DOLLAR:start r_variable:var
 {:
-	ReflectionVariable ref = new ReflectionVariable(startleft, varright, var);
+	ReflectionVariableReference ref = new ReflectionVariableReference(startleft, varright, var);
 	RESULT = ref;
 :}
 
 | T_DOLLAR:start T_CURLY_OPEN expr:varName T_CURLY_CLOSE:end
 {:
-	ReflectionVariable var = new ReflectionVariable(startleft, endright, varName);
+	ReflectionVariableReference var = new ReflectionVariableReference(startleft, endright, varName);
 	RESULT = var;
 :}
 ;
@@ -1634,31 +1679,31 @@ T_VARIABLE:var
 static_var_list ::=
 static_var_list:list T_COMMA T_VARIABLE:var
 {:
-	Variable v = new Variable(varleft, varright, var); 
+	VariableReference v = new VariableReference(varleft, varright, var); 
 	list.add(v);
 	RESULT = list;
 :}
 
-| static_var_list:list T_COMMA T_VARIABLE:var T_EQUAL static_scalar:expr
+| static_var_list:list T_COMMA T_VARIABLE:var T_EQUAL:varComment static_scalar:expr
 {:
-	Variable v = new Variable(varleft, varright, var); 
-	Assignment assignment = new Assignment(varleft, exprright, v, Assignment.OP_EQUAL, expr); 
+	VariableReference v = new VariableReference(varleft, varright, var); 
+	Assignment assignment = new Assignment(varleft, exprright, v, Assignment.OP_EQUAL, expr, varComment); 
 	list.add(assignment);
 	RESULT = list;
 :}
 
 | T_VARIABLE:var
 {:
-	Variable v = new Variable(varleft, varright, var); 
+	VariableReference v = new VariableReference(varleft, varright, var); 
 	List list = new LinkedList();
 	list.add(v);
 	RESULT = list;
 :}
 
-| T_VARIABLE:var T_EQUAL static_scalar:expr
+| T_VARIABLE:var T_EQUAL:varComment static_scalar:expr
 {:
-	Variable v = new Variable(varleft, varright, var); 
-	Assignment assignment = new Assignment(varleft, exprright, v, Assignment.OP_EQUAL, expr); 
+	VariableReference v = new VariableReference(varleft, varright, var); 
+	Assignment assignment = new Assignment(varleft, exprright, v, Assignment.OP_EQUAL, expr, varComment); 
 	List list = new LinkedList();
 	list.add(assignment);
 	RESULT = list;
@@ -1668,7 +1713,9 @@ static_var_list:list T_COMMA T_VARIABLE:var
 class_statement_list ::=
 class_statement_list:list class_statement:classStatement
 {:
-	list.add(classStatement);
+	if (classStatement != null) {
+		list.addAll(classStatement);
+	}
 	RESULT = list;
 :}
 
@@ -1680,16 +1727,39 @@ class_statement_list:list class_statement:classStatement
 ;
 
 class_statement ::=
-variable_modifiers:modifier class_variable_declaration:decList T_SEMICOLON:end
+variable_modifiers:modifier class_variable_declaration:decList T_SEMICOLON
 {:
-	FieldsDeclaration fieldsDeclaration = new FieldsDeclaration(modifierleft, endright, modifier.intValue(), decList);
-	RESULT = fieldsDeclaration;
+	List constList = new LinkedList();
+	Iterator i = decList.iterator();
+	while (i.hasNext()) {
+		ASTNode[] decl = (ASTNode[]) i.next();
+		VariableReference variable = (VariableReference)decl[0];
+		Expression initializer = (Expression)decl[1];
+		int start = variable.sourceStart();
+		int end = (initializer == null ? variable.sourceEnd() : initializer.sourceEnd());
+		constList.add (new PHPFieldDeclaration(variable, initializer, start, end, modifier.modifier, modifier.doc));
+	}
+	RESULT = constList;
 :}
 
-| class_constant_declaration:list T_SEMICOLON:end
+| class_constant_declaration:decList T_SEMICOLON
 {:
-	ClassConstantDeclaration classConstantDeclaration = new ClassConstantDeclaration(listleft, endright, list);
-	RESULT = classConstantDeclaration;
+	List constList = new LinkedList();
+	Iterator i = decList.iterator();
+	while (i.hasNext()) {
+		ASTNode[] decl = (ASTNode[]) i.next();
+		ConstantReference constant = (ConstantReference)decl[0];
+		Expression initializer = (Expression)decl[1];
+		
+		PHPDocBlock docBlock = null;
+		if (decl.length == 3) {
+			docBlock = (PHPDocBlock)decl[2];
+		}
+		int start = constant.sourceStart();
+		int end = (initializer == null ? constant.sourceEnd() : initializer.sourceEnd());
+		constList.add (new ClassConstantDeclaration(constant, initializer, start, end, docBlock));
+	}
+	RESULT = constList;
 :}
 
 | method_modifiers:modifier T_FUNCTION:start is_reference:isReference string_st:functionName
@@ -1697,11 +1767,15 @@ T_OPEN_PARENTHESE parameter_list:paramList T_CLOSE_PARENTHESE
 method_body:body
 {:
 	int methodStart = modifier == null ? startleft : modifierleft;
-	modifier = modifier == null ? PHPAspectParser.PUBLIC : modifier;
-	Identifier functionId = new Identifier(functionNameleft, functionNameright, functionName);
-	FunctionDeclaration functionDeclaration = new FunctionDeclaration(startleft, bodyright, functionId, paramList, body, isReference.booleanValue());
-	MethodDeclaration methodDeclaration = new MethodDeclaration(methodStart, bodyright, modifier.intValue(), functionDeclaration, true);
-	RESULT = methodDeclaration;
+	int modifierValue = modifier == null ? Modifiers.AccPublic : modifier.modifier;
+	PHPDocBlock docBlock = start;
+	if (modifier != null && modifier.doc != null) {
+		docBlock = modifier.doc;
+	}
+	PHPMethodDeclaration methodDeclaration = new PHPMethodDeclaration(startleft, bodyright, functionNameleft, functionNameright, functionName, modifierValue, paramList, body, isReference, docBlock);
+	List methodList = new LinkedList();
+	methodList.add(methodDeclaration);
+	RESULT = methodList;
 :}
 
 | T_VAR_COMMENT:varComment
@@ -1727,16 +1801,20 @@ variable_modifiers ::=
 non_empty_member_modifiers:list
 {:
 	int result = 0;
+	PHPDocBlock docBlock = null;
 	for (Iterator it = list.iterator(); it.hasNext() ; ) {
-		Integer modifier = (Integer)it.next();
-		result |= modifier.intValue();
+		PHPAspectParser.ModifierDocPair modifier = (PHPAspectParser.ModifierDocPair)it.next();
+		if (modifier.doc != null) {
+			docBlock = modifier.doc;
+		}
+		result |= modifier.modifier;
 	}
-	RESULT = new Integer(result);
+	RESULT = parser.new ModifierDocPair(result, docBlock);
 :}
 
-| T_VAR
+| T_VAR:var
 {:
-	RESULT = PHPAspectParser.PUBLIC;
+	RESULT = parser.new ModifierDocPair(Modifiers.AccPublic, var);
 :}
 ;
 
@@ -1749,11 +1827,15 @@ method_modifiers ::=
 | non_empty_member_modifiers:list
 {:
 	int result = 0;
+	PHPDocBlock docBlock = null;
 	for (Iterator it = list.iterator(); it.hasNext() ; ) {
-		Integer modifier = (Integer)it.next();
-		result |= modifier.intValue();
+		PHPAspectParser.ModifierDocPair modifier = (PHPAspectParser.ModifierDocPair)it.next();
+		if (modifier.doc != null) {
+			docBlock = modifier.doc;
+		}
+		result |= modifier.modifier;
 	}
-	RESULT = new Integer(result);
+	RESULT = parser.new ModifierDocPair(result, docBlock);
 :}
 ;
 
@@ -1773,48 +1855,48 @@ member_modifier:modifier
 ;
 
 member_modifier ::=
-T_PUBLIC
+T_PUBLIC:value
 {:
-	RESULT = PHPAspectParser.PUBLIC;
+	RESULT = parser.new ModifierDocPair(Modifiers.AccPublic, value);
 :}
 
-| T_PROTECTED
+| T_PROTECTED:value
 {:
-	RESULT = PHPAspectParser.PROTECTED;
+	RESULT = parser.new ModifierDocPair(Modifiers.AccProtected, value);
 :}
 
-| T_PRIVATE
+| T_PRIVATE:value
 {:
-	RESULT = PHPAspectParser.PRIVATE;
+	RESULT = parser.new ModifierDocPair(Modifiers.AccPrivate, value);
 :}
 
-| T_STATIC
+| T_STATIC:value
 {:
-	RESULT = PHPAspectParser.STATIC;
+	RESULT = parser.new ModifierDocPair(Modifiers.AccStatic, value);
 :}
 
-| T_ABSTRACT
+| T_ABSTRACT:value
 {:
-	RESULT = PHPAspectParser.ABSTRACT;
+	RESULT = parser.new ModifierDocPair(Modifiers.AccAbstract, value);
 :}
 
-| T_FINAL
+| T_FINAL:value
 {:
-	RESULT = PHPAspectParser.FINAL;
+	RESULT = parser.new ModifierDocPair(Modifiers.AccFinal, value);
 :}
 ;
 
 class_variable_declaration ::=
 class_variable_declaration:list T_COMMA T_VARIABLE:var
 {:
-	Variable varId = new Variable(varleft, varright, var);
+	VariableReference varId = new VariableReference(varleft, varright, var);
 	list.add(new ASTNode[] {varId, null});
 	RESULT = list;
 :}
 
 | class_variable_declaration:list T_COMMA T_VARIABLE:var T_EQUAL static_scalar:expr
 {:
-	Variable varId = new Variable(varleft, varright, var);
+	VariableReference varId = new VariableReference(varleft, varright, var);
 	list.add(new ASTNode[] {varId, expr});
 	RESULT = list;
 :}
@@ -1822,7 +1904,7 @@ class_variable_declaration:list T_COMMA T_VARIABLE:var
 | T_VARIABLE:var
 {:
 	List list = new LinkedList();
-	Variable varId = new Variable(varleft, varright, var);
+	VariableReference varId = new VariableReference(varleft, varright, var);
 	list.add(new ASTNode[] {varId, null});
 	RESULT = list;
 :}
@@ -1830,7 +1912,7 @@ class_variable_declaration:list T_COMMA T_VARIABLE:var
 | T_VARIABLE:var T_EQUAL static_scalar:expr
 {:
 	List list = new LinkedList();
-	Variable varId = new Variable(varleft, varright, var);
+	VariableReference varId = new VariableReference(varleft, varright, var);
 	list.add(new ASTNode[] {varId, expr});
 	RESULT = list;
 :}
@@ -1839,16 +1921,16 @@ class_variable_declaration:list T_COMMA T_VARIABLE:var
 class_constant_declaration ::=
 class_constant_declaration:list T_COMMA T_STRING:constName T_EQUAL static_scalar:expr
 {:
-	Identifier constId = new Identifier(constNameleft, constNameright, constName);
+	ConstantReference constId = new ConstantReference(constNameleft, constNameright, constName);
 	list.add(new ASTNode[] {constId, expr});
 	RESULT = list;
 :}
 
-| T_CONST T_STRING:constName T_EQUAL static_scalar:expr
+| T_CONST:value T_STRING:constName T_EQUAL static_scalar:expr
 {:
 	List list = new LinkedList();
-	Identifier constId = new Identifier(constNameleft, constNameright, constName);
-	list.add(new ASTNode[] {constId, expr});
+	ConstantReference constId = new ConstantReference(constNameleft, constNameright, constName);
+	list.add(new ASTNode[] {constId, expr, value});
 	RESULT = list;
 :}
 ;
@@ -1902,21 +1984,20 @@ T_LIST:start T_OPEN_PARENTHESE assignment_list:varList T_CLOSE_PARENTHESE:close 
 	RESULT = list; 
 :}
 
-| variable:var T_EQUAL expr:expr
+| variable:var T_EQUAL:varComment expr:expr
 {: 
-	RESULT = new Assignment(varleft, exprright, var, Assignment.OP_EQUAL, expr); 
+	RESULT = new Assignment(varleft, exprright, var, Assignment.OP_EQUAL, expr, varComment); 
 :}
 
-| variable:var T_EQUAL T_REFERENCE:reftoken variable:refvar
+| variable:var T_EQUAL:varComment T_REFERENCE:reftoken variable:refvar
 {: 
-	RESULT = new Assignment(varleft, refvarright, var, Assignment.OP_EQUAL, new Reference(reftokenleft, refvarright, refvar)); 
+	RESULT = new Assignment(varleft, refvarright, var, Assignment.OP_REF_EQUAL, refvar, varComment); 
 :}
 
-| variable:var T_EQUAL T_REFERENCE:reftoken T_NEW:start class_name_reference:className ctor_arguments:ctor
+| variable:var T_EQUAL:varComment T_REFERENCE:reftoken T_NEW:start class_name_reference:className ctor_arguments:ctor
 {:
 	ClassInstanceCreation classInstanceCreation = new ClassInstanceCreation(startleft, ctorright, className, ctor);
-	Reference reference = new Reference(reftokenleft, ctorright, classInstanceCreation);
-	Assignment assignment = new Assignment(varleft, ctorright, var, Assignment.OP_EQUAL, reference);
+	Assignment assignment = new Assignment(varleft, ctorright, var, Assignment.OP_REF_EQUAL, classInstanceCreation, varComment);
 	RESULT = assignment;
 :} 
 
@@ -2154,8 +2235,7 @@ T_LIST:start T_OPEN_PARENTHESE assignment_list:varList T_CLOSE_PARENTHESE:close 
 
 | T_OPEN_PARENTHESE:start expr:expr T_CLOSE_PARENTHESE:end
 {:
-	ParenthesisExpression parenthesisExpression = new ParenthesisExpression(startleft, endright, expr);
-	RESULT = parenthesisExpression; 
+	RESULT = expr; 
 :}
 
 | expr:condition T_QUESTION_MARK expr:ifTrue T_NEKUDOTAIM expr:ifFalse
@@ -2205,13 +2285,12 @@ T_LIST:start T_OPEN_PARENTHESE assignment_list:varList T_CLOSE_PARENTHESE:close 
 
 | T_EXIT:start exit_expr:expr 
 {:
-	List expList = new LinkedList();
+	PHPCallArgumentsList list = new PHPCallArgumentsList();
 	if (expr != null) {
-		expList.add(expr);
+		list.addNode(expr);
 	}
-	Identifier id = new Identifier(startleft, startright, start);
-	FunctionName name = new FunctionName(startleft, startright, id);
-	FunctionInvocation result = new FunctionInvocation(startleft, exprright, name, expList);
+	SimpleReference functionName = new SimpleReference(startleft, startright, start);
+	PHPCallExpression result = new PHPCallExpression(startleft, exprright, null, functionName, list);
 	RESULT = result;
 :}
 
@@ -2240,13 +2319,12 @@ T_LIST:start T_OPEN_PARENTHESE assignment_list:varList T_CLOSE_PARENTHESE:close 
 
 | T_PRINT:start expr:expr
 {:
-	List expList = new LinkedList();
+	PHPCallArgumentsList list = new PHPCallArgumentsList();
 	if (expr != null) {
-		expList.add(expr);
+		list.addNode(expr);
 	}
-	Identifier id = new Identifier(startleft, startright, "print");
-	FunctionName name = new FunctionName(startleft, startright, id);
-	FunctionInvocation result = new FunctionInvocation(startleft, exprright, name, expList);
+	SimpleReference name = new SimpleReference(startleft, startright, "print");
+	PHPCallExpression result = new PHPCallExpression(startleft, exprright, null, name, list);
 	RESULT = result;
 :}
 ;
@@ -2254,39 +2332,33 @@ T_LIST:start T_OPEN_PARENTHESE assignment_list:varList T_CLOSE_PARENTHESE:close 
 function_call ::=
 string_st:functionName T_OPEN_PARENTHESE function_call_parameter_list:parameters T_CLOSE_PARENTHESE:end
 {: 
-	Identifier name = new Identifier(functionNameleft, functionNameright, functionName);
-	FunctionName fName = new FunctionName(functionNameleft, functionNameright, name);
-	RESULT = new FunctionInvocation(functionNameleft, endright, fName, parameters); 
+	SimpleReference name = new SimpleReference(functionNameleft, functionNameright, functionName);
+	RESULT = new PHPCallExpression(functionNameleft, endright, null, name, parameters); 
 :}
 
 | fully_qualified_class_name:className T_PAAMAYIM_NEKUDOTAYIM T_STRING:functionName T_OPEN_PARENTHESE function_call_parameter_list:parameters T_CLOSE_PARENTHESE:end
 {: 
-	Identifier name = new Identifier(functionNameleft, functionNameright, functionName);
-	FunctionName fName = new FunctionName(functionNameleft, functionNameright, name);
-	FunctionInvocation functionInvocation = new FunctionInvocation(functionNameleft, endright, fName, parameters); 
-	StaticMethodInvocation staticMethodInvocation = new StaticMethodInvocation(classNameleft, endright, className, functionInvocation); 
+	SimpleReference name = new SimpleReference(functionNameleft, functionNameright, functionName);
+	StaticMethodInvocation staticMethodInvocation = new StaticMethodInvocation(classNameleft, endright, className, name, parameters); 
 	RESULT = staticMethodInvocation;
 :}
 
 | fully_qualified_class_name:className T_PAAMAYIM_NEKUDOTAYIM variable_without_objects:reflectionName T_OPEN_PARENTHESE function_call_parameter_list:parameters T_CLOSE_PARENTHESE:end
 {: 
-	FunctionName functionName = new FunctionName(reflectionNameleft, reflectionNameright, reflectionName);
-	FunctionInvocation functionInvocation = new FunctionInvocation(reflectionNameleft, endright, functionName, parameters); 
-	StaticMethodInvocation staticMethodInvocation = new StaticMethodInvocation(classNameleft, endright, className, functionInvocation); 
-	RESULT = staticMethodInvocation;
+	ReflectionStaticMethodInvocation functionInvocation = new ReflectionStaticMethodInvocation(classNameleft, endright, className, reflectionName, parameters); 
+	RESULT = functionInvocation;
 :}
 
 | variable_without_objects:reflectionName T_OPEN_PARENTHESE function_call_parameter_list:parameters T_CLOSE_PARENTHESE:end
 {:
-	FunctionName functionName = new FunctionName(reflectionNameleft, reflectionNameright, reflectionName); 
-	RESULT = new FunctionInvocation(reflectionNameleft, endright, functionName, parameters); 
+	RESULT = new ReflectionCallExpression(reflectionNameleft, endright, null, reflectionName, parameters); 
 :}
 ;
 
 fully_qualified_class_name ::=
 T_STRING:className
 {:
-	Identifier name = new Identifier(classNameleft, classNameright, className);
+	TypeReference name = new TypeReference(classNameleft, classNameright, className);
 	RESULT = name;
 :}
 ;
@@ -2294,8 +2366,8 @@ T_STRING:className
 class_name_reference ::=
 T_STRING:className
 {:
-	Identifier name = new Identifier(classNameleft, classNameright, className);
-	RESULT = new ClassName(classNameleft, classNameright, name);
+	TypeReference classReference = new TypeReference(classNameleft, classNameright, className);
+	RESULT = classReference;
 :}
 
 | dynamic_class_name_reference:className
@@ -2312,24 +2384,20 @@ base_variable:var T_OBJECT_OPERATOR object_property:firstVarProperty dynamic_cla
 	list.addFirst(firstVarProperty);
 	
 	// now create the dispatch(es) nodes 
-	Dispatch dispatch = null;
-	VariableBase dispatcher = var;
+	Expression dispatcher = var;
+
 	Iterator listIt = list.iterator();
 	while (listIt.hasNext()) {
-		VariableBase property = (VariableBase)listIt.next();
-		dispatch = parser.createDispatch(dispatcher, property);
-		dispatcher = dispatch;
+		Expression property = (Expression)listIt.next();
+		dispatcher = parser.createDispatch(dispatcher, property);
 	}	
 	
-	// create class name from the dispatch
-	ClassName name = new ClassName(varleft, propertyListright, dispatch);
-	RESULT = name;
+	RESULT = dispatcher;
 :}
 
 | base_variable:var 
 {:
-	 ClassName name = new ClassName(varleft, varright, var);
-	 RESULT = name;
+	 RESULT = var;
 :}
 ;
 
@@ -2373,7 +2441,7 @@ exit_expr ::=
 ctor_arguments ::=
 /* empty */
 {:
-	RESULT = new LinkedList();
+	RESULT = new PHPCallArgumentsList();
 :}
 
 | T_OPEN_PARENTHESE function_call_parameter_list:paramsList T_CLOSE_PARENTHESE
@@ -2471,8 +2539,8 @@ common_scalar:scalar
 static_class_constant ::=
 T_STRING:className T_PAAMAYIM_NEKUDOTAYIM T_STRING:varName
 {:
-	Identifier vname = new Identifier(varNameleft, varNameright, varName);
-	Identifier cname = new Identifier(classNameleft, classNameright, className);
+	ConstantReference vname = new ConstantReference(varNameleft, varNameright, varName);
+	TypeReference cname = new TypeReference(classNameleft, classNameright, className);
 	StaticConstantAccess constant = new StaticConstantAccess(classNameleft, varNameright, cname, vname); 
 	RESULT = constant;
 :}
@@ -2505,12 +2573,6 @@ string_st:scalar
 | T_QUATE:start encaps_list:list T_QUATE:end
 {:
 	Quote quote = new Quote(startleft, endright, list, Quote.QT_QUOTE);
-	RESULT = quote;
-:}
-
-| T_SINGLE_QUATE:start encaps_list:list T_SINGLE_QUATE:end
-{:
-	Quote quote = new Quote(startleft, endright, list, Quote.QT_SINGLE);
 	RESULT = quote;
 :}
 
@@ -2599,12 +2661,15 @@ variable ::=
 base_variable_with_function_calls:var T_OBJECT_OPERATOR object_property:memberProperty method_or_not:paramsList variable_properties:propertyList
 {:
 	// get the last property 
-	VariableBase firstVarProperty = null;
+	Expression firstVarProperty = null;
 	if (paramsList == null) {
 		firstVarProperty = memberProperty;
 	} else {
-		FunctionName functionName = new FunctionName(memberPropertyleft, memberPropertyright, memberProperty);
-		firstVarProperty = new FunctionInvocation(memberPropertyleft, paramsListright, functionName, paramsList);
+		if (memberProperty.getClass().equals(SimpleReference.class)) {
+			firstVarProperty = new PHPCallExpression(memberPropertyleft, paramsListright, null, (SimpleReference)memberProperty, paramsList);
+		} else {
+			firstVarProperty = new ReflectionCallExpression(memberPropertyleft, paramsListright, null, memberProperty, paramsList);
+		}
 	}
 
 	// then get the aggregated list of properties (->...->...->...)
@@ -2612,15 +2677,15 @@ base_variable_with_function_calls:var T_OBJECT_OPERATOR object_property:memberPr
 	list.addFirst(firstVarProperty);
 	
 	// now create the dispatch(es) nodes 
-	Dispatch dispatch = null;
-	VariableBase dispatcher = var;
+	Expression dispatcher = var;
+	
 	Iterator listIt = list.iterator();
 	while (listIt.hasNext()) {
-		VariableBase property = (VariableBase)listIt.next();
-		dispatch = parser.createDispatch(dispatcher, property);
-		dispatcher = dispatch;
-	}	
-	RESULT = dispatch;
+		Expression property = (Expression)listIt.next();
+		dispatcher = parser.createDispatch(dispatcher, property);
+	}
+
+	RESULT = dispatcher;
 :}
 
 | base_variable_with_function_calls:var
@@ -2645,12 +2710,15 @@ variable_properties:variables variable_property:variableProperty
 variable_property ::=
 T_OBJECT_OPERATOR object_property:memberProperty method_or_not:paramsList
 {:
-	VariableBase result = null;
+	Expression result = null;
 	if (paramsList == null) {
 		result = memberProperty;
 	} else {
-		FunctionName functionName = new FunctionName(memberPropertyleft, memberPropertyright, memberProperty);
-		result = new FunctionInvocation(memberPropertyleft, paramsListright, functionName, paramsList);
+		if (memberProperty.getClass().equals(SimpleReference.class)) {
+			result = new PHPCallExpression(memberPropertyleft, paramsListright, null, (SimpleReference)memberProperty, paramsList);
+		} else {
+			result = new ReflectionCallExpression(memberPropertyleft, paramsListright, null, memberProperty, paramsList);
+		}
 	}
 	RESULT = result;
 :}
@@ -2678,11 +2746,11 @@ reference_variable:var
 {:
 	// the ref_count counts the number of reflection (DOLLAR sign) so now we should 
 	// accomulate the dolars into reflection variables
-	Variable finalVar = var;
+	Expression finalVar = var;
 	for (int i=0; i<ref_count.intValue(); i++) {
-		finalVar = new ReflectionVariable(ref_countright - i - 1, varright, finalVar);				
+		finalVar = new ReflectionVariableReference(ref_countright - i - 1, varright, finalVar);				
 	}
-	RESULT = finalVar;	
+	RESULT = finalVar;
 :}
 ;
 
@@ -2712,11 +2780,11 @@ reference_variable:var
 {:
 	// the ref_count counts the number of reflection (DOLLAR sign) so now we should 
 	// accomulate the dolars into reflection variables
-	VariableBase finalVar = var;
+	Expression finalVar = var;
 	for (int i=0; i<ref_count.intValue(); i++) {
-		finalVar = new ReflectionVariable(ref_countright - i - 1, varright, finalVar);				
+		finalVar = new ReflectionVariableReference(ref_countright - i - 1, varright, finalVar);				
 	}
-	RESULT = finalVar;	
+	RESULT = finalVar;
 :}
 
 | static_member:staticFieldAccess
@@ -2728,13 +2796,23 @@ reference_variable:var
 reference_variable ::=
 reference_variable:varName T_OPEN_RECT dim_offset:index T_CLOSE_RECT:end
 {:
-	Variable var = new ArrayAccess(varNameleft, endright, varName, index, ArrayAccess.VARIABLE_ARRAY);
+	Expression var;
+	if(varName.getKind() == ExpressionConstants.E_IDENTIFIER) { // VariableReference - $a
+		var = new ArrayVariableReference(varNameleft, endright, ((SimpleReference)varName).getName(), index, ArrayVariableReference.VARIABLE_ARRAY);
+	} else {
+		var = new ReflectionArrayVariableReference(varNameleft, endright, varName, index, ReflectionArrayVariableReference.VARIABLE_ARRAY);
+	}
 	RESULT = var;
 :}
 
 | reference_variable:varName T_CURLY_OPEN expr:index T_CURLY_CLOSE:end
 {:
-	Variable var = new ArrayAccess(varNameleft, endright, varName, index, ArrayAccess.VARIABLE_HASHTABLE);
+	Expression var;
+	if(varName.getKind() == ExpressionConstants.E_IDENTIFIER) { // VariableReference - $a
+		var = new ArrayVariableReference(varNameleft, endright, ((SimpleReference)varName).getName(), index, ArrayVariableReference.VARIABLE_HASHTABLE);
+	} else {
+		var = new ReflectionArrayVariableReference(varNameleft, endright, varName, index, ReflectionArrayVariableReference.VARIABLE_HASHTABLE);
+	}
 	RESULT = var;
 :}
 
@@ -2748,7 +2826,7 @@ tracked_variable:var
 
 | T_DOLLAR:start T_CURLY_OPEN expr:expr T_CURLY_CLOSE:end
 {:
-	ReflectionVariable var = new ReflectionVariable(startleft, endright, expr);
+	ReflectionVariableReference var = new ReflectionVariableReference(startleft, endright, expr);
 	RESULT = var;	 
 :}	
 ;
@@ -2780,13 +2858,23 @@ object_dim_list:var
 object_dim_list ::=
 object_dim_list:var T_OPEN_RECT dim_offset:index T_CLOSE_RECT:end
 {:
-	Variable varArray = new ArrayAccess(varleft, endright, var, index, ArrayAccess.VARIABLE_ARRAY);
+	Expression varArray;
+	if(var.getKind() == ExpressionConstants.E_IDENTIFIER) { // VariableReference - $a
+		varArray = new ArrayVariableReference(varleft, endright, ((SimpleReference)var).getName(), index, ArrayVariableReference.VARIABLE_ARRAY);
+	} else {
+		varArray = new ReflectionArrayVariableReference(varleft, endright, var, index, ReflectionArrayVariableReference.VARIABLE_ARRAY);
+	}
 	RESULT = varArray;	
 :}
 
 | object_dim_list:var T_CURLY_OPEN expr:index T_CURLY_CLOSE:end
 {:
-	Variable varArray = new ArrayAccess(varleft, endright, var, index, ArrayAccess.VARIABLE_HASHTABLE);
+	Expression varArray;
+	if(var.getKind() == ExpressionConstants.E_IDENTIFIER) { // VariableReference - $a
+		varArray = new ArrayVariableReference(varleft, endright, ((SimpleReference)var).getName(), index, ArrayVariableReference.VARIABLE_HASHTABLE);
+	} else {
+		varArray = new ReflectionArrayVariableReference(varleft, endright, var, index, ReflectionArrayVariableReference.VARIABLE_HASHTABLE);
+	}
 	RESULT = varArray;	
 :}
 
@@ -2797,12 +2885,12 @@ object_dim_list:var T_OPEN_RECT dim_offset:index T_CLOSE_RECT:end
 variable_name ::=
 string_st:varName
 {:
-	RESULT = new Variable(varNameleft, varNameright, varName); 
+	RESULT = new SimpleReference(varNameleft, varNameright, varName); 
 :}
 
 | T_CURLY_OPEN:start expr:expr T_CURLY_CLOSE:end
 {:
-	RESULT = new ReflectionVariable(startleft, endright, expr); 
+	RESULT = new ReflectionVariableReference(startleft, endright, expr); 
 :}
 ;
 
@@ -2902,7 +2990,7 @@ non_empty_array_pair_list:list T_COMMA expr:key T_DOUBLE_ARROW expr:value
 
 | non_empty_array_pair_list:list T_COMMA expr:key T_DOUBLE_ARROW T_REFERENCE:start w_variable:var
 {:
-	Reference value = new Reference(startleft, varright, var);
+	ReferenceExpression value = new ReferenceExpression(startleft, varright, var);
 	ArrayElement element = new ArrayElement(keyleft, varright, key, value);	
 	list.add(element);
 	RESULT = list;
@@ -2910,7 +2998,7 @@ non_empty_array_pair_list:list T_COMMA expr:key T_DOUBLE_ARROW expr:value
 
 | non_empty_array_pair_list:list T_COMMA T_REFERENCE:start w_variable:var
 {:
-	Reference ref = new Reference(startleft, varright, var);
+	ReferenceExpression ref = new ReferenceExpression(startleft, varright, var);
 	ArrayElement element = new ArrayElement(startleft, varright, ref);	
 	list.add(element);
 	RESULT = list;
@@ -2919,7 +3007,7 @@ non_empty_array_pair_list:list T_COMMA expr:key T_DOUBLE_ARROW expr:value
 | expr:key T_DOUBLE_ARROW T_REFERENCE:start w_variable:var
 {:
 	List list = new LinkedList();
-	Reference value = new Reference(startleft, varright, var);
+	ReferenceExpression value = new ReferenceExpression(startleft, varright, var);
 	ArrayElement element = new ArrayElement(keyleft, varright, key, value);	
 	list.add(element);
 	RESULT = list;
@@ -2928,7 +3016,7 @@ non_empty_array_pair_list:list T_COMMA expr:key T_DOUBLE_ARROW expr:value
 | T_REFERENCE:start w_variable:var
 {:
 	List list = new LinkedList();
-	Reference ref = new Reference(startleft, varright, var);
+	ReferenceExpression ref = new ReferenceExpression(startleft, varright, var);
 	ArrayElement element = new ArrayElement(startleft, varright, ref);	
 	list.add(element);
 	RESULT = list;
@@ -2942,72 +3030,9 @@ encaps_list:list encaps_var:var
 	RESULT = list;
 :}
 
-| encaps_list:list string_st:string
-{:
-	Scalar scalar = new Scalar(stringleft, stringright, string, Scalar.TYPE_STRING);
-	list.add(scalar);
-	RESULT = list;
-:}
-
-| encaps_list:list T_NUM_STRING:string
-{:
-	Scalar scalar = new Scalar(stringleft, stringright, string, Scalar.TYPE_STRING);
-	list.add(scalar);
-	RESULT = list;
-:}
-
 | encaps_list:list T_ENCAPSED_AND_WHITESPACE:string
 {:
-	Scalar scalar = new Scalar(stringleft, stringright, string, Scalar.TYPE_UNKNOWN);
-	list.add(scalar);
-	RESULT = list;
-:}
-
-| encaps_list:list T_CHARACTER:string
-{:
-	Scalar scalar = new Scalar(stringleft, stringright, string, Scalar.TYPE_STRING);
-	list.add(scalar);
-	RESULT = list;
-:}
-
-| encaps_list:list T_BAD_CHARACTER:string
-{:
-	Scalar scalar = new Scalar(stringleft, stringright, string, Scalar.TYPE_STRING);
-	list.add(scalar);
-	RESULT = list;
-:}
-
-| encaps_list:list T_OPEN_RECT:string
-{:
-	Scalar scalar = new Scalar(stringleft, stringright, "[", Scalar.TYPE_STRING);
-	list.add(scalar);
-	RESULT = list;
-:}
-
-| encaps_list:list T_CLOSE_RECT:string
-{:
-	Scalar scalar = new Scalar(stringleft, stringright, "]", Scalar.TYPE_STRING);
-	list.add(scalar);
-	RESULT = list;
-:}
-
-| encaps_list:list T_CURLY_OPEN:string
-{:
-	Scalar scalar = new Scalar(stringleft, stringright, "{", Scalar.TYPE_STRING);
-	list.add(scalar);
-	RESULT = list;
-:}
-
-| encaps_list:list T_CURLY_CLOSE:string
-{:
-	Scalar scalar = new Scalar(stringleft, stringright, "}", Scalar.TYPE_STRING);
-	list.add(scalar);
-	RESULT = list;
-:}
-
-| encaps_list:list T_OBJECT_OPERATOR:string
-{:
-	Scalar scalar = new Scalar(stringleft, stringright, "->", Scalar.TYPE_STRING);
+	Scalar scalar = new Scalar(stringleft, stringright, string, string == null ? Scalar.TYPE_UNKNOWN : Scalar.TYPE_STRING);
 	list.add(scalar);
 	RESULT = list;
 :}
@@ -3026,33 +3051,32 @@ tracked_variable:var
 
 | tracked_variable:varName T_OPEN_RECT encaps_var_offset:index T_CLOSE_RECT:end
 {:
-	Variable var = new ArrayAccess(varNameleft, endright, varName, index, ArrayAccess.VARIABLE_ARRAY);
+	VariableReference var = new ArrayVariableReference(varNameleft, endright, varName.getName(), index, ArrayVariableReference.VARIABLE_ARRAY);
 	RESULT = var;
 :}
 
 | tracked_variable:var T_OBJECT_OPERATOR string_st:string
 {:
-	Variable property = new Variable(stringleft, stringright, string);
-	Dispatch dispatch = parser.createDispatch(var, property);
+	VariableReference property = new VariableReference(stringleft, stringright, string);
+	Expression dispatch = parser.createDispatch(var, property);
 	RESULT = dispatch;
 :}
 
 | T_DOLLAR_OPEN_CURLY_BRACES:start expr:expr T_CURLY_CLOSE:end
 {:
-	ReflectionVariable var = new ReflectionVariable(startleft, endright, expr);
+	ReflectionVariableReference var = new ReflectionVariableReference(startleft, endright, expr);
 	RESULT = var;
 :}	
 
 | T_DOLLAR_OPEN_CURLY_BRACES:start T_STRING_VARNAME:varName T_OPEN_RECT expr:index T_CLOSE_RECT T_CURLY_CLOSE:end
 {:
-	Variable var = new Variable(varNameleft, varNameright, varName);
-	Variable indexedVar = new ArrayAccess(startleft, endright, var, index, ArrayAccess.VARIABLE_ARRAY);
+	VariableReference indexedVar = new ArrayVariableReference(startleft, endright, varName, index, ArrayVariableReference.VARIABLE_ARRAY);
 	RESULT = indexedVar;
 :}
 
 | T_CURLY_OPEN_WITH_DOLAR:start variable:var T_CURLY_CLOSE:end
 {:
-	ReflectionVariable ref = new ReflectionVariable(startleft, endright, var);
+	ReflectionVariableReference ref = new ReflectionVariableReference(startleft, endright, var);
 	RESULT = ref;
 :}
 ;
@@ -3060,8 +3084,8 @@ tracked_variable:var
 encaps_var_offset ::=
 string_st:string
 {:
-	Identifier id = new Identifier(stringleft, stringright, string);
-	RESULT = id;
+	Scalar scalar = new Scalar(stringleft,stringright, string, Scalar.TYPE_STRING);
+	RESULT = scalar;
 :}
 
 | T_NUM_STRING:num
@@ -3079,19 +3103,17 @@ string_st:string
 internal_functions_in_yacc ::=
 T_ISSET:start T_OPEN_PARENTHESE isset_variables:varList T_CLOSE_PARENTHESE:end
 {:
-	Identifier id = new Identifier(startleft, startright, "isset");
-	FunctionName name = new FunctionName(startleft, startright, id);
-	FunctionInvocation result = new FunctionInvocation(startleft, endright, name, varList);
+	SimpleReference name = new SimpleReference(startleft, startright, "isset");
+	PHPCallExpression result = new PHPCallExpression(startleft, endright, null, name, varList);
 	RESULT = result;
 :}
 
 | T_EMPTY:start T_OPEN_PARENTHESE variable:var T_CLOSE_PARENTHESE:end
 {:
-	Identifier id = new Identifier(startleft, startright, "empty");
-	FunctionName name = new FunctionName(startleft, startright, id);
-	LinkedList varList = new LinkedList();
-	varList.add(var);
-	FunctionInvocation result = new FunctionInvocation(startleft, endright, name, varList);
+	SimpleReference name = new SimpleReference(startleft, startright, "empty");
+	PHPCallArgumentsList varList = new PHPCallArgumentsList();
+	varList.addNode(var);
+	PHPCallExpression result = new PHPCallExpression(startleft, endright, null, name, varList);
 	RESULT = result;
 :}
 
@@ -3109,11 +3131,10 @@ T_ISSET:start T_OPEN_PARENTHESE isset_variables:varList T_CLOSE_PARENTHESE:end
 
 | T_EVAL:start T_OPEN_PARENTHESE expr:expr T_CLOSE_PARENTHESE:end
 {:
-	Identifier id = new Identifier(startleft, startright, "eval");
-	FunctionName name = new FunctionName(startleft, startright, id);
-	LinkedList exprList = new LinkedList();
-	exprList.add(expr);
-	FunctionInvocation result = new FunctionInvocation(startleft, endright, name, exprList);
+	SimpleReference name = new SimpleReference(startleft, startright, "eval");
+	PHPCallArgumentsList exprList = new PHPCallArgumentsList();
+	exprList.addNode(expr);
+	PHPCallExpression result = new PHPCallExpression(startleft, endright, null, name, exprList);
 	RESULT = result;
 :}
 
@@ -3133,14 +3154,14 @@ T_ISSET:start T_OPEN_PARENTHESE isset_variables:varList T_CLOSE_PARENTHESE:end
 isset_variables ::=
 variable:var 
 {:
-	List list = new LinkedList();
-	list.add(var);
+	PHPCallArgumentsList list = new PHPCallArgumentsList();
+	list.addNode(var);
 	RESULT = list;	
 :}
 
 | isset_variables:varList T_COMMA variable:var
 {:
-	varList.add(var);
+	varList.addNode(var);
 	RESULT = varList;
 :}
 ;
@@ -3148,7 +3169,7 @@ variable:var
 class_constant ::=
 fully_qualified_class_name:className T_PAAMAYIM_NEKUDOTAYIM T_STRING:varName
 {:
-	Identifier name = new Identifier(varNameleft, varNameright, varName);
+	ConstantReference name = new ConstantReference(varNameleft, varNameright, varName);
 	StaticConstantAccess constant = new StaticConstantAccess(classNameleft, varNameright, className, name); 
 	RESULT = constant;
 :}
@@ -3157,7 +3178,7 @@ fully_qualified_class_name:className T_PAAMAYIM_NEKUDOTAYIM T_STRING:varName
 tracked_variable ::=
 T_VARIABLE:varName
 {:
-	RESULT = new Variable(varNameleft, varNameright, varName); 
+	RESULT = new VariableReference(varNameleft, varNameright, varName, PHPVariableKind.LOCAL);
 :}
 ;
 

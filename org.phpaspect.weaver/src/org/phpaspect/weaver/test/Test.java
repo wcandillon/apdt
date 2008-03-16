@@ -11,7 +11,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.eclipse.php.internal.core.ast.nodes.Program;
 import org.eclipse.php.internal.core.ast.visitor.CodeBuilder;
-import org.phpaspect.weaver.parser.ASTGenerator;
+import org.phpaspect.weaver.internal.core.compiler.ast.ASTGenerator;
 import org.phpaspect.weaver.xslt.XSLTProcessor;
 
 import net.sf.saxon.TransformerFactoryImpl;

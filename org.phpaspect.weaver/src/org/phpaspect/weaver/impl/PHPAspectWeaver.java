@@ -20,7 +20,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
 import org.phpaspect.weaver.Weaver;
-import org.phpaspect.weaver.parser.ASTGenerator;
+import org.phpaspect.weaver.internal.core.compiler.ast.ASTGenerator;
 import org.phpaspect.weaver.xslt.XSLTProcessor;
 
 public class PHPAspectWeaver implements Weaver {
