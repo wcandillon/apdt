@@ -24,6 +24,8 @@ import org.phpaspect.apdt.internal.core.documentModel.parser.regions.PHPAspectRe
 %unicode
 %caseless
 
+
+
 %state ST_PHP_IN_SCRIPTING
 %state ST_PHP_DOUBLE_QUOTES
 %state ST_PHP_BACKQUOTE
@@ -38,30 +40,31 @@ import org.phpaspect.apdt.internal.core.documentModel.parser.regions.PHPAspectRe
 %state ST_PHP_LINE_COMMENT
 %state ST_PHP_HIGHLIGHTING_ERROR
 
+
 %{
     public PHPAspectLexer(int state){
         initialize(state);
     }
     public void reset(char array[], int offset, int length) {
-        this.yy_buffer = array;
-        this.yy_currentPos = offset;
-        this.yy_markedPos = offset;
-        this.yy_pushbackPos = offset;
+        this.zzBuffer = array;
+        this.zzCurrentPos = offset;
+        this.zzMarkedPos = offset;
+        this.zzPushbackPos = offset;
         this.yychar = offset;
-        this.yy_endRead = offset + length;
-        this.yy_startRead = offset;
-        this.yy_atEOF = yy_currentPos >= yy_endRead;
+        this.zzEndRead = offset + length;
+        this.zzStartRead = offset;
+        this.zzAtEOF = zzCurrentPos >= zzEndRead;
         this.firstPos = offset;
     }
 
     public void reset(java.io.Reader  reader, char[] buffer, int[] parameters){
-    	this.yy_reader = reader;
-    	this.yy_buffer = buffer;
-    	this.yy_markedPos = parameters[0];
-    	this.yy_pushbackPos = parameters[1];
-    	this.yy_currentPos = parameters[2];
-    	this.yy_startRead = parameters[3];
-    	this.yy_endRead = parameters[4];
+    	this.zzReader = reader;
+    	this.zzBuffer = buffer;
+    	this.zzMarkedPos = parameters[0];
+    	this.zzPushbackPos = parameters[1];
+    	this.zzCurrentPos = parameters[2];
+    	this.zzStartRead = parameters[3];
+    	this.zzEndRead = parameters[4];
     	this.yyline = parameters[5];  
     	initialize(parameters[6]);
     }
@@ -71,31 +74,31 @@ import org.phpaspect.apdt.internal.core.documentModel.parser.regions.PHPAspectRe
     }
     
     public int[] getParamenters(){
-    	return new int[]{yy_markedPos, yy_pushbackPos, yy_currentPos, yy_startRead, yy_endRead, yyline, yy_lexical_state};
+    	return new int[]{zzMarkedPos, zzPushbackPos, zzCurrentPos, zzStartRead, zzEndRead, yyline, zzLexicalState};
     }
 
-    protected int getYy_lexical_state() {
-        return yy_lexical_state;
+    protected int getZZLexicalState() {
+        return zzLexicalState;
     }
 
-    protected int getYy_markedPos() {
-        return yy_markedPos;
+    protected int getZZMarkedPos() {
+        return zzMarkedPos;
     }
 
-    protected int getYy_endRead() {
-        return yy_endRead;
+    protected int getZZEndRead() {
+        return zzEndRead;
     }
 
-    public char[] getYy_buffer() {
-        return yy_buffer;
+    public char[] getZZBuffer() {
+        return zzBuffer;
     }
     
-    protected int getYy_startRead() {
-    	return this.yy_startRead;
+    protected int getZZStartRead() {
+    	return this.zzStartRead;
     }
 
-    protected int getYy_pushBackPosition() {
-    	return this.yy_pushbackPos;
+    protected int getZZPushBackPosition() {
+    	return this.zzPushbackPos;
     }
 
 	protected void pushBack(int i) {
@@ -155,7 +158,6 @@ PHP_OPERATOR=       "=>"|"++"|"--"|"==="|"!=="|"=="|"!="|"<>"|"<="|">="|"+="|"-=
 }
 
 <ST_PHP_IN_SCRIPTING>"const" {
-
     return PHP_CONST;
 }
 

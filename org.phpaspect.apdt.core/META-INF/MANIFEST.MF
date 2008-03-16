@@ -15,21 +15,14 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.filesystem,
  org.eclipse.php.debug.core
 Eclipse-LazyStart: true
-Export-Package: java_cup.runtime,
- org.phpaspect.apdt.internal.core,
+Export-Package: org.phpaspect.apdt.internal.core,
  org.phpaspect.apdt.internal.core.builder,
  org.phpaspect.apdt.internal.core.documentModel.handler,
  org.phpaspect.apdt.internal.core.documentModel.loader,
  org.phpaspect.apdt.internal.core.documentModel.parser,
  org.phpaspect.apdt.internal.core.documentModel.parser.regions,
  org.phpaspect.apdt.internal.core.documentModel.provisional.contenttype,
- org.phpaspect.apdt.internal.core.preferences,
- org.phpaspect.weaver.parser,
- org.phpaspect.weaver.parser.nodes,
- org.phpaspect.weaver,
- org.phpaspect.weaver.impl,
- org.phpaspect.weaver.visitor,
- org.phpaspect.weaver.visitor.impl
+ org.phpaspect.apdt.internal.core.preferences
 Bundle-Vendor: phpAspect.org
 Bundle-ClassPath: .,
  Resources/phpaspect.jar,
