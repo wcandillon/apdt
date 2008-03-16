@@ -2,7 +2,7 @@
 <project name="APDTBuild" default="build" basedir=".">
 	
 	<property name="jflex_home_122" value="JFlex-1.2.2.jar" />
-	<property name="jflex_home" value="jflex-1.3.5/lib/JFlex.jar" />
+	<property name="jflex_home" value="jflex-1.4.1/lib/JFlex.jar" />
 	
 	<target name="build">
 		<!-- Generating the PHPAspect syntax highlighter Lexer -->
