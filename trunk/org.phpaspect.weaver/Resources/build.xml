@@ -6,10 +6,11 @@
 	<property name="lexerName" value="PHPAspectLexer" />
 	<property name="parserName" value="PHPAspectParser" />
 	<property name="symbolsName" value="PHPAspectSymbols" />
-	<property name="jflex_home" value="jflex-1.3.5/lib/JFlex.jar" />
+	<property name="jflex_home" value="jflex-1.4.1/lib/JFlex.jar" />
 	<property name="javacup_home" value="java-cup-11a/java-cup-11a.jar" />
-	<property name="output_dir" value="../src/org/phpaspect/weaver/parser" />
-
+	<property name="output_dir" value="../src/org/phpaspect/weaver/internal/core/compiler/ast/parser" />
+	<property name="output_lexer_dir" value="../src/org/phpaspect/weaver/internal/core/ast/scanner" />
+	
 	<target name="build_jar">
 		 <jar destfile="../../org.phpaspect.apdt.core/Resources/phpaspect.jar">
 		 	<fileset dir="../bin" />
@@ -20,13 +21,16 @@
 	
 	<target name="build_parser">
 		<!-- Generating the PHPAspect Visitor -->
-		<java classname="org.phpaspect.weaver.visitor.impl.GeneratePHPAspectVisitor"
+		<!--java classname="org.phpaspect.weaver.visitor.impl.GeneratePHPAspectVisitor"
 				classpath="../bin">
 			<arg value="../src/org/phpaspect/weaver/parser/nodes" />
 			<arg value="../src/org/phpaspect/weaver/visitor/PHPAspectVisitor.java" />
-		</java>
+		</java-->
 		<!-- Generating the PHPAspect Lexer -->
 		<java jar="${jflex_home}" fork="true" failonerror="true">
+			<arg value="-d" />
+			<arg value="${output_lexer_dir}" />
+			<arg value="-nobak" />
 			<arg value="${lexer}" />
 		</java>
 		<!-- Generating the PHPAspect Parser -->
@@ -40,7 +44,6 @@
 		<!-- Coying to the right APDT package -->
 		<move file="${parserName}.java" todir="${output_dir}" />
  		<move file="${symbolsName}.java" todir="${output_dir}" />
-		<move file="${lexerName}.java" todir="${output_dir}" />
 		<antcall target="build_jar" />
 	</target>
 </project>

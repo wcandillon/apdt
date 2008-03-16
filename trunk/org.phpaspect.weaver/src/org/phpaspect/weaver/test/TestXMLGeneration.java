@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.Reader;
 
-import org.phpaspect.weaver.parser.ASTGenerator;
+import org.phpaspect.weaver.internal.core.compiler.ast.ASTGenerator;
 
 public class TestXMLGeneration {
 

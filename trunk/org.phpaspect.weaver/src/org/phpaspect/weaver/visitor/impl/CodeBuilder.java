@@ -5,32 +5,18 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.eclipse.php.internal.core.ast.nodes.*;
-import org.phpaspect.weaver.parser.nodes.AspectAnnotation;
-import org.phpaspect.weaver.parser.nodes.AspectAnnotations;
-import org.phpaspect.weaver.parser.nodes.AspectCodeAdviceDeclaration;
-import org.phpaspect.weaver.parser.nodes.AspectConstructionJoinpoint;
-import org.phpaspect.weaver.parser.nodes.AspectDeclaration;
-import org.phpaspect.weaver.parser.nodes.AspectInterTypeDeclaration;
-import org.phpaspect.weaver.parser.nodes.AspectInterTypeFieldDeclaration;
-import org.phpaspect.weaver.parser.nodes.AspectInterTypeFieldsDeclaration;
-import org.phpaspect.weaver.parser.nodes.AspectInterTypeMethodDeclaration;
-import org.phpaspect.weaver.parser.nodes.AspectInterTypeParentDeclaration;
-import org.phpaspect.weaver.parser.nodes.AspectPointcutDeclaration;
-import org.phpaspect.weaver.parser.nodes.AspectPointcutParameter;
-import org.phpaspect.weaver.parser.nodes.AspectPointcutReference;
-import org.phpaspect.weaver.visitor.PHPAspectVisitor;
+import org.eclipse.php.internal.core.ast.visitor.AbstractVisitor;
 
 /**
  * Sample visitor which get the AST and convert it to PHP code
  *  
  * @author Jackie
- * @author William Candillon
  *
  */
-public class CodeBuilder implements PHPAspectVisitor {
+public class CodeBuilder extends AbstractVisitor {
 
 	public StringBuffer buffer = new StringBuffer();
-	
+
 	public void printOutputfile(String filename) throws IOException {
 		Writer outFile = new FileWriter(filename, false);
 		outFile.write(buffer.toString());
@@ -56,19 +42,8 @@ public class CodeBuilder implements PHPAspectVisitor {
 			expressions[i].accept(this);
 		}
 	}
-	
-	public void visit(AspectAnnotations aspectAnnotations){
-		AspectAnnotation[] annotations = aspectAnnotations.getAnnotations();
-		if(annotations.length > 0){
-			buffer.append("/**\n");
-			for(int i=0; i < annotations.length; i++){
-				buffer.append(" * @"+annotations[i].getName()+"\n");
-			}
-			buffer.append(" */");			
-		}
-	}
 
-	public void visit(ArrayAccess arrayAccess) {
+	public boolean visit(ArrayAccess arrayAccess) {
 		arrayAccess.getVariableName().accept(this);
 		if (arrayAccess.getIndex() != null) {
 			if (arrayAccess.getArrayType() == ArrayAccess.VARIABLE_ARRAY) { //array type
@@ -83,9 +58,10 @@ public class CodeBuilder implements PHPAspectVisitor {
 				throw new IllegalArgumentException();
 			}
 		}
+		return false;
 	}
 
-	public void visit(ArrayCreation arrayCreation) {
+	public boolean visit(ArrayCreation arrayCreation) {
 		buffer.append("array("); //$NON-NLS-1$
 		ArrayElement[] elements = arrayCreation.getElements();
 		for (int i = 0; i < elements.length; i++) {
@@ -93,43 +69,48 @@ public class CodeBuilder implements PHPAspectVisitor {
 			buffer.append(","); //$NON-NLS-1$
 		}
 		buffer.append(")"); //$NON-NLS-1$
+		return false;
 	}
 
-	public void visit(ArrayElement arrayElement) {
+	public boolean visit(ArrayElement arrayElement) {
 		if (arrayElement.getKey() != null) {
 			arrayElement.getKey().accept(this);
 			buffer.append("=>"); //$NON-NLS-1$
 		}
 		arrayElement.getValue().accept(this);
+		return false;
 	}
 
-	public void visit(Assignment assignment) {
+	public boolean visit(Assignment assignment) {
 		assignment.getVariable().accept(this);
 		buffer.append(Assignment.getOperator(assignment.getOperator()));
 		assignment.getValue().accept(this);
+		return false;
 	}
 
-	public void visit(ASTError astError) {
+	public boolean visit(ASTError astError) {
 		buffer.append(this.str.substring(astError.getStart(), astError.getEnd()));
 
+		return false;
 	}
 
-	public void visit(BackTickExpression backTickExpression) {
+	public boolean visit(BackTickExpression backTickExpression) {
 		buffer.append("`"); //$NON-NLS-1$
 		Expression[] expressions = backTickExpression.getExpressions();
 		for (int i = 0; i < expressions.length; i++) {
 			expressions[i].accept(this);
 		}
 		buffer.append("`"); //$NON-NLS-1$
+		return false;
 	}
 
-	public void visit(Block block) {
+	public boolean visit(Block block) {
 		if (block.isCurly()) {
 			buffer.append("{\n"); //$NON-NLS-1$
 		} else {
 			buffer.append(":\n"); //$NON-NLS-1$
 		}
-		
+
 		Statement[] statements = block.getStatements();
 		for (int i = 0; i < statements.length; i++) {
 			statements[i].accept(this);
@@ -140,33 +121,37 @@ public class CodeBuilder implements PHPAspectVisitor {
 		} else {
 			buffer.append("end;\n"); //$NON-NLS-1$
 		}
+		return false;
 	}
 
-	public void visit(BreakStatement breakStatement) {
+	public boolean visit(BreakStatement breakStatement) {
 		buffer.append("break "); //$NON-NLS-1$
 		if (breakStatement.getExpr() != null) {
 			breakStatement.getExpr().accept(this);
 		}
 		buffer.append(";\n"); //$NON-NLS-1$
+		return false;
 	}
 
-	public void visit(CastExpression castExpression) {
+	public boolean visit(CastExpression castExpression) {
 		buffer.append("("); //$NON-NLS-1$
 		buffer.append(CastExpression.getCastType(castExpression.getCastType()));
 		buffer.append(")"); //$NON-NLS-1$
 		castExpression.getExpr().accept(this);
+		return false;
 	}
 
-	public void visit(CatchClause catchClause) {
+	public boolean visit(CatchClause catchClause) {
 		buffer.append("catch ("); //$NON-NLS-1$
 		catchClause.getClassName().accept(this);
 		buffer.append(" "); //$NON-NLS-1$
 		catchClause.getVariable().accept(this);
 		buffer.append(") "); //$NON-NLS-1$
 		catchClause.getStatement().accept(this);
+		return false;
 	}
 
-	public void visit(ClassConstantDeclaration classConstantDeclaration) {
+	public boolean visit(ClassConstantDeclaration classConstantDeclaration) {
 		buffer.append("const "); //$NON-NLS-1$
 		boolean isFirst = true;
 		Identifier[] variableNames = classConstantDeclaration.getVariableNames();
@@ -181,9 +166,10 @@ public class CodeBuilder implements PHPAspectVisitor {
 			isFirst = false;
 		}
 		buffer.append(";\n"); //$NON-NLS-1$
+		return false;
 	}
 
-	public void visit(ClassDeclaration classDeclaration) {
+	public boolean visit(ClassDeclaration classDeclaration) {
 		buffer.append("class "); //$NON-NLS-1$
 		classDeclaration.getName().accept(this);
 		if (classDeclaration.getSuperClass() != null) {
@@ -200,9 +186,10 @@ public class CodeBuilder implements PHPAspectVisitor {
 			}
 		}
 		classDeclaration.getBody().accept(this);
+		return false;
 	}
 
-	public void visit(ClassInstanceCreation classInstanceCreation) {
+	public boolean visit(ClassInstanceCreation classInstanceCreation) {
 		buffer.append("new "); //$NON-NLS-1$
 		classInstanceCreation.getClassName().accept(this);
 		Expression[] ctorParams = classInstanceCreation.getCtorParams();
@@ -215,38 +202,44 @@ public class CodeBuilder implements PHPAspectVisitor {
 			}
 			buffer.append(")"); //$NON-NLS-1$
 		}
+		return false;
 	}
 
-	public void visit(ClassName className) {
+	public boolean visit(ClassName className) {
 		className.getClassName().accept(this);
+		return false;
 	}
 
-	public void visit(CloneExpression cloneExpression) {
+	public boolean visit(CloneExpression cloneExpression) {
 		buffer.append("clone "); //$NON-NLS-1$
 		cloneExpression.getExpr().accept(this);
+		return false;
 	}
 
-	public void visit(Comment comment) {
-		//buffer.append(this.str.substring(comment.getStart(), comment.getEnd()));
+	public boolean visit(Comment comment) {
+		buffer.append(this.str.substring(comment.getStart(), comment.getEnd()));
+		return false;
 	}
 
-	public void visit(ConditionalExpression conditionalExpression) {
+	public boolean visit(ConditionalExpression conditionalExpression) {
 		conditionalExpression.getCondition().accept(this);
 		buffer.append(" ? "); //$NON-NLS-1$
 		conditionalExpression.getIfTrue().accept(this);
 		buffer.append(" : "); //$NON-NLS-1$
 		conditionalExpression.getIfFalse().accept(this);
+		return false;
 	}
 
-	public void visit(ContinueStatement continueStatement) {
+	public boolean visit(ContinueStatement continueStatement) {
 		buffer.append("continue "); //$NON-NLS-1$
 		if (continueStatement.getExpr() != null) {
 			continueStatement.getExpr().accept(this);
 		}
 		buffer.append(";\n"); //$NON-NLS-1$
+		return false;
 	}
 
-	public void visit(DeclareStatement declareStatement) {
+	public boolean visit(DeclareStatement declareStatement) {
 		buffer.append("declare ("); //$NON-NLS-1$
 		boolean isFirst = true;
 		Identifier[] directiveNames = declareStatement.getDirectiveNames();
@@ -262,41 +255,47 @@ public class CodeBuilder implements PHPAspectVisitor {
 		}
 		buffer.append(")"); //$NON-NLS-1$
 		declareStatement.getAction().accept(this);
+		return false;
 	}
 
-	public void visit(DoStatement doStatement) {
+	public boolean visit(DoStatement doStatement) {
 		buffer.append("do "); //$NON-NLS-1$
 		doStatement.getAction().accept(this);
 		buffer.append("while ("); //$NON-NLS-1$
 		doStatement.getCondition().accept(this);
 		buffer.append(");\n"); //$NON-NLS-1$
+		return false;
 	}
 
-	public void visit(EchoStatement echoStatement) {
+	public boolean visit(EchoStatement echoStatement) {
 		buffer.append("echo "); //$NON-NLS-1$
 		Expression[] expressions = echoStatement.getExpressions();
 		for (int i = 0; i < expressions.length; i++) {
 			expressions[i].accept(this);
 		}
 		buffer.append(";\n "); //$NON-NLS-1$
+		return false;
 	}
 
-	public void visit(EmptyStatement emptyStatement) {
+	public boolean visit(EmptyStatement emptyStatement) {
 		buffer.append(";\n"); //$NON-NLS-1$
+		return false;
 	}
 
-	public void visit(ExpressionStatement expressionStatement) {
+	public boolean visit(ExpressionStatement expressionStatement) {
 		expressionStatement.getExpr().accept(this);
 		buffer.append(";\n"); //$NON-NLS-1$
+		return false;
 	}
 
-	public void visit(FieldAccess fieldAccess) {
+	public boolean visit(FieldAccess fieldAccess) {
 		fieldAccess.getDispatcher().accept(this);
 		buffer.append("->"); //$NON-NLS-1$
 		fieldAccess.getField().accept(this);
+		return false;
 	}
 
-	public void visit(FieldsDeclaration fieldsDeclaration) {
+	public boolean visit(FieldsDeclaration fieldsDeclaration) {
 		Variable[] variableNames = fieldsDeclaration.getVariableNames();
 		Expression[] initialValues = fieldsDeclaration.getInitialValues();
 		for (int i = 0; i < variableNames.length; i++) {
@@ -308,9 +307,10 @@ public class CodeBuilder implements PHPAspectVisitor {
 			}
 			buffer.append(";\n"); //$NON-NLS-1$
 		}
+		return false;
 	}
 
-	public void visit(ForEachStatement forEachStatement) {
+	public boolean visit(ForEachStatement forEachStatement) {
 		buffer.append("foreach ("); //$NON-NLS-1$
 		forEachStatement.getExpression().accept(this);
 		buffer.append(" as "); //$NON-NLS-1$
@@ -321,20 +321,21 @@ public class CodeBuilder implements PHPAspectVisitor {
 		forEachStatement.getValue().accept(this);
 		buffer.append(")"); //$NON-NLS-1$
 		forEachStatement.getStatement().accept(this);
+		return false;
 	}
 
-	public void visit(FormalParameter formalParameter) {
+	public boolean visit(FormalParameter formalParameter) {
 		if (formalParameter.getParameterType() != null) {
 			formalParameter.getParameterType().accept(this);
-			buffer.append(" ");
 		}
 		formalParameter.getParameterName().accept(this);
 		if (formalParameter.getDefaultValue() != null) {
 			formalParameter.getDefaultValue().accept(this);
 		}
+		return false;
 	}
 
-	public void visit(ForStatement forStatement) {
+	public boolean visit(ForStatement forStatement) {
 		boolean isFirst = true;
 		buffer.append("for ("); //$NON-NLS-1$
 		Expression[] initializations = forStatement.getInitializations();
@@ -367,9 +368,10 @@ public class CodeBuilder implements PHPAspectVisitor {
 		}
 		buffer.append(" ) "); //$NON-NLS-1$
 		forStatement.getAction().accept(this);
+		return false;
 	}
 
-	public void visit(FunctionDeclaration functionDeclaration) {
+	public boolean visit(FunctionDeclaration functionDeclaration) {
 		buffer.append(" function ");
 		functionDeclaration.getFunctionName().accept(this);
 		buffer.append("("); //$NON-NLS-1$
@@ -380,15 +382,16 @@ public class CodeBuilder implements PHPAspectVisitor {
 				buffer.append(","); //$NON-NLS-1$
 				formalParameters[i].accept(this);
 			}
-			
+
 		}
 		buffer.append(")"); //$NON-NLS-1$
 		if (functionDeclaration.getBody() != null) {
 			functionDeclaration.getBody().accept(this);
 		}
+		return false;
 	}
 
-	public void visit(FunctionInvocation functionInvocation) {
+	public boolean visit(FunctionInvocation functionInvocation) {
 		functionInvocation.getFunctionName().accept(this);
 		buffer.append("("); //$NON-NLS-1$
 		Expression[] parameters = functionInvocation.getParameters();
@@ -400,13 +403,15 @@ public class CodeBuilder implements PHPAspectVisitor {
 			}
 		}
 		buffer.append(")"); //$NON-NLS-1$
+		return false;
 	}
 
-	public void visit(FunctionName functionName) {
+	public boolean visit(FunctionName functionName) {
 		functionName.getFunctionName().accept(this);
+		return false;
 	}
 
-	public void visit(GlobalStatement globalStatement) {
+	public boolean visit(GlobalStatement globalStatement) {
 		buffer.append("global "); //$NON-NLS-1$
 		boolean isFirst = true;
 		Variable[] variables = globalStatement.getVariables();
@@ -418,13 +423,15 @@ public class CodeBuilder implements PHPAspectVisitor {
 			isFirst = false;
 		}
 		buffer.append(";\n "); //$NON-NLS-1$
+		return false;
 	}
 
-	public void visit(Identifier identifier) {
+	public boolean visit(Identifier identifier) {
 		buffer.append(identifier.getName());
+		return false;
 	}
 
-	public void visit(IfStatement ifStatement) {
+	public boolean visit(IfStatement ifStatement) {
 		buffer.append("if("); //$NON-NLS-1$
 		ifStatement.getCondition().accept(this);
 		buffer.append(")"); //$NON-NLS-1$
@@ -433,37 +440,43 @@ public class CodeBuilder implements PHPAspectVisitor {
 			buffer.append("else"); //$NON-NLS-1$
 			ifStatement.getFalseStatement().accept(this);
 		}
+		return false;
 	}
 
-	public void visit(IgnoreError ignoreError) {
+	public boolean visit(IgnoreError ignoreError) {
 		buffer.append("@"); //$NON-NLS-1$
 		ignoreError.getExpr().accept(this);
+		return false;
 	}
 
-	public void visit(Include include) {
+	public boolean visit(Include include) {
 		buffer.append(Include.getType(include.getIncludeType()));
 		buffer.append(" ("); //$NON-NLS-1$
 		include.getExpr().accept(this);
 		buffer.append(")"); //$NON-NLS-1$
+		return false;
 	}
 
-	public void visit(InfixExpression infixExpression) {
+	public boolean visit(InfixExpression infixExpression) {
 		infixExpression.getLeft().accept(this);
 		buffer.append(InfixExpression.getOperator(infixExpression.getOperator()));
 		infixExpression.getRight().accept(this);
+		return false;
 	}
 
-	public void visit(InLineHtml inLineHtml) {
+	public boolean visit(InLineHtml inLineHtml) {
 		buffer.append(this.str.substring(inLineHtml.getStart(), inLineHtml.getEnd()));
+		return false;
 	}
 
-	public void visit(InstanceOfExpression instanceOfExpression) {
+	public boolean visit(InstanceOfExpression instanceOfExpression) {
 		instanceOfExpression.getExpr().accept(this);
 		buffer.append(" instanceof "); //$NON-NLS-1$
 		instanceOfExpression.getClassName().accept(this);
+		return false;
 	}
 
-	public void visit(InterfaceDeclaration interfaceDeclaration) {
+	public boolean visit(InterfaceDeclaration interfaceDeclaration) {
 		buffer.append("interface "); //$NON-NLS-1$
 		interfaceDeclaration.getName().accept(this);
 		buffer.append(" extends "); //$NON-NLS-1$
@@ -477,9 +490,10 @@ public class CodeBuilder implements PHPAspectVisitor {
 			isFirst = false;
 		}
 		interfaceDeclaration.getBody().accept(this);
+		return false;
 	}
 
-	public void visit(ListVariable listVariable) {
+	public boolean visit(ListVariable listVariable) {
 		buffer.append("list("); //$NON-NLS-1$
 		boolean isFirst = true;
 		VariableBase[] variables = listVariable.getVariables();
@@ -491,39 +505,45 @@ public class CodeBuilder implements PHPAspectVisitor {
 			isFirst = false;
 		}
 		buffer.append(")"); //$NON-NLS-1$
+		return false;
 	}
 
-	public void visit(MethodDeclaration methodDeclaration) {
+	public boolean visit(MethodDeclaration methodDeclaration) {
 		buffer.append(methodDeclaration.getModifierString());
 		methodDeclaration.getFunction().accept(this);
+		return false;
 	}
 
-	public void visit(MethodInvocation methodInvocation) {
+	public boolean visit(MethodInvocation methodInvocation) {
 		methodInvocation.getDispatcher().accept(this);
 		buffer.append("->"); //$NON-NLS-1$
 		methodInvocation.getMethod().accept(this);
+		return false;
 	}
 
-	public void visit(ParenthesisExpression parenthesisExpression) {
+	public boolean visit(ParenthesisExpression parenthesisExpression) {
 		buffer.append("("); //$NON-NLS-1$
 		if (parenthesisExpression.getExpr() != null) {
 			parenthesisExpression.getExpr().accept(this);
 		}
 		buffer.append(")"); //$NON-NLS-1$
-		
+
+		return false;
 	}
 
-	public void visit(PostfixExpression postfixExpressions) {
+	public boolean visit(PostfixExpression postfixExpressions) {
 		postfixExpressions.getVariable().accept(this);
 		buffer.append(PostfixExpression.getOperator(postfixExpressions.getOperator()));
+		return false;
 	}
 
-	public void visit(PrefixExpression prefixExpression) {
+	public boolean visit(PrefixExpression prefixExpression) {
 		prefixExpression.getVariable().accept(this);
 		buffer.append(PrefixExpression.getOperator(prefixExpression.getOperator()));
+		return false;
 	}
 
-	public void visit(Program program) {
+	public boolean visit(Program program) {
 		boolean isPhpState = false;
 		Statement[] statements = program.getStatements();
 		for (int i = 0; i < statements.length; i++) {
@@ -560,9 +580,10 @@ public class CodeBuilder implements PHPAspectVisitor {
 			Comment comment = (Comment) iter.next();
 			comment.accept(this);
 		}
+		return false;
 	}
 
-	public void visit(Quote quote) {
+	public boolean visit(Quote quote) {
 		switch (quote.getQuoteType()) {
 			case 0:
 				buffer.append("\""); //$NON-NLS-1$
@@ -579,53 +600,61 @@ public class CodeBuilder implements PHPAspectVisitor {
 				acceptQuoteExpression(quote.getExpressions());
 				buffer.append("\nHeredoc"); //$NON-NLS-1$
 		}
+		return false;
 	}
 
-	public void visit(Reference reference) {
+	public boolean visit(Reference reference) {
 		buffer.append("&"); //$NON-NLS-1$
 		reference.getExpression().accept(this);
+		return false;
 	}
 
-	public void visit(ReflectionVariable reflectionVariable) {
+	public boolean visit(ReflectionVariable reflectionVariable) {
 		buffer.append("$"); //$NON-NLS-1$
 		reflectionVariable.getVariableName().accept(this);
+		return false;
 	}
 
-	public void visit(ReturnStatement returnStatement) {
+	public boolean visit(ReturnStatement returnStatement) {
 		buffer.append("return "); //$NON-NLS-1$
 		if (returnStatement.getExpr() != null) {
 			returnStatement.getExpr().accept(this);
 		}
 		buffer.append(";\n"); //$NON-NLS-1$
+		return false;
 	}
 
-	public void visit(Scalar scalar) {
+	public boolean visit(Scalar scalar) {
 		if (scalar.getScalarType() == Scalar.TYPE_UNKNOWN) {
 			buffer.append(this.str.substring(scalar.getStart(), scalar.getEnd()));
 		} else {
 			buffer.append(scalar.getStringValue());
 		}
+		return false;
 	}
 
-	public void visit(StaticConstantAccess staticFieldAccess) {
+	public boolean visit(StaticConstantAccess staticFieldAccess) {
 		staticFieldAccess.getClassName().accept(this);
 		buffer.append("::"); //$NON-NLS-1$
 		staticFieldAccess.getConstant().accept(this);
+		return false;
 	}
 
-	public void visit(StaticFieldAccess staticFieldAccess) {
+	public boolean visit(StaticFieldAccess staticFieldAccess) {
 		staticFieldAccess.getClassName().accept(this);
 		buffer.append("::"); //$NON-NLS-1$
 		staticFieldAccess.getField().accept(this);
+		return false;
 	}
 
-	public void visit(StaticMethodInvocation staticMethodInvocation) {
+	public boolean visit(StaticMethodInvocation staticMethodInvocation) {
 		staticMethodInvocation.getClassName().accept(this);
 		buffer.append("::"); //$NON-NLS-1$
 		staticMethodInvocation.getMethod().accept(this);
+		return false;
 	}
 
-	public void visit(StaticStatement staticStatement) {
+	public boolean visit(StaticStatement staticStatement) {
 		buffer.append("static "); //$NON-NLS-1$
 		boolean isFirst = true;
 		Expression[] expressions = staticStatement.getExpressions();
@@ -637,9 +666,10 @@ public class CodeBuilder implements PHPAspectVisitor {
 			isFirst = false;
 		}
 		buffer.append(";\n"); //$NON-NLS-1$
+		return false;
 	}
 
-	public void visit(SwitchCase switchCase) {
+	public boolean visit(SwitchCase switchCase) {
 
 		if (switchCase.getValue() != null) {
 			switchCase.getValue().accept(this);
@@ -649,108 +679,49 @@ public class CodeBuilder implements PHPAspectVisitor {
 		for (int i = 0; i < actions.length; i++) {
 			actions[i].accept(this);
 		}
+		return false;
 	}
 
-	public void visit(SwitchStatement switchStatement) {
+	public boolean visit(SwitchStatement switchStatement) {
 		buffer.append("switch ("); //$NON-NLS-1$
 		switchStatement.getExpr().accept(this);
 		buffer.append(")"); //$NON-NLS-1$
 		switchStatement.getStatement().accept(this);
+		return false;
 	}
 
-	public void visit(ThrowStatement throwStatement) {
-		buffer.append("throw ");
+	public boolean visit(ThrowStatement throwStatement) {
 		throwStatement.getExpr().accept(this);
-		buffer.append(";");
+		return false;
 	}
 
-	public void visit(TryStatement tryStatement) {
+	public boolean visit(TryStatement tryStatement) {
 		buffer.append("try "); //$NON-NLS-1$
 		tryStatement.getTryStatement().accept(this);
 		CatchClause[] catchClauses = tryStatement.getCatchClauses();
 		for (int i = 0; i < catchClauses.length; i++) {
 			catchClauses[i].accept(this);
 		}
+		return false;
 	}
 
-	public void visit(UnaryOperation unaryOperation) {
+	public boolean visit(UnaryOperation unaryOperation) {
 		buffer.append(UnaryOperation.getOperator(unaryOperation.getOperator()));
 		unaryOperation.getExpr().accept(this);
+		return false;
 	}
 
-	public void visit(Variable variable) {
+	public boolean visit(Variable variable) {
 		buffer.append("$");
 		variable.getVariableName().accept(this);
+		return false;
 	}
 
-	public void visit(WhileStatement whileStatement) {
+	public boolean visit(WhileStatement whileStatement) {
 		buffer.append("while ("); //$NON-NLS-1$
 		whileStatement.getCondition().accept(this);
 		buffer.append(")\n"); //$NON-NLS-1$
 		whileStatement.getAction().accept(this);
-	}
-
-	public void visit(AspectInterTypeDeclaration aspectInterTypeDeclaration) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void visit(AspectDeclaration aspectDeclaration) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void visit(AspectPointcutDeclaration aspectPointcutDeclaration) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void visit(
-			AspectInterTypeFieldsDeclaration aspectInterTypeFieldsDeclaration) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void visit(
-			AspectInterTypeFieldDeclaration aspectInterTypeFieldDeclaration) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void visit(AspectPointcutParameter aspectPointcutParameter) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void visit(AspectAnnotation aspectAnnotation) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void visit(AspectPointcutReference aspectPointcutReference) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void visit(AspectCodeAdviceDeclaration aspectCodeAdviceDeclaration) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void visit(
-			AspectInterTypeMethodDeclaration aspectInterTypeMethodDeclaration) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void visit(AspectConstructionJoinpoint aspectConstructionJoinpoint) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void visit(
-			AspectInterTypeParentDeclaration aspectInterTypeParentDeclaration) {
-		// TODO Auto-generated method stub
-		
+		return false;
 	}
 }
