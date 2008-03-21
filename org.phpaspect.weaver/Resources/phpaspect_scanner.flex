@@ -17,10 +17,10 @@ import java.util.List;
 
 import org.eclipse.php.internal.core.ast.nodes.IDocumentorLexer;
 import org.eclipse.php.internal.core.ast.nodes.Comment;
-import org.eclipse.php.internal.core.phpModel.javacup.sym;
 import org.eclipse.php.internal.core.ast.nodes.AST;
-import java_cup.runtime.Symbol;
 import org.eclipse.php.internal.core.phpModel.parser.StateStack;
+
+import org.phpaspect.weaver.java_cup.runtime.Symbol;
 
 import org.phpaspect.weaver.internal.core.compiler.ast.parser.PHPAspectSymbols;
 
@@ -34,9 +34,9 @@ import org.phpaspect.weaver.internal.core.compiler.ast.parser.PHPAspectSymbols;
 /* %cup */
 %implements org.phpaspect.weaver.internal.core.ast.scanner.PHPAspectAstLexer
 %function next_token
-%type java_cup.runtime.Symbol
+%type org.phpaspect.weaver.java_cup.runtime.Symbol
 %eofval{
-    return createSymbol(sym.EOF);
+    return createSymbol(PHPAspectSymbols.EOF);
 %eofval}
 %eofclose
 

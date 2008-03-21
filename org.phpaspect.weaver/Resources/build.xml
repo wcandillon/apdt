@@ -36,11 +36,17 @@
 		<!-- Generating the PHPAspect Parser -->
 		<java jar="${javacup_home}" input="${parser}" fork="true" failonerror="true">
 			<arg line="-progress" />
-			<arg line="-expect 2" />
+			<arg line="-expect 4" />
 			<arg line="-compact_red" />
 			<arg line="-parser ${parserName}" />
-			<arg line="-symbols ${symbolsName}" />			
+			<arg line="-symbols ${symbolsName}" />
+			<arg value="-interface" />		
 		</java>
+		<!-- Replace the java_cup namespace by org.phpaspect.weaver.java_cup -->
+		<replace file="${parserName}.java">
+			<replacetoken>java_cup</replacetoken>
+			<replacevalue>org.phpaspect.weaver.java_cup</replacevalue>
+		</replace>
 		<!-- Coying to the right APDT package -->
 		<move file="${parserName}.java" todir="${output_dir}" />
  		<move file="${symbolsName}.java" todir="${output_dir}" />

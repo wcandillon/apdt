@@ -29,24 +29,23 @@ public class Test {
 	 * @param args
 	 * @throws SaxonApiException 
 	 */
-	public static void main(String[] args) throws SaxonApiException {			
-		XSLTProcessor xslt = new XSLTProcessor();
-		String xml = null;
+	public static void main(String[] args) {
 		try {
-			xml = ASTGenerator.getXMLAstFromPHPAspect(new URI("/home/wcandillon/workspace/org.phpaspect.weaver/Tests/Singleton.ap"));
+			String xml = ASTGenerator.getXMLAstFromPHPAspect(new URI("/home/wcandillon/apdt/wokspace/org.phpaspect.weaver/Tests/Singleton.ap"));
+			System.out.println(xml);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Source source = null;
+/*		Source source = null;
 		//source = new StreamSource(new File("/home/wcandillon/workspace/org.phpaspect.weaver/Tests/Singleton.xml"));
 		source = new StreamSource(new StringReader(xml), "source");
 		xslt.setSource(source);
 		xslt.setStylesheet(XSLTProcessor.TO_CLASS);
-		xslt.setOutput("/home/wcandillon/workspace/org.phpaspect.weaver/Tests/Singleton.xml");
+		xslt.setOutput("/home/wcandillon/apdt/wokspace/Singleton.xml");
 		xslt.setOutputMethod("xml");
-		xslt.transform();
-		
+		xslt.transform();*/
+/*		
 		try {
 			Program ast = ASTGenerator.getAstFromXML(new FileReader("/home/wcandillon/workspace/org.phpaspect.weaver/Tests/Singleton.xml"));
 			CodeBuilder unparser = new CodeBuilder();
@@ -55,6 +54,6 @@ public class Test {
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 }
