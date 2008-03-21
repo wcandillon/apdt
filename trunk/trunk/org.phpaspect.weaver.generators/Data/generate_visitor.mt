@@ -1,7 +1,7 @@
 <%
 metamodel http://www.eclipse.org/emf/2002/Ecore
 %>
-<%script type="ecore.EPackage" name="generate_visitor" file="PHPAspectVisitor.java"%>
+<%script type="ecore.EPackage" name="generate_visitor" file="Data/PHPAspectVisitor.java"%>
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.php.internal.core.compiler.ast.visitor.PHPASTVisitor;
 import org.phpaspect.weaver.internal.core.compiler.ast.nodes.*;
