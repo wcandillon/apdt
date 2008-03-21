@@ -23,7 +23,8 @@ import org.eclipse.php.internal.core.compiler.ast.parser.PhpAstLexer5;
 import org.eclipse.php.internal.core.compiler.ast.parser.PhpAstParser5;
 import org.phpaspect.weaver.internal.core.ast.scanner.PHPAspectLexer;
 import org.phpaspect.weaver.internal.core.compiler.ast.parser.PHPAspectParser;
-import org.phpaspect.weaver.visitor.PHPAspectVisitor;
+import org.phpaspect.weaver.internal.core.compiler.ast.visitor.PHPAspectVisitor;
+import org.phpaspect.weaver.java_cup.runtime.Scanner;
 import org.phpaspect.weaver.visitor.impl.CodeBuilder;
 
 import com.thoughtworks.xstream.XStream;
@@ -145,7 +146,7 @@ public class ASTGenerator {
     }
     
     public static Program getAstFromPHPAspect(Reader aspect) throws Exception{
-            PHPAspectLexer   lexer = new PHPAspectLexer(aspect);
+            Scanner lexer = new PHPAspectLexer(aspect);
             PHPAspectParser parser = new PHPAspectParser(lexer);
             return (Program)parser.parse().value;
     }

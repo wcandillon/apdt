@@ -2,7 +2,7 @@ package org.phpaspect.weaver.internal.core.ast.scanner;
 
 import java.util.List;
 
-import java_cup.runtime.Scanner;
+import org.phpaspect.weaver.java_cup.runtime.Scanner;
 
 
 public interface PHPAspectAstLexer extends Scanner{
