@@ -19,18 +19,18 @@ public abstract class PHPAspectVisitor extends PHPASTVisitor{
 	<%}%>
 
 	public boolean endVisit(ASTNode s) throws Exception{
-		if(!super.endVisit(s)){
+		if(!super.endvisit(s)){
 			return false;
 		}
 		<%for (eAllContents()){%>
 		if(s.getClass().equals(<%name%>.class)){
-			return envisit((<%name%>) s);
+			return endvisit((<%name%>) s);
 		}
 		<%}%>
 		return true;
 	}
 	
-	public boolean visit(ASTNode s) throw Exception{
+	public boolean visit(ASTNode s) throws Exception{
 		if(!super.visit(s)){
 			return false;
 		}
@@ -42,4 +42,3 @@ public abstract class PHPAspectVisitor extends PHPASTVisitor{
 		return true;
 	}
 }
-
