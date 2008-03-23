@@ -1,0 +1,10 @@
+<?php
+aspect AspectMethods{
+
+    public function foo(){
+        return "foo";
+    }
+    
+    public abstract function bar(Foo $foo = "foo");
+}
+?>
