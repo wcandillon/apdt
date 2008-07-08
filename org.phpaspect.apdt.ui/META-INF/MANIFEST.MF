@@ -58,7 +58,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.compare,
  org.eclipse.debug.core,
  com.ibm.icu,
- org.eclipse.wst.web.ui
+ org.eclipse.wst.web.ui,
+ org.eclipse.dltk.ui;bundle-version="0.95.1"
 Eclipse-LazyStart: true
 Export-Package: org.phpaspect.apdt.internal.ui,
  org.phpaspect.apdt.internal.ui.actions,
@@ -69,7 +70,6 @@ Export-Package: org.phpaspect.apdt.internal.ui,
  org.phpaspect.apdt.internal.ui.icons,
  org.phpaspect.apdt.internal.ui.preferences,
  org.phpaspect.apdt.internal.ui.text,
- org.phpaspect.apdt.internal.ui.treecontent,
  org.phpaspect.apdt.internal.ui.views,
  org.phpaspect.apdt.internal.ui.wizards
 Bundle-Vendor: phpAspect.org
