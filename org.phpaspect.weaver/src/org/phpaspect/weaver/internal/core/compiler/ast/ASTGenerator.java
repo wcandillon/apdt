@@ -19,8 +19,8 @@ import java.util.TreeMap;
 import org.eclipse.php.internal.core.ast.nodes.ASTNode;
 import org.eclipse.php.internal.core.ast.nodes.Program;
 import org.eclipse.php.internal.core.ast.scanner.AstLexer;
-import org.eclipse.php.internal.core.compiler.ast.parser.PhpAstLexer5;
-import org.eclipse.php.internal.core.compiler.ast.parser.PhpAstParser5;
+import org.eclipse.php.internal.core.ast.scanner.PhpAstLexer5;
+import org.eclipse.php.internal.core.ast.scanner.PhpAstParser5;
 import org.phpaspect.weaver.internal.core.ast.scanner.PHPAspectLexer;
 import org.phpaspect.weaver.internal.core.compiler.ast.parser.PHPAspectParser;
 import org.phpaspect.weaver.internal.core.compiler.ast.visitor.PHPAspectVisitor;
@@ -146,7 +146,7 @@ public class ASTGenerator {
     }
     
     public static Program getAstFromPHPAspect(Reader aspect) throws Exception{
-            Scanner lexer = new PHPAspectLexer(aspect);
+            Scanner lexer = (Scanner) new PHPAspectLexer(aspect);
             PHPAspectParser parser = new PHPAspectParser(lexer);
             return (Program)parser.parse().value;
     }

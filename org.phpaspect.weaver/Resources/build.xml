@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="PHPAspectBuild" default="build_parser" basedir=".">
 
-	<property name="lexer" value="phpaspect_scanner.flex" />
-	<property name="parser" value="phpaspect_parser.cup" />
+	<property name="lexer" value="PHPAspectLexer.jflex" />
+	<property name="parser" value="PHPAspectParser.cup" />
 	<property name="lexerName" value="PHPAspectLexer" />
 	<property name="parserName" value="PHPAspectParser" />
 	<property name="symbolsName" value="PHPAspectSymbols" />
@@ -43,6 +43,10 @@
 			<arg value="-interface" />		
 		</java>
 		<!-- Replace the java_cup namespace by org.phpaspect.weaver.java_cup -->
+		<replace
+			file="${parserName}.java"
+			token="extends java_cup.runtime.lr_parser"
+			value="extends PHPAspectAbstractParser"/>
 		<replace file="${parserName}.java">
 			<replacetoken>java_cup</replacetoken>
 			<replacevalue>org.phpaspect.weaver.java_cup</replacevalue>
