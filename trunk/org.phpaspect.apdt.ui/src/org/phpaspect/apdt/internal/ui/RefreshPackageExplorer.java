@@ -4,7 +4,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.php.internal.ui.explorer.ExplorerPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
@@ -43,10 +42,11 @@ public class RefreshPackageExplorer extends UIJob{
 		long start = System.currentTimeMillis();
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		if (page != null) {
-		    ExplorerPart explorerPart = (ExplorerPart) page.findView("org.eclipse.php.ui.explorer");
-		    if (explorerPart != null) {
-		    	explorerPart.getViewer().refresh();
-		    }
+			//TODO: unimplemented method
+//		    ExplorerPart explorerPart = (ExplorerPart) page.findView("org.eclipse.php.ui.explorer");
+//		    if (explorerPart != null) {
+//		    	explorerPart.getViewer().refresh();
+//		    }
 		}
 		previousExecutionTime = (int)(System.currentTimeMillis() - start);
 		return Status.OK_STATUS;
