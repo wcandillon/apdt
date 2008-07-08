@@ -3,6 +3,7 @@ package org.phpaspect.weaver.internal.core.compiler.ast.nodes;
 import java.util.List;
 
 import org.eclipse.dltk.ast.statements.Block;
+import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.php.internal.core.compiler.ast.nodes.FormalParameter;
 import org.eclipse.php.internal.core.compiler.ast.nodes.PHPDocBlock;
 import org.eclipse.php.internal.core.compiler.ast.nodes.PHPMethodDeclaration;
