@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/wcandillon/eclipse/plugins/org.eclipse.equinox.common_3.4.0.v20080421-2006.jar" sourcepath="/Users/wcandillon/eclipse/plugins/org.eclipse.equinox.common_3.4.0.v20080421-2006.jar">
+		<accessrules>
+			<accessrule kind="discouraged" pattern="org/eclipse/core/internal/boot/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/core/internal/runtime/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/core/runtime/*"/>
+			<accessrule ignoreifbetter="true" kind="nonaccessible" pattern="**/*"/>
+		</accessrules>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/wcandillon/eclipse/plugins/org.eclipse.core.resources_3.4.0.v20080604-1400.jar" sourcepath="/Users/wcandillon/eclipse/plugins/org.eclipse.core.resources_3.4.0.v20080604-1400.jar">
+		<accessrules>
+			<accessrule kind="discouraged" pattern="org/eclipse/core/internal/dtree/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/core/internal/events/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/core/internal/localstore/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/core/internal/properties/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/core/internal/propertytester/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/core/internal/refresh/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/core/internal/resources/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/core/internal/resources/mapping/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/core/internal/resources/refresh/win32/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/core/internal/utils/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/core/internal/watson/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/core/resources/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/core/resources/mapping/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/core/resources/refresh/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/core/resources/team/*"/>
+			<accessrule kind="discouraged" pattern="org/eclipse/core/internal/indexing/*"/>
+			<accessrule ignoreifbetter="true" kind="nonaccessible" pattern="**/*"/>
+		</accessrules>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/wcandillon/eclipse/plugins/org.eclipse.core.jobs_3.4.0.v20080512.jar" sourcepath="/Users/wcandillon/eclipse/plugins/org.eclipse.core.jobs_3.4.0.v20080512.jar">
+		<accessrules>
+			<accessrule kind="discouraged" pattern="org/eclipse/core/internal/jobs/*"/>
+			<accessrule kind="accessible" pattern="org/eclipse/core/runtime/jobs/*"/>
+			<accessrule ignoreifbetter="true" kind="nonaccessible" pattern="**/*"/>
+		</accessrules>
+	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.phpaspect.weaver"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.php.core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.php.test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
