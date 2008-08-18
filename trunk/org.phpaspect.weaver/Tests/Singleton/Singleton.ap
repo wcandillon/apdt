@@ -1,8 +1,0 @@
-<?php
-/**
- * @author William Candillon <wcandillon@elv.telecom-lille1.eu>
- */
-aspect Singleton{
-
-}
-?>
