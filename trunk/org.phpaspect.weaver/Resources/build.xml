@@ -1,0 +1,41 @@
+<project default="build">
+
+	<target name="build">
+		<antcall target="generateScanner" />
+		<antcall target="generateParser" />
+	</target>
+		
+	<target name="generateScanner">
+		<java jar="JFlex-1.4.1\JFlex.jar" fork="true">
+			<arg value="-d" />
+			<arg value="../src/org/phpaspect/weaver/ast/scanner" />
+			<arg value="-nobak" />
+			<arg value="phpaspect_scanner.flex" />
+		</java>
+	</target>
+
+	<target name="generateParser">
+		<java 
+			jar="javacup/java-cup-10k.jar" 
+			input="phpaspect_parser.cup"
+			fork="true">
+			<arg value="-compact_red"/>
+			<arg value="-expect"/>
+			<arg value="4"/>
+			<arg value="-parser"/>
+			<arg value="PHPAspectParser"/>
+			<arg value="-symbols"/>
+			<arg value="PHPAspectSymbols"/>
+			<arg value="-interface"/>
+		</java>
+
+		<move
+			file="PHPAspectParser.java"
+			todir="../src/org/phpaspect/weaver/ast/parser"/>
+
+		<move
+			file="PHPAspectSymbols.java"
+			todir="../src/org/phpaspect/weaver/ast/parser"/>
+
+	</target>
+</project>
