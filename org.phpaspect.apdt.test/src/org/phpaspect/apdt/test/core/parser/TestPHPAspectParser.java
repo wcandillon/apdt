@@ -3,11 +3,15 @@ package org.phpaspect.apdt.test.core.parser;
 import java.io.IOException;
 import java.io.StringReader;
 
+import java_cup.runtime.Scanner;
+
 import junit.framework.Assert;
 
 import org.eclipse.php.test.infra.testcase.PhpTestCase;
 import org.junit.Test;
-import org.phpaspect.apdt.internal.core.documentModel.parser.PHPAspectLexer;
+import org.phpaspect.weaver.ast.parser.PHPAspectParser;
+import org.phpaspect.weaver.ast.scanner.PHPAspectLexer;
+
 public class TestPHPAspectParser extends PhpTestCase {
 	
 	@Test	
@@ -24,8 +28,8 @@ public class TestPHPAspectParser extends PhpTestCase {
 
 	private void parseMustSucceed(String str){
 		try {
-			PHPAspectLexer lexer = new PHPAspectLexer(new StringReader(str));
-			//new PHPAspectParser(lexer).parse();
+			Scanner lexer = new PHPAspectLexer(new StringReader(str));
+			new PHPAspectParser(lexer).parse();
 		} catch (Exception e) {
 			Assert.assertTrue(false);
 		}
@@ -34,8 +38,8 @@ public class TestPHPAspectParser extends PhpTestCase {
 	
 	private void parseMustFailed(String str){
 		try {
-			PHPAspectLexer lexer = new PHPAspectLexer(new StringReader(str));
-			//new PHPAspectParser(lexer).parse();
+			Scanner lexer = new PHPAspectLexer(new StringReader(str));
+			new PHPAspectParser(lexer).parse();
 		} catch (Exception e) {
 			Assert.assertTrue(true);
 		}
