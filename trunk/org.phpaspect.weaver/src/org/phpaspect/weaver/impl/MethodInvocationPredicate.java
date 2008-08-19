@@ -58,11 +58,16 @@ public class MethodInvocationPredicate implements Pointcut {
 				return methodName.matches(this.methodName);
 			} else if(methodName.matches(this.methodName) && node.getDispatcher().resolveTypeBinding().getName().matches(declaringType)){
 				runtimeAssertion = ast.newScalar("true");
+				matched = true;
+			} else {
+				runtimeAssertion = ast.newScalar("false");
+				return false;
 			}
 			matched = true;
 			return true;
 		}
 		runtimeAssertion = ast.newScalar("false");
+		matched = true;
 		return false;
 	}
 
