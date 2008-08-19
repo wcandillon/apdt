@@ -18,8 +18,10 @@ public class APDTDecorator extends LabelProvider implements ILabelDecorator {
 		IResource ressource = (IResource)object;
 		//If the project has the PHPAspect nature, we decorate the project folder and the aspect files
 		try {
-			if(ressource.getProject().hasNature(PHPAspectNature.NATURE_ID) &&
-					ressource.getType() == IResource.PROJECT){
+			if(ressource.getProject().isOpen() && 
+			   ressource.getProject().hasNature(PHPAspectNature.NATURE_ID) &&
+			   ressource.getType() == IResource.PROJECT){
+				//TODO: do something here...
 				return null;
 			}
 		} catch (CoreException e) {
