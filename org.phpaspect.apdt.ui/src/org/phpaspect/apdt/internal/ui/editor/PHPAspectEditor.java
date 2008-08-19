@@ -14,9 +14,5 @@ public class PHPAspectEditor extends PHPStructuredEditor {
 	
 	protected void doSetInput(IEditorInput input) throws CoreException {
 		super.doSetInput(input);
-//		IResource resource = ((FileEditorInput)input).getFile();
-//		if(resource instanceof IFile){
-//			PHPAspectSourceParser.editFile.set(resource);
-//		}
 	}
 }

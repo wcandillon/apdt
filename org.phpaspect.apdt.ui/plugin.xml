@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.3"?>
 <plugin>
-
+   <!-- PHPAspect UI Nature -->
+   <extension
+       point="org.eclipse.dltk.ui.language">
+     <language
+          class="org.eclipse.php.internal.ui.PHPAspectUILanguageToolkit"
+          nature="org.phpaspect.apdt.core.phpAspectNature"
+          priority="1">
+     </language>
+   </extension>
    <extension
          point="org.eclipse.ui.ide.projectNatureImages">
       <image
@@ -73,21 +81,45 @@
          point="org.eclipse.ui.editors">
       <editor
             class="org.phpaspect.apdt.internal.ui.editor.PHPAspectEditor"
-            contributorClass="org.eclipse.php.internal.ui.editor.PHPEditorActionBarContributor"
+            contributorClass="org.eclipse.php.internal.ui.editor.ActionContributorForPhp"
             default="true"
             icon="icons/phpaspectfile.gif"
             id="org.phpaspect.apdt.ui.editor"
-            extension="ap"
             name="PHPAspect Editor"
             symbolicFontName="org.eclipse.wst.sse.ui.textfont">
             <contentTypeBinding contentTypeId="org.phpaspect.apdt.core.phpaspectsource" />
       </editor>
    </extension>
    <extension point="org.eclipse.wst.sse.ui.editorConfiguration">
-		<!-- associating a source viewer configuration to an input's content type-->
-		<sourceViewerConfiguration
-			class="org.phpaspect.apdt.internal.ui.editor.configuration.PHPAspectStructuredTextViewerConfiguration"
+			<sourceViewerConfiguration
+			class="org.eclipse.php.internal.ui.editor.configuration.PHPStructuredTextViewerConfiguration"
 			target="org.phpaspect.apdt.core.phpaspectsource" />
+		<contentOutlineConfiguration
+			class="org.eclipse.php.internal.ui.outline.PHPContentOutlineConfiguration"
+			target="org.phpaspect.apdt.core.phpaspectsource" />
+		<propertySheetConfiguration
+			class="org.eclipse.wst.xml.ui.views.properties.XMLPropertySheetConfiguration"
+			target="org.phpaspect.apdt.core.phpaspectsource" />
+		<provisionalConfiguration
+			type="sourceeditingtexttools"
+			class="org.eclipse.wst.xml.ui.internal.provisional.XMLSourceEditingTextTools"
+			target="org.phpaspect.apdt.core.phpaspectsource" />
+		<provisionalConfiguration
+			type="characterpairmatcher"
+			class="org.eclipse.php.internal.ui.text.PHPDocumentRegionEdgeMatcher"
+			target="org.phpaspect.apdt.core.phpaspectsource" />
+		<provisionalConfiguration
+			type="structuredtextfoldingprovider"
+			class="org.eclipse.php.internal.ui.folding.PHPFoldingStructureProviderProxy"
+			target="org.phpaspect.apdt.core.phpaspectsource" />
+		<provisionalDefinition
+			type="spellingregions"
+			value="XML_COMMENT_TEXT, PHP_CONTENT, XML_CONTENT"
+			target="org.phpaspect.apdt.core.phpaspectsource" />
+		<provisionalDefinition
+			type="activecontexts"
+			value="org.phpaspect.apdt.core.phpaspectsource"  
+        	target="org.phpaspect.apdt.core.phpaspectsource" />
 	</extension>
    <!-- PHPAspect Wizards -->
    <extension
