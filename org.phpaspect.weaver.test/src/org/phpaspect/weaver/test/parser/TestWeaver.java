@@ -30,4 +30,20 @@ public class TestWeaver extends TestCase{
         System.out.println(wovenProgram);
         project.dispose();
 	}
+	
+	public void testSimple1Weaving() throws Exception{
+		Reader file = new FileReader(new File("Classes/simple1.php"));
+		StringBuffer content = new StringBuffer();
+		while(file.ready()){
+			content.append((char)file.read());
+		}
+		TestProject project = new TestProject();
+		IResource script = project.createScript("simple1.php", content.toString());
+        WeaverVisitor weaver = new WeaverVisitor((IFile)script, "simple1.php");
+        weaver.addPointcut(new MethodInvocationPredicate("Foo", "fuebar"));
+        String wovenProgram = weaver.weave();
+        System.out.println("woven program:");
+        System.out.println(wovenProgram);
+        project.dispose();
+	}
 }
