@@ -14,6 +14,7 @@ import org.phpaspect.weaver.impl.*;
 import org.phpaspect.weaver.ast.nodes.*;
 import org.phpaspect.weaver.impl.MethodInvocationPredicate;
 import org.phpaspect.weaver.ast.scanner.PHPAspectLexer;
+import org.phpaspect.weaver.ast.parser.PHPAspectSymbolsUtils;
 
 
 parser code {:
