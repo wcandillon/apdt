@@ -26,6 +26,7 @@ Export-Package: org.phpaspect.apdt.internal.core,
  org.phpaspect.apdt.internal.core.documentModel.parser,
  org.phpaspect.apdt.internal.core.documentModel.parser.regions,
  org.phpaspect.apdt.internal.core.documentModel.provisional.contenttype,
+ org.phpaspect.apdt.internal.core.language,
  org.phpaspect.apdt.internal.core.mixin,
  org.phpaspect.apdt.internal.core.phpAspectModel,
  org.phpaspect.apdt.internal.core.preferences

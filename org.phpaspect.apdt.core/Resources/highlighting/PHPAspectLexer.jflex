@@ -47,6 +47,8 @@ import org.eclipse.php.internal.core.util.collections.IntHashtable;
         initialize(state);
     }
     
+  private static final IntHashtable lexerStates = new IntHashtable(100);
+  
 	protected IntHashtable getLexerStates() {
 		return lexerStates;
 	}

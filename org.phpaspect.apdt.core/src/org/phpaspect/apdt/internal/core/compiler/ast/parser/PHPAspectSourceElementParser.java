@@ -13,7 +13,6 @@ public class PHPAspectSourceElementParser extends AbstractSourceElementParser {
 	public void parseSourceModule(char[] contents, ISourceModuleInfo astCache, char[] filename) {
 		this.contents = contents;
 		this.filename = filename;
-
 		super.parseSourceModule(contents, astCache, filename);
 	}
 

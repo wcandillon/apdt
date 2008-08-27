@@ -368,6 +368,17 @@ aspect_is_persistent:persistent T_CURLY_OPEN:blockStart aspect_statement_list:st
 :}
 ;
 
+aspect_statement_list ::=
+aspect_statement_list:list aspect_statement:aspectStatement
+{:
+	if(!(parser.declarations.peek() instanceof TypeDeclaration)) {
+		parser.declarations.pop();
+	}
+:}
+
+| /* empty */
+;
+
 aspect_statement ::=
 class_statement:statement
 {:
@@ -1442,17 +1453,6 @@ static_var_list:list T_COMMA T_VARIABLE:var
 	list.add(assignment);
 	RESULT = list;
 :}	
-;
-
-class_statement_list ::=
-class_statement_list:list class_statement:classStatement
-{:
-	if(!(parser.declarations.peek() instanceof TypeDeclaration)) {
-		parser.declarations.pop();
-	}
-:}
-
-| /* empty */
 ;
 
 class_statement ::=
