@@ -1,33 +1,20 @@
-package org.phpaspect.weaver.impl;
+package org.phpaspect.weaver.pointucts;
 
 import org.eclipse.php.internal.core.ast.nodes.AST;
 import org.eclipse.php.internal.core.ast.nodes.Expression;
+import org.phpaspect.weaver.AbstractPointcut;
 import org.phpaspect.weaver.JoinPoint;
 import org.phpaspect.weaver.Pointcut;
 
-public class ParenthesisPointcut implements Pointcut {
+public class ParenthesisPointcut extends AbstractPointcut {
 
-	protected int id;
 	protected Pointcut pt;
 	protected Expression runtimeAssertion = null;
 	protected boolean matched;
 	
 	public ParenthesisPointcut(Pointcut pt){
-		this(PointcutCounter.getId(), pt);
-	}
-	
-	private ParenthesisPointcut(int id, Pointcut pt){
-		this.id = id;
+		super();
 		this.pt = pt;
-	}
-	
-	public int getId() {
-		return id;
-	}
-
-	public Expression getRuntimeAssertion() {
-		// TODO Auto-generated method stub
-		return runtimeAssertion;
 	}
 
 	public boolean match(AST ast, JoinPoint jp) {
@@ -37,7 +24,7 @@ public class ParenthesisPointcut implements Pointcut {
 	}
 	
 	public Pointcut clone(){
-		return new ParenthesisPointcut(id, pt);
+		return new ParenthesisPointcut(pt);
 	}
 
 }

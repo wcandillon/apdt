@@ -6,12 +6,14 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-import java_cup.runtime.Scanner;
-import java_cup.runtime.lr_parser;
 
 import org.eclipse.php.internal.core.CoreMessages;
 import org.eclipse.php.internal.core.ast.scanner.*;
 import org.eclipse.php.internal.core.language.PHPVersion;
+import org.phpaspect.weaver.ast.parser.PHPAspectParser;
+import org.phpaspect.weaver.ast.scanner.PHPAspectLexer;
+import java_cup.runtime.Scanner;
+import java_cup.runtime.lr_parser;
 
 /**
  * Umbrella owner and abstract syntax tree node factory.
@@ -80,16 +82,13 @@ import org.eclipse.php.internal.core.language.PHPVersion;
  */
 public class AST {
 
-	public final static String PHP4 = PHPVersion.PHP4;
-	public final static String PHP5 = PHPVersion.PHP5;
-
 	/**
 	 * The scanner capabilities to the AST - all has package access
 	 * to enable ASTParser access  
 	 */
 	final AstLexer lexer;
 	final lr_parser parser;
-	final String apiLevel;
+	String apiLevel = "PHPAspect";
 	final boolean useASPTags;
 
 	/**
@@ -160,32 +159,24 @@ public class AST {
 	 * @throws IOException
 	 */
 	private AstLexer getLexerInstance(Reader reader, String phpVersion, boolean aspTagsAsPhp) throws IOException {
-		if (PHPVersion.PHP4.equals(phpVersion)) {
+		//if (PHPVersion.PHP4.equals(phpVersion)) {
 			//final PhpAstLexer4 lexer4 = getLexer4(reader);
 			//lexer4.setUseAspTagsAsPhp(aspTagsAsPhp);
 			//return lexer4;
-		} else if (PHPVersion.PHP5.equals(phpVersion)) {
+		//} else if (PHPVersion.PHP5.equals(phpVersion)) {
 			//final PhpAstLexer5 lexer5 = getLexer5(reader);
 			//lexer5.setUseAspTagsAsPhp(aspTagsAsPhp);
 			//return lexer5;
-		} else {
-			throw new IllegalArgumentException(CoreMessages.getString("ASTParser_1") + phpVersion);
-		}
-		return null;
+		//} else {
+		//	throw new IllegalArgumentException(CoreMessages.getString("ASTParser_1") + phpVersion);
+		//}
+		return new PHPAspectLexer(reader);
 	}
 
 	private lr_parser getParserInstance(String phpVersion, Scanner lexer) {
-		if (PHPVersion.PHP4.equals(phpVersion)) {
-			final PhpAstParser4 parser = new PhpAstParser4(lexer);
-			//parser.setAST(this);
-			return parser;
-		} else if (PHPVersion.PHP5.equals(phpVersion)) {
-			final PhpAstParser5 parser = new PhpAstParser5(lexer);
-			//parser.setAST(this);
-			return parser;
-		} else {
-			throw new IllegalArgumentException(CoreMessages.getString("ASTParser_1") + phpVersion);
-		}
+		final PHPAspectParser parser = new PHPAspectParser(lexer);
+		parser.setAST(this);
+		return parser;
 	}
 
 	/**
@@ -1461,9 +1452,9 @@ public class AST {
 		formalParameter.setParameterType(type);
 		formalParameter.setParameterName(parameterName);
 		formalParameter.setDefaultValue(defaultValue);
-		if (apiLevel().equals(AST.PHP4)) {
-			formalParameter.setIsMandatory(isMandatory);
-		}
+		//if (apiLevel().equals(AST.PHP4)) {
+		//	formalParameter.setIsMandatory(isMandatory);
+		//}
 		return formalParameter;
 	}
 
