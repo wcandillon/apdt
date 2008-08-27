@@ -6,5 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.php.test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.phpaspect.weaver"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.dltk.core"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
