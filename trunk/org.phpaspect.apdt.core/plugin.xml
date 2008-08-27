@@ -50,7 +50,6 @@
       </runtime>
       <requires-nature id="org.eclipse.php.core.PHPNature" />
    </extension>
-
 	 <extension
 	       id="phpaspectproblemmarker"
 	       name="PHPAspect Syntax Error"
@@ -102,5 +101,12 @@
           nature="org.phpaspect.apdt.core.phpAspectNature"
           priority="0">
     </mixin>
+ </extension>
+ <extension
+       point="org.eclipse.dltk.core.buildpathContainerInitializer">
+    <buildpathContainerInitializer
+          class="org.phpaspect.apdt.internal.core.language.PHPAspectLanguageModelInitializer"
+          id="org.phpaspect.apdt.core.LANGUAGE">
+    </buildpathContainerInitializer>
  </extension>
 </plugin>

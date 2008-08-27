@@ -9,6 +9,7 @@ import org.phpaspect.apdt.internal.core.documentModel.provisional.contenttype.Co
 
 public class PHPAspectLanguageToolkit extends AbstractLanguageToolkit {
 
+	private final static String PHPASPECT_LANGUAGE = "PHPAspect";
 	private static PHPAspectLanguageToolkit toolkit = new PHPAspectLanguageToolkit();
 
 	protected String getCorePluginID() {
@@ -21,7 +22,7 @@ public class PHPAspectLanguageToolkit extends AbstractLanguageToolkit {
 	}
 
 	public String getLanguageName() {
-		return "PHPAspect";
+		return PHPASPECT_LANGUAGE;
 	}
 
 	public String getNatureId() {

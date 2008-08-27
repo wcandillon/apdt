@@ -5,7 +5,7 @@
 	<property name="jflex_home" value="jflex-1.4.1/lib/JFlex.jar" />
 
 	<target name="generateParser">
-		<java  jar="javacup/java-cup-10k.jar" input="phpaspect_dltk_parser.cup" fork="true">
+		<java jar="../../org.eclipse.php.core/Resources/parserTools/javacup/java-cup-10k.jar" input="phpaspect_dltk_parser.cup" fork="true">
 			<arg value="-compact_red" />
 			<arg value="-expect" />
 			<arg value="4" />

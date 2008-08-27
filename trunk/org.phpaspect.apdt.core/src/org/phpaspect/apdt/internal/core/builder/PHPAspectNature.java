@@ -27,7 +27,6 @@ public class PHPAspectNature extends ScriptNature {
 		}
 		folder.create(true, true, null);
 		project.getFolder("weaved").getFolder("_aspects").create(true, true, null);
-		
 		//TODO:We add the correct include paths (check if the pear one is not already added
 		//IPath path = Path.fromOSString("/usr/lib/php5");
 		//IncludePathVariableManager.instance().putVariable("PHPASPECT_RUNTIME", path);
