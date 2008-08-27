@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="Resources/junit-4.4.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/Users/wcandillon/eclipse/plugins/org.eclipse.equinox.common_3.4.0.v20080421-2006.jar" sourcepath="/Users/wcandillon/eclipse/plugins/org.eclipse.equinox.common_3.4.0.v20080421-2006.jar">
 		<accessrules>
@@ -41,6 +42,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.phpaspect.weaver"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.php.core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.php.test"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
