@@ -40,10 +40,15 @@ class Fueabar
 	}
 }
 
+class SubBar extends Foo{}
+
 $foo = new Foo();
 echo $foo->bar(true, time());
 $foo = new Fueabar();
 $foo->bar();
 $bar->bar();
 $bar->foo();
+//Test subtypes
+$foo = new SubBar();
+$foo->bar();
 ?>

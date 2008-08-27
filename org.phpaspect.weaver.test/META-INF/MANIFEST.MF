@@ -32,6 +32,9 @@ Require-Bundle: org.eclipse.text;bundle-version="3.4.0",
  org.eclipse.dltk.core;bundle-version="1.0.0",
  org.eclipse.php.test;bundle-version="2.0.0",
  org.phpaspect.weaver;bundle-version="1.0.0",
- org.junit;bundle-version="3.8.2"
+ org.junit4;bundle-version="4.3.1",
+ org.eclipse.php.core;bundle-version="2.0.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: junit.framework
+Bundle-ClassPath: .,
+ Resources/junit-4.4.jar
