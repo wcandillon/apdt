@@ -71,7 +71,7 @@ import org.phpaspect.weaver.ast.parser.PHPAspectSymbols;
     }
     
 	public String getPHPVersion() {
-		return AST.PHP5;
+		return "PHPAspect";
 	}
     
 	public void setInScriptingState() {

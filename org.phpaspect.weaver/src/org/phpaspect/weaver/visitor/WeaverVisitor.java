@@ -24,9 +24,7 @@ import org.eclipse.php.internal.core.ast.nodes.Identifier;
 import org.eclipse.php.internal.core.ast.nodes.Include;
 import org.eclipse.php.internal.core.ast.nodes.MethodInvocation;
 import org.eclipse.php.internal.core.ast.nodes.Program;
-import org.eclipse.php.internal.core.ast.nodes.Scalar;
 import org.eclipse.php.internal.core.ast.nodes.Statement;
-import org.eclipse.php.internal.core.ast.nodes.StaticMethodInvocation;
 import org.eclipse.php.internal.core.ast.nodes.TypeDeclaration;
 import org.eclipse.php.internal.core.ast.nodes.Variable;
 import org.eclipse.php.internal.core.ast.nodes.VariableBase;
@@ -36,8 +34,8 @@ import org.eclipse.text.edits.TextEdit;
 import org.phpaspect.weaver.JoinPoint;
 import org.phpaspect.weaver.Pointcut;
 import org.phpaspect.weaver.SourceLocation;
-import org.phpaspect.weaver.impl.JoinPointImpl;
 import org.phpaspect.weaver.impl.SourceLocationImpl;
+import org.phpaspect.weaver.joinpoints.MethodInvocationJoinPoint;
 
 public class WeaverVisitor extends AbstractVisitor{
 
@@ -122,7 +120,7 @@ public class WeaverVisitor extends AbstractVisitor{
 	public void endVisit(MethodInvocation methodInvocation) {
 		//Create a joinpoint
 		SourceLocation sourceLocation = getSourceLocation(methodInvocation);
-		JoinPoint joinpoint = new JoinPointImpl(JoinPoint.Kind.METHOD_CALL, sourceLocation, methodInvocation);
+		JoinPoint joinpoint = new MethodInvocationJoinPoint(sourceLocation, methodInvocation);
 		//If a pointcut is matched we store its id
 		List<ArrayElement> ids = new LinkedList<ArrayElement>();
 		//Foreach id, we store the corresponding runtime assertion

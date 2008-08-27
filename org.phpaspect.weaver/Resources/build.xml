@@ -16,7 +16,7 @@
 
 	<target name="generateParser">
 		<java 
-			jar="javacup/java-cup-10k.jar" 
+			jar="../../org.eclipse.php.core/Resources/parserTools/javacup/java-cup-10k.jar" 
 			input="phpaspect_parser.cup"
 			fork="true">
 			<arg value="-compact_red"/>
@@ -28,7 +28,7 @@
 			<arg value="PHPAspectSymbols"/>
 			<arg value="-interface"/>
 		</java>
-
+		
 		<move
 			file="PHPAspectParser.java"
 			todir="../src/org/phpaspect/weaver/ast/parser"/>

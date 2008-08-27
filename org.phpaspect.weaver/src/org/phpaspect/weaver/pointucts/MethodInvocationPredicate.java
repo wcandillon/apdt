@@ -1,4 +1,4 @@
-package org.phpaspect.weaver.impl;
+package org.phpaspect.weaver.pointucts;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,37 +11,29 @@ import org.eclipse.php.internal.core.ast.nodes.MethodInvocation;
 import org.eclipse.php.internal.core.ast.nodes.Identifier;
 import org.eclipse.php.internal.core.ast.nodes.Variable;
 import org.eclipse.php.internal.core.ast.nodes.VariableBase;
+import org.phpaspect.weaver.AbstractPointcut;
 import org.phpaspect.weaver.JoinPoint;
 import org.phpaspect.weaver.Pointcut;
 
-public class MethodInvocationPredicate implements Pointcut {
+public class MethodInvocationPredicate extends AbstractPointcut {
 	
-	protected int id;
 	protected String declaringType;
 	protected String methodName;
-	protected Expression runtimeAssertion = null;
-	protected boolean matched = false;
-	
+	protected boolean subType;
+
 	public MethodInvocationPredicate(String declaringType, String methodName){
-		this(PointcutCounter.getId(), declaringType, methodName);
-	
-	}
-	
-	private MethodInvocationPredicate(int id, String declaringType, String methodName){
-		this.id = id;
+		super();
 		this.declaringType = declaringType.replace("*", ".*");
 		this.methodName = methodName.replace("*", ".*");
 	}
 	
 	public Pointcut clone(){
-		return new MethodInvocationPredicate(id, declaringType, methodName);
-	}
-	
-	public int getId() {
-		return id;
+		return new MethodInvocationPredicate(declaringType, methodName);
 	}
 
 	public boolean match(AST ast, JoinPoint jp) {
+		//TODO: warning for ambiguous types
+		//TODO: check for subtypes
 		if (jp.getKind() == JoinPoint.Kind.METHOD_CALL){
 			MethodInvocation node = (MethodInvocation) jp.getNode();
 			Variable var = (Variable)node.getMethod().getFunctionName().getName();
@@ -69,12 +61,5 @@ public class MethodInvocationPredicate implements Pointcut {
 		runtimeAssertion = ast.newScalar("false");
 		matched = true;
 		return false;
-	}
-
-	public Expression getRuntimeAssertion() {
-		if(!matched){
-			throw new IllegalStateException("The point has to be matched before getting runtime assertions");
-		}
-		return runtimeAssertion;
 	}
 }

@@ -40,17 +40,17 @@ public class AspectDeclaration extends ClassDeclaration {
 		buffer.append(tab).append("<AspectDeclaration"); //$NON-NLS-1$
 		appendInterval(buffer);
 		buffer.append(" modifier='").append(getModifier(modifier)).append("'>\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		buffer.append(tab).append(TAB).append("<ClassName>\n"); //$NON-NLS-1$
+		buffer.append(tab).append(TAB).append("<AspectName>\n"); //$NON-NLS-1$
 		getName().toString(buffer, TAB + TAB + tab);
 		buffer.append("\n"); //$NON-NLS-1$
-		buffer.append(tab).append(TAB).append("</ClassName>\n"); //$NON-NLS-1$
+		buffer.append(tab).append(TAB).append("</AspectName>\n"); //$NON-NLS-1$
 
-		buffer.append(tab).append(TAB).append("<SuperClassName>\n"); //$NON-NLS-1$
+		buffer.append(tab).append(TAB).append("<SuperAspectName>\n"); //$NON-NLS-1$
 		if (superClass != null) {
 			superClass.toString(buffer, TAB + TAB + tab);
 			buffer.append("\n"); //$NON-NLS-1$
 		}
-		buffer.append(tab).append(TAB).append("</SuperClassName>\n"); //$NON-NLS-1$
+		buffer.append(tab).append(TAB).append("</SuperAspectName>\n"); //$NON-NLS-1$
 
 		buffer.append(tab).append(TAB).append("<Interfaces>\n"); //$NON-NLS-1$
 		for (Object object : interfaces()) {
