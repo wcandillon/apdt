@@ -5,11 +5,14 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.io.StringReader;
 
+import java_cup.runtime.Symbol;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.php.test.infra.project.TestProject;
 
 import org.phpaspect.weaver.ast.nodes.AST;
+import org.phpaspect.weaver.ast.nodes.Program;
 import org.phpaspect.weaver.pointucts.MethodInvocationPredicate;
 import org.phpaspect.weaver.visitor.WeaverVisitor;
 
@@ -47,20 +50,5 @@ public class TestWeaver extends TestCase{
         System.out.println("woven program:");
         System.out.println(wovenProgram);
         project.dispose();
-	}
-	
-	public void testAspectDeclaration() throws Exception{
-		checkAST("<?php aspect Foo{} ?>");
-	}
-
-	private void checkAST(String source) throws Exception{
-		checkAST(source, true);
-	}
-	
-	private void checkAST(String source, boolean shouldFail) throws Exception {
-		Reader reader = new StringReader(source);
-		AST ast = new AST(reader, "PHPAspect", false);
-		ast.parser().parse();
-		//assertTrue((symbol == null) == shouldFail);
 	}
 }

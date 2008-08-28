@@ -1,26 +1,42 @@
 package org.phpaspect.weaver.test.parser;
 
+import java.io.FileReader;
 import java.io.Reader;
-import java.io.StringReader;
 
 import org.phpaspect.weaver.ast.nodes.AST;
+import org.phpaspect.weaver.ast.nodes.Program;
 
 import junit.framework.TestCase;
 
 public class TestAST extends TestCase{
 	
 	public void testAspectDeclaration() throws Exception{
-		checkAST("<?php aspect class Foo{} ?>");
-	}
-
-	private void checkAST(String source) throws Exception{
-		checkAST(source, true);
+		checkAST(new FileReader("Aspects/SimpleDeclaration.ap"));
 	}
 	
-	private void checkAST(String source, boolean shouldFail) throws Exception {
-		Reader reader = new StringReader(source);
-		AST ast = new AST(reader, "PHPAspect", false);
-		ast.parser().parse();
-		//assertTrue((symbol == null) == shouldFail);
+	public void testWrongAspectDeclaration() throws Exception{
+		checkAST(new FileReader("Aspects/WrongDeclaration.ap"), true);
+	}
+	
+	public void testAspectAttributes() throws Exception{
+		checkAST(new FileReader("Aspects/AspectAttributes.ap"));
+	}
+	
+	public void testAspectMethods() throws Exception{
+		checkAST(new FileReader("Aspects/AspectMethods.ap"));
+	}
+
+	private void checkAST(Reader source) throws Exception{
+		checkAST(source, false);
+	}
+	
+	private void checkAST(Reader source, boolean shouldFail) throws Exception {
+		AST ast = new AST(source, "PHPAspect", false);
+		Object value = ast.parser().parse().value;
+		if(shouldFail){
+			assertTrue(value instanceof Boolean);
+		}else{
+			assertTrue(value instanceof Program);
+		}
 	}
 }
