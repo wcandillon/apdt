@@ -28,15 +28,15 @@ public interface Visitor {
 	
 	public boolean visit(AspectDeclaration aspectDeclaration);
 	
-	public boolean endVisit(AspectDeclaration aspectDeclaration);
+	public void endVisit(AspectDeclaration aspectDeclaration);
 	
 	public boolean visit(InterTypeClassConstantDeclaration interTypeClassConstantDeclaration);
 	
-	public boolean endVisit(InterTypeClassConstantDeclaration interTypeClassConstantDeclaration);
+	public void endVisit(InterTypeClassConstantDeclaration interTypeClassConstantDeclaration);
 	
 	public boolean visit(InterTypeFieldsDeclaration interTypeFieldsDeclaration);
 	
-	public boolean endVisit(InterTypeFieldsDeclaration interTypeFieldsDeclaration);
+	public void endVisit(InterTypeFieldsDeclaration interTypeFieldsDeclaration);
 	
 	public boolean visit(ArrayAccess arrayAccess);
 
