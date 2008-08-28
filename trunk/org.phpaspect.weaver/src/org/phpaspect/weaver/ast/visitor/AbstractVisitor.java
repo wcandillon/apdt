@@ -1,73 +1,6 @@
 package org.phpaspect.weaver.ast.visitor;
 
-import org.phpaspect.weaver.ast.nodes.ASTError;
-import org.phpaspect.weaver.ast.nodes.ASTNode;
-import org.phpaspect.weaver.ast.nodes.ArrayAccess;
-import org.phpaspect.weaver.ast.nodes.ArrayCreation;
-import org.phpaspect.weaver.ast.nodes.ArrayElement;
-import org.phpaspect.weaver.ast.nodes.AspectDeclaration;
-import org.phpaspect.weaver.ast.nodes.Assignment;
-import org.phpaspect.weaver.ast.nodes.BackTickExpression;
-import org.phpaspect.weaver.ast.nodes.Block;
-import org.phpaspect.weaver.ast.nodes.BreakStatement;
-import org.phpaspect.weaver.ast.nodes.CastExpression;
-import org.phpaspect.weaver.ast.nodes.CatchClause;
-import org.phpaspect.weaver.ast.nodes.ClassConstantDeclaration;
-import org.phpaspect.weaver.ast.nodes.ClassDeclaration;
-import org.phpaspect.weaver.ast.nodes.ClassInstanceCreation;
-import org.phpaspect.weaver.ast.nodes.ClassName;
-import org.phpaspect.weaver.ast.nodes.CloneExpression;
-import org.phpaspect.weaver.ast.nodes.Comment;
-import org.phpaspect.weaver.ast.nodes.ConditionalExpression;
-import org.phpaspect.weaver.ast.nodes.ContinueStatement;
-import org.phpaspect.weaver.ast.nodes.DeclareStatement;
-import org.phpaspect.weaver.ast.nodes.DoStatement;
-import org.phpaspect.weaver.ast.nodes.EchoStatement;
-import org.phpaspect.weaver.ast.nodes.EmptyStatement;
-import org.phpaspect.weaver.ast.nodes.ExpressionStatement;
-import org.phpaspect.weaver.ast.nodes.FieldAccess;
-import org.phpaspect.weaver.ast.nodes.FieldsDeclaration;
-import org.phpaspect.weaver.ast.nodes.ForEachStatement;
-import org.phpaspect.weaver.ast.nodes.ForStatement;
-import org.phpaspect.weaver.ast.nodes.FormalParameter;
-import org.phpaspect.weaver.ast.nodes.FunctionDeclaration;
-import org.phpaspect.weaver.ast.nodes.FunctionInvocation;
-import org.phpaspect.weaver.ast.nodes.FunctionName;
-import org.phpaspect.weaver.ast.nodes.GlobalStatement;
-import org.phpaspect.weaver.ast.nodes.Identifier;
-import org.phpaspect.weaver.ast.nodes.IfStatement;
-import org.phpaspect.weaver.ast.nodes.IgnoreError;
-import org.phpaspect.weaver.ast.nodes.InLineHtml;
-import org.phpaspect.weaver.ast.nodes.Include;
-import org.phpaspect.weaver.ast.nodes.InfixExpression;
-import org.phpaspect.weaver.ast.nodes.InstanceOfExpression;
-import org.phpaspect.weaver.ast.nodes.InterTypeClassConstantDeclaration;
-import org.phpaspect.weaver.ast.nodes.InterTypeFieldsDeclaration;
-import org.phpaspect.weaver.ast.nodes.InterfaceDeclaration;
-import org.phpaspect.weaver.ast.nodes.ListVariable;
-import org.phpaspect.weaver.ast.nodes.MethodDeclaration;
-import org.phpaspect.weaver.ast.nodes.MethodInvocation;
-import org.phpaspect.weaver.ast.nodes.ParenthesisExpression;
-import org.phpaspect.weaver.ast.nodes.PostfixExpression;
-import org.phpaspect.weaver.ast.nodes.PrefixExpression;
-import org.phpaspect.weaver.ast.nodes.Program;
-import org.phpaspect.weaver.ast.nodes.Quote;
-import org.phpaspect.weaver.ast.nodes.Reference;
-import org.phpaspect.weaver.ast.nodes.ReflectionVariable;
-import org.phpaspect.weaver.ast.nodes.ReturnStatement;
-import org.phpaspect.weaver.ast.nodes.Scalar;
-import org.phpaspect.weaver.ast.nodes.SingleFieldDeclaration;
-import org.phpaspect.weaver.ast.nodes.StaticConstantAccess;
-import org.phpaspect.weaver.ast.nodes.StaticFieldAccess;
-import org.phpaspect.weaver.ast.nodes.StaticMethodInvocation;
-import org.phpaspect.weaver.ast.nodes.StaticStatement;
-import org.phpaspect.weaver.ast.nodes.SwitchCase;
-import org.phpaspect.weaver.ast.nodes.SwitchStatement;
-import org.phpaspect.weaver.ast.nodes.ThrowStatement;
-import org.phpaspect.weaver.ast.nodes.TryStatement;
-import org.phpaspect.weaver.ast.nodes.UnaryOperation;
-import org.phpaspect.weaver.ast.nodes.Variable;
-import org.phpaspect.weaver.ast.nodes.WhileStatement;
+import org.phpaspect.weaver.ast.nodes.*;
 
 public class AbstractVisitor implements Visitor {
 
@@ -731,21 +664,18 @@ public class AbstractVisitor implements Visitor {
 		return true;
 	}
 
-	public boolean endVisit(AspectDeclaration aspectDeclaration) {
+	public void endVisit(AspectDeclaration aspectDeclaration) {
 		
-		return true;
 	}
 
-	public boolean endVisit(
+	public void endVisit(
 			InterTypeClassConstantDeclaration interTypeClassConstantDeclaration) {
 		
-		return true;
 	}
 
-	public boolean endVisit(
+	public void endVisit(
 			InterTypeFieldsDeclaration interTypeFieldsDeclaration) {
 		
-		return true;
 	}
 
 	public boolean visit(AspectDeclaration aspectDeclaration) {

@@ -8,16 +8,16 @@ public class AspectDeclaration extends ClassDeclaration {
 
 	private boolean persistent = false;
 	
-	public static final ChildPropertyDescriptor PERSISTENT_PROPERTY = 
-		new ChildPropertyDescriptor(AspectDeclaration.class, "persistent", Boolean.class, MANDATORY, NO_CYCLE_RISK); //$NON-NLS-1$
+	//public static final ChildPropertyDescriptor PERSISTENT_PROPERTY = 
+	//	new ChildPropertyDescriptor(AspectDeclaration.class, "persistent", Boolean.class, MANDATORY, NO_CYCLE_RISK); //$NON-NLS-1$
 	
-	private static final List<StructuralPropertyDescriptor> PROPERTY_DESCRIPTORS;
+	//private static final List<StructuralPropertyDescriptor> PROPERTY_DESCRIPTORS;
 	
-	static {
+	/*static {
 		List<StructuralPropertyDescriptor> propertyList = new ArrayList<StructuralPropertyDescriptor>(1);
 		propertyList.add(PERSISTENT_PROPERTY);
 		PROPERTY_DESCRIPTORS = Collections.unmodifiableList(propertyList);
-	}	
+	}*/	
 	
 	public AspectDeclaration(AST ast) {
 		super(ast);
@@ -28,9 +28,9 @@ public class AspectDeclaration extends ClassDeclaration {
 		this.persistent = persistent;
 	}
 	
-	protected ChildPropertyDescriptor getBodyProperty() {
+	/*protected ChildPropertyDescriptor getBodyProperty() {
 		return PERSISTENT_PROPERTY;
-	}
+	}*/
 
 	public int getType() {
 		return ASTNode.ASPECT_DECLARATION;
