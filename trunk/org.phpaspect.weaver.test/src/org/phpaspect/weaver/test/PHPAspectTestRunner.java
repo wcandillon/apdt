@@ -9,10 +9,10 @@ import junit.framework.TestSuite;
 public class PHPAspectTestRunner {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.phpaspect.weaver.test");
+		TestSuite suite = new TestSuite("org.phpaspect.weaver.test");
 		//$JUnit-BEGIN$
-		suite.addTestSuite(TestAST.class);
 		suite.addTestSuite(TestWeaver.class);
+		suite.addTestSuite(TestAST.class);
 		//$JUnit-END$
 		return suite;
 	}
