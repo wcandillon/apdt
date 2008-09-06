@@ -6,16 +6,14 @@ package org.phpaspect.weaver.ast.parser;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
 import java.util.*;
 
 import org.phpaspect.weaver.Pointcut;
 import org.phpaspect.weaver.impl.*;
 import org.phpaspect.weaver.ast.nodes.*;
-import org.phpaspect.weaver.impl.MethodInvocationPredicate;
+import org.phpaspect.weaver.pointucts.*;
 import org.phpaspect.weaver.ast.scanner.PHPAspectLexer;
 import org.phpaspect.weaver.ast.parser.PHPAspectSymbolsUtils;
-
 
 parser code {:
 	protected final static Integer PUBLIC = new Integer(BodyDeclaration.Modifier.PUBLIC);
@@ -441,9 +439,8 @@ method_body:body
 |	T_POINTCUT:start T_STRING:ptName T_OPEN_PARENTHESE T_CLOSE_PARENTHESE T_NEKUDOTAIM aspect_pointcut:pt T_SEMICOLON:end
 {:
     parser.pointcuts.put(ptName, pt);
-	RESULT = null;
-	//AspectPointcutDeclaration aspectPointcutDeclaration = new AspectPointcutDeclaration(startleft, endright, parser.ast, ptName, expr);
-	//RESULT = aspectPointcutDeclaration;
+	AspectPointcutDeclaration aspectPointcutDeclaration = new AspectPointcutDeclaration(startleft, endright, parser.ast, ptName, pt);
+	RESULT = aspectPointcutDeclaration;
 :}
 |	T_BEFORE:start T_OPEN_PARENTHESE T_CLOSE_PARENTHESE T_NEKUDOTAIM aspect_pointcut:pt T_CURLY_OPEN:blockStart inner_statement_list:statementList T_CURLY_CLOSE:end
 {:
