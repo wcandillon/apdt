@@ -1,4 +1,14 @@
 <?php
 aspect AspectSimpleDeclaration{
+
+	public $foo = array();
+	private static $bar;
+	private static $instance = null;
+	
+	public function bar(){
+		return true;
+	}
+
+	pointcut foo(): call(Foo->bar());
 }
 ?>

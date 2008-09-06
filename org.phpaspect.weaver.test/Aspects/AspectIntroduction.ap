@@ -1,0 +1,16 @@
+<?php
+aspect Introduction
+{
+	public Bar::$foo,$bar = array();
+	
+	private function Bar::foo()
+	{
+		return true;
+	}
+	
+	public static function Foo::bar()
+	{
+		return false;
+	}
+}
+?>
