@@ -25,6 +25,18 @@ public class TestAST extends TestCase{
 	public void testAspectMethods() throws Exception{
 		checkAST(new FileReader("Aspects/AspectMethods.ap"));
 	}
+	
+	public void testAspectIntroduction() throws Exception{
+		checkAST(new FileReader("Aspects/AspectIntroduction.ap"));
+	}
+	
+	public void testAspectMethodInvocationJoinPoint() throws Exception{
+		checkAST(new FileReader("Aspects/AspectMethodInvocationJoinPoint.ap"));
+	}
+	
+	public void testAspectTestPointcut() throws Exception{
+		checkAST(new FileReader("Aspects/AspectTestPointcut.ap"));
+	}
 
 	private void checkAST(Reader source) throws Exception{
 		checkAST(source, false);

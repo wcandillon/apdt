@@ -1,6 +1,7 @@
 package org.phpaspect.weaver.test;
 
 import org.phpaspect.weaver.test.parser.TestAST;
+import org.phpaspect.weaver.test.weaver.TestAspectGeneration;
 import org.phpaspect.weaver.test.weaver.TestWeaver;
 
 import junit.framework.Test;
@@ -13,8 +14,8 @@ public class PHPAspectTestRunner {
 		//$JUnit-BEGIN$
 		suite.addTestSuite(TestWeaver.class);
 		suite.addTestSuite(TestAST.class);
+		suite.addTestSuite(TestAspectGeneration.class);
 		//$JUnit-END$
 		return suite;
 	}
-
 }
