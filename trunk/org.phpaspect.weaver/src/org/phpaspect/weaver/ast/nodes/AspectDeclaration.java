@@ -63,4 +63,15 @@ public class AspectDeclaration extends ClassDeclaration {
 		buffer.append("\n"); //$NON-NLS-1$
 		buffer.append(tab).append("</AspectDeclaration>"); //$NON-NLS-1$
 	}
+
+	@Override
+	ASTNode clone0(AST target) {
+		final Block body = ASTNode.copySubtree(target, getBody());
+		final Identifier superName = ASTNode.copySubtree(target, getSuperClass());
+		final int modifier = getModifier();
+		final List interfaces = ASTNode.copySubtrees(target, interfaces());
+		final Identifier name = ASTNode.copySubtree(target, getName());
+		final AspectDeclaration result = new AspectDeclaration(getStart(), getEnd(), target, modifier, name, persistent, superName, interfaces, body);
+		return result;
+	}
 }
