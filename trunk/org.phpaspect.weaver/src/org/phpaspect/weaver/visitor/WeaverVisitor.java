@@ -100,10 +100,8 @@ public class WeaverVisitor extends AbstractVisitor{
 	public void endVisit(Program program){ 
 		//List of the includes for PHPAspect Runtime
 		List<Statement> includes = new  LinkedList<Statement>();
-		//require_once 'Runtime/Aspect.php';
-		Expression aspectFile = ast.newScalar("'Runtime/Aspect.php'");
-	    includes.add(ast.newExpressionStatement(ast.newInclude(aspectFile, Include.IT_REQUIRE_ONCE)));
-	    //require_once 'Runtime/Reflection/JoinPointImpl.php';
+		//TODO: include runtime aspects
+		//require_once 'Runtime/Reflection/JoinPointImpl.php';
 		Expression jpFile = ast.newScalar("'Runtime/Reflection/JoinPointImpl.php'");
 	    includes.add(ast.newExpressionStatement(ast.newInclude(jpFile, Include.IT_REQUIRE_ONCE)));
 	    //require_once 'Runtime/Dispatcher.php';
