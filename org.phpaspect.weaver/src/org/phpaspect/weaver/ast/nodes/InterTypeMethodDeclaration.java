@@ -8,14 +8,14 @@ public class InterTypeMethodDeclaration extends MethodDeclaration {
 	
 	private String interType;
 
-	public static final ChildPropertyDescriptor INTERTYPE_PROPERTY = 
-		new ChildPropertyDescriptor(InterTypeClassConstantDeclaration.class, "interType", String.class, MANDATORY, NO_CYCLE_RISK); //$NON-NLS-1$
+	//public static final ChildPropertyDescriptor INTERTYPE_PROPERTY = 
+	//	new ChildPropertyDescriptor(InterTypeClassConstantDeclaration.class, "interType", String.class, MANDATORY, NO_CYCLE_RISK); //$NON-NLS-1$
 	
 	private static final List<StructuralPropertyDescriptor> PROPERTY_DESCRIPTORS;
 	
 	static {
 		List<StructuralPropertyDescriptor> propertyList = new ArrayList<StructuralPropertyDescriptor>(1);
-		propertyList.add(INTERTYPE_PROPERTY);
+		//propertyList.add(INTERTYPE_PROPERTY);
 		PROPERTY_DESCRIPTORS = Collections.unmodifiableList(propertyList);
 	}
 	

@@ -6,8 +6,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-
-import org.eclipse.php.internal.core.CoreMessages;
 import org.eclipse.php.internal.core.ast.scanner.*;
 import org.eclipse.php.internal.core.language.PHPVersion;
 import org.phpaspect.weaver.ast.parser.PHPAspectParser;
@@ -693,6 +691,7 @@ public class AST {
 	 * Must not collide with a value for IProgram constants
 	 */
 	static final int RESOLVED_BINDINGS = 0x80000000;
+	public static final String PHPASPECT = "PHPAspect";
 
 	/**
 	 * Tag bit value. This represents internal state of the tree.
@@ -831,6 +830,16 @@ public class AST {
 		this.lexer.yyreset(reader);
 		this.lexer.resetCommentList();
 		this.parser.setScanner(this.lexer);
+	}
+	
+	/**
+	 * Creates a new {@link AspectDeclaration}
+	 * 
+	 * @return a new AspectDeclaration.
+	 */
+	public AspectDeclaration newAspectDeclaration(){
+		AspectDeclaration aspectDeclaration = new AspectDeclaration(this);
+		return aspectDeclaration;
 	}
 
 	/**

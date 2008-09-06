@@ -19,7 +19,7 @@ public class AspectCodeAdviceDeclaration extends Statement {
 	/**
 	 * The structural property of this node type.
 	 */
-	public static final ChildPropertyDescriptor ADVICE_TYPE_PROPERTY = 
+	/*public static final ChildPropertyDescriptor ADVICE_TYPE_PROPERTY = 
 		new ChildPropertyDescriptor(AspectCodeAdviceDeclaration.class, "adviceType", AdviceType.class, MANDATORY, NO_CYCLE_RISK); //$NON-NLS-1$
 	public static final ChildPropertyDescriptor POINTCUT_PROPERTY = 
 		new ChildPropertyDescriptor(AspectCodeAdviceDeclaration.class, "pointcut", Pointcut.class, MANDATORY, CYCLE_RISK); //$NON-NLS-1$
@@ -36,7 +36,7 @@ public class AspectCodeAdviceDeclaration extends Statement {
 
 	protected ChildPropertyDescriptor getPointcutBody() {
 		return BODY_PROPERTY;
-	}	
+	}*/	
 	
 	/**
 	 * A list of property descriptors (element type: 
@@ -47,9 +47,9 @@ public class AspectCodeAdviceDeclaration extends Statement {
 	
 	static {
 		List<StructuralPropertyDescriptor> propertyList = new ArrayList<StructuralPropertyDescriptor>(3);
-		propertyList.add(ADVICE_TYPE_PROPERTY);
-		propertyList.add(POINTCUT_PROPERTY);
-		propertyList.add(BODY_PROPERTY);
+		//propertyList.add(ADVICE_TYPE_PROPERTY);
+		//propertyList.add(POINTCUT_PROPERTY);
+		//propertyList.add(BODY_PROPERTY);
 		PROPERTY_DESCRIPTORS = Collections.unmodifiableList(propertyList);
 	}		
 	
