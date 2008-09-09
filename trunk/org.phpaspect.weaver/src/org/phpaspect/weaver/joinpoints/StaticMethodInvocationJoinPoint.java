@@ -6,12 +6,12 @@ import org.phpaspect.weaver.AbstractJoinPoint;
 import org.phpaspect.weaver.JoinPoint;
 import org.phpaspect.weaver.SourceLocation;
 
-public class MethodInvocationJoinPoint extends AbstractJoinPoint {
+public class StaticMethodInvocationJoinPoint extends AbstractJoinPoint {
 
 	private MethodInvocation methodInvocation;
 	
-	public MethodInvocationJoinPoint(SourceLocation sourceLocation, MethodInvocation node) {
-		super(JoinPoint.Kind.METHOD_CALL, sourceLocation);
+	public StaticMethodInvocationJoinPoint(SourceLocation sourceLocation, MethodInvocation node) {
+		super(JoinPoint.Kind.STATIC_METHOD_CALL, sourceLocation);
 		methodInvocation = node;
 	}
 

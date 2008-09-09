@@ -1,4 +1,4 @@
-package org.phpaspect.weaver.pointucts;
+package org.phpaspect.weaver.pointcuts;
 
 import org.eclipse.php.internal.core.ast.nodes.AST;
 import org.eclipse.php.internal.core.ast.nodes.InfixExpression;

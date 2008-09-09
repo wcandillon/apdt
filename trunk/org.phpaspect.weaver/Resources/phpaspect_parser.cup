@@ -8,10 +8,12 @@ package org.phpaspect.weaver.ast.parser;
 
 import java.util.*;
 
+import org.phpaspect.weaver.Introduction;
 import org.phpaspect.weaver.Pointcut;
 import org.phpaspect.weaver.impl.*;
 import org.phpaspect.weaver.ast.nodes.*;
-import org.phpaspect.weaver.pointucts.*;
+import org.phpaspect.weaver.pointcuts.*;
+import org.phpaspect.weaver.introductions.*;
 import org.phpaspect.weaver.ast.scanner.PHPAspectLexer;
 import org.phpaspect.weaver.ast.parser.PHPAspectSymbolsUtils;
 
@@ -26,6 +28,7 @@ parser code {:
 	AST ast;
 	
 	protected Map<String, Pointcut> pointcuts = new HashMap<String, Pointcut>();
+ 	protected List<Introduction> introductions = new LinkedList<Introduction>();
   
 	public final void setAST (AST ast) {
 		this.ast = ast;
@@ -202,6 +205,7 @@ non terminal String aspect_inter_type_signature;
 non terminal String aspect_signature;
 non terminal Pointcut aspect_pointcut;
 non terminal Pointcut aspect_joinpoint;
+non terminal Boolean aspect_subtype_or_not;
 
 /*non terminal List aspect_statement_list;
 non terminal List aspect_statement;
@@ -211,7 +215,6 @@ non terminal AspectInterTypeDeclaration aspect_inter_type_declaration_or_variabl
 non terminal AspectInterTypeDeclaration aspect_inter_type_declaration_r;
 non terminal String aspect_inter_type_signature;
 non terminal String aspect_signature;
-non terminal Boolean aspect_subtype_or_not;
 non terminal List aspect_pointcut_parameter_list;
 non terminal AspectPointcutParameter aspect_pointcut_parameter;
 non terminal List aspect_joinpoint_parameters;
@@ -410,6 +413,11 @@ aspect_statement_list:list aspect_statement:aspectStatement
 :}
 ;
 
+aspect_subtype_or_not ::= 
+T_PLUS {: RESULT = true; :}
+| /* empty */ {: RESULT = false; :}
+;
+
 aspect_statement ::=
 class_statement:statement
 {:
@@ -417,12 +425,14 @@ class_statement:statement
 :}
 |  variable_modifiers:modifier aspect_inter_type_signature:interType T_PAAMAYIM_NEKUDOTAYIM class_variable_declaration:decList T_SEMICOLON:end
 {:
-	InterTypeFieldsDeclaration fieldsDeclaration = new InterTypeFieldsDeclaration(modifierleft, endright, parser.ast, modifier.intValue(), interType, decList);
+	InterTypeFieldsDeclaration fieldsDeclaration = new InterTypeFieldsDeclaration(modifierleft, endright, parser.ast, modifier.intValue(), interType, false, decList);
+	parser.introductions.add(new AttributeIntroduction(fieldsDeclaration));
 	RESULT = fieldsDeclaration;
 :}
 | aspect_inter_type_signature:interType T_PAAMAYIM_NEKUDOTAYIM class_constant_declaration:list T_SEMICOLON:end
 {:
-	InterTypeClassConstantDeclaration classConstantDeclaration = new InterTypeClassConstantDeclaration(listleft, endright, parser.ast, interType, list);
+	InterTypeClassConstantDeclaration classConstantDeclaration = new InterTypeClassConstantDeclaration(listleft, endright, parser.ast, interType, false, list);
+	parser.introductions.add(new ConstantIntroduction(classConstantDeclaration));
 	RESULT = classConstantDeclaration;
 :}
 | method_modifiers:modifier T_FUNCTION:start is_reference:isReference aspect_inter_type_signature:interType T_PAAMAYIM_NEKUDOTAYIM string_st:functionName
@@ -433,7 +443,8 @@ method_body:body
 	modifier = modifier == null ? PHPAspectParser.PUBLIC : modifier;
 	Identifier functionId = new Identifier(functionNameleft, functionNameright, parser.ast, functionName);
 	FunctionDeclaration functionDeclaration = new FunctionDeclaration(startleft, bodyright, parser.ast, functionId, paramList, body, isReference.booleanValue());
-	InterTypeMethodDeclaration methodDeclaration = new InterTypeMethodDeclaration(methodStart, bodyright, parser.ast, modifier.intValue(), interType, functionDeclaration, true);
+	InterTypeMethodDeclaration methodDeclaration = new InterTypeMethodDeclaration(methodStart, bodyright, parser.ast, modifier.intValue(), interType, false, functionDeclaration, true);
+	parser.introductions.add(new MethodIntroduction(methodDeclaration));
 	RESULT = methodDeclaration;
 :}
 |	T_POINTCUT:start T_STRING:ptName T_OPEN_PARENTHESE T_CLOSE_PARENTHESE T_NEKUDOTAIM aspect_pointcut:pt T_SEMICOLON:end
