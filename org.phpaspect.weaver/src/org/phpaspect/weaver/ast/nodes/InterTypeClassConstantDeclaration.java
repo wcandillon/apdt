@@ -8,6 +8,7 @@ import java.util.List;
 public class InterTypeClassConstantDeclaration extends ClassConstantDeclaration {
 	
 	private String interType;
+	private boolean subType;
 
 	public static final ChildPropertyDescriptor INTERTYPE_PROPERTY = 
 		new ChildPropertyDescriptor(InterTypeClassConstantDeclaration.class, "interType", String.class, MANDATORY, NO_CYCLE_RISK); //$NON-NLS-1$
@@ -20,9 +21,10 @@ public class InterTypeClassConstantDeclaration extends ClassConstantDeclaration 
 		PROPERTY_DESCRIPTORS = Collections.unmodifiableList(propertyList);
 	}
 	
-	public InterTypeClassConstantDeclaration(int start, int end, AST ast, String interType, List variablesAndDefaults) {
+	public InterTypeClassConstantDeclaration(int start, int end, AST ast, String interType, boolean subType, List variablesAndDefaults) {
 		super(start, end, ast, variablesAndDefaults);
 		this.setInterType(interType);
+		this.setSubType(subType);
 	}
 
 	public InterTypeClassConstantDeclaration(AST ast) {
@@ -60,5 +62,13 @@ public class InterTypeClassConstantDeclaration extends ClassConstantDeclaration 
 			buffer.append(tab).append(TAB).append("</InitialValue>\n"); //$NON-NLS-1$
 		}
 		buffer.append(tab).append("</InterTypeClassConstantDeclaration>"); //$NON-NLS-1$
+	}
+
+	public void setSubType(boolean subType) {
+		this.subType = subType;
+	}
+
+	public boolean isSubType() {
+		return subType;
 	}
 }

@@ -31,6 +31,7 @@ import org.eclipse.php.internal.core.ast.nodes.VariableBase;
 import org.eclipse.php.internal.core.ast.rewrite.ASTRewrite;
 import org.eclipse.php.internal.core.ast.visitor.AbstractVisitor;
 import org.eclipse.text.edits.TextEdit;
+import org.phpaspect.weaver.Introduction;
 import org.phpaspect.weaver.JoinPoint;
 import org.phpaspect.weaver.Pointcut;
 import org.phpaspect.weaver.SourceLocation;
@@ -40,6 +41,7 @@ import org.phpaspect.weaver.joinpoints.MethodInvocationJoinPoint;
 public class WeaverVisitor extends AbstractVisitor{
 
 	protected List<Pointcut> pointcuts = new LinkedList<Pointcut>();
+	protected List<Introduction> introductions = new LinkedList<Introduction>();
 
 	private ASTParser parser;
 	private Program program;
@@ -81,6 +83,11 @@ public class WeaverVisitor extends AbstractVisitor{
 
 	public WeaverVisitor addPointcut(Pointcut pointcut){
 		pointcuts.add(pointcut);
+		return this;
+	}
+	
+	public WeaverVisitor addIntroduction(Introduction introduction){
+		introductions.add(introduction);
 		return this;
 	}
 	

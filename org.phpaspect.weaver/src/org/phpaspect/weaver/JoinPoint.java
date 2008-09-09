@@ -16,6 +16,4 @@ public interface JoinPoint {
     public String toLongString();
 
     public String toString();
-
-    public String toShortString();
 }

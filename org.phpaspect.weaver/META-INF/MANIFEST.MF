@@ -25,7 +25,7 @@ Export-Package: org.phpaspect.weaver;uses:="org.eclipse.php.internal.core.ast.no
  org.phpaspect.weaver.ast.visitor;uses:="org.phpaspect.weaver.ast.nodes",
  org.phpaspect.weaver.impl;uses:="org.phpaspect.weaver,org.eclipse.php.internal.core.ast.nodes",
  org.phpaspect.weaver.joinpoints,
- org.phpaspect.weaver.pointucts,
+ org.phpaspect.weaver.pointcuts,
  org.phpaspect.weaver.utils,
  org.phpaspect.weaver.visitor;
   uses:="org.eclipse.php.internal.core.ast.visitor,
