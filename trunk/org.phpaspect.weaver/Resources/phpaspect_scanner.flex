@@ -922,13 +922,13 @@ yybegin(ST_DOCBLOCK);
 
 <ST_IN_SCRIPTING>("?>"|"</script"{WHITESPACE}*">"){NEWLINE}? {
     yybegin(YYINITIAL);
-    return createSymbol(PHPAspectSymbols.T_SEMICOLON);  /* implicit ';' at php-end tag */
+    /* return createSymbol(PHPAspectSymbols.T_SEMICOLON);  implicit ';' at php-end tag */
 }
 
 <ST_IN_SCRIPTING>"%>"{NEWLINE}? {
     if (asp_tags) {
         yybegin(YYINITIAL);
-        return createSymbol(PHPAspectSymbols.T_SEMICOLON);  /* implicit ';' at php-end tag */
+        /* return createSymbol(PHPAspectSymbols.T_SEMICOLON);  implicit ';' at php-end tag */
     } else {
         return createSymbol(PHPAspectSymbols.T_INLINE_HTML);
     }
