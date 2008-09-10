@@ -5,7 +5,7 @@
    <extension
        point="org.eclipse.dltk.ui.language">
      <language
-          class="org.eclipse.php.internal.ui.PHPAspectUILanguageToolkit"
+          class="org.phpaspect.apdt.internal.ui.PHPAspectUILanguageToolkit"
           nature="org.phpaspect.apdt.core.phpAspectNature"
           priority="1">
      </language>
@@ -91,8 +91,8 @@
       </editor>
    </extension>
    <extension point="org.eclipse.wst.sse.ui.editorConfiguration">
-			<sourceViewerConfiguration
-			class="org.eclipse.php.internal.ui.editor.configuration.PHPStructuredTextViewerConfiguration"
+   		<sourceViewerConfiguration
+			class="org.phpaspect.apdt.internal.ui.editor.configuration.PHPAspectStructuredTextViewerConfiguration"
 			target="org.phpaspect.apdt.core.phpaspectsource" />
 		<contentOutlineConfiguration
 			class="org.eclipse.php.internal.ui.outline.PHPContentOutlineConfiguration"
