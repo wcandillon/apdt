@@ -1,23 +1,23 @@
 package org.phpaspect.apdt.debug.core;
 
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin {
+public class APDTDebugCore extends Plugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.phpaspect.apdt.debut.core";
 
 	// The shared instance
-	private static Activator plugin;
+	private static APDTDebugCore plugin;
 	
 	/**
 	 * The constructor
 	 */
-	public Activator() {
+	public APDTDebugCore() {
 	}
 
 	/*
@@ -43,7 +43,7 @@ public class Activator extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static Activator getDefault() {
+	public static APDTDebugCore getDefault() {
 		return plugin;
 	}
 
