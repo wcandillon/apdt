@@ -76,6 +76,12 @@
          </action>
       </objectContribution>
    </extension>
+   <!-- Aspect tree content provider -->
+   <!--extension point="org.eclipse.php.ui.phpTreeContentProviders">
+   	<provider
+   		class="org.phpaspect.apdt.internal.ui.treecontent.IncludePathTreeContent"
+   		targetId="org.eclipse.php.ui.explorer" />
+   </extension-->
    <!-- PHPAspect Editor -->
    <extension
          point="org.eclipse.ui.editors">
@@ -181,7 +187,14 @@
 	    </filter>
 	</extension>
 	<!--Property Pages:-->
-	<extension point="org.eclipse.ui.propertyPages">
+	<extension point="org.eclipse.php.ui.phpPreferencePageBlocks">
+		<block
+        	class="org.phpaspect.apdt.internal.ui.preferences.PHPAspectPreferences"
+        	id="org.phpaspect.ui.preferences"
+        	name="PHPAspect Preferences"
+        	pageId="org.phpaspect.apdt.ui.preferences.PHPAspectPreferences"/>
+	</extension>
+	<!--extension point="org.eclipse.ui.propertyPages">
 		<page
 			class="org.phpaspect.apdt.internal.ui.preferences.PHPAspectInterpreterPreferencePage"
 			id="org.phpaspect.apdt.ui.propertyPages.PHPAspectInterpreterPreferencePage"
@@ -191,7 +204,7 @@
 				name="nature"
 				value="org.phpaspect.apdt.core.phpAspectNature" />
 		</page>
-	</extension>
+	</extension-->
 	<!--Preferences Pages:-->
 	<!--extension point="org.eclipse.ui.preferencePages">
 		<page
