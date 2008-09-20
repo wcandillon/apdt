@@ -1,11 +1,11 @@
 package org.phpaspect.apdt.internal.core;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-public class APDTCorePlugin extends AbstractUIPlugin {
+public class APDTCorePlugin extends Plugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.phpaspect.apdt.core";
 

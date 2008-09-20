@@ -38,7 +38,6 @@
             contentTypeId="org.phpaspect.apdt.core.phpaspectsource"
             class="org.eclipse.wst.sse.core.internal.filebuffers.BasicStructuredDocumentFactory"/>
    </extension>
-
    <extension
          id="org.phpaspect.apdt.core.phpAspectNature"
          name="PHPAspect Project Nature"
@@ -105,8 +104,8 @@
  <extension
        point="org.eclipse.dltk.core.buildpathContainerInitializer">
     <buildpathContainerInitializer
-          class="org.phpaspect.apdt.internal.core.language.PHPAspectLanguageModelInitializer"
-          id="org.phpaspect.apdt.core.LANGUAGE">
+          class="org.phpaspect.apdt.internal.core.language.LanguageModelInitializer"
+          id="org.phpaspect.apdt.core.RUNTIME_LANGUAGE">
     </buildpathContainerInitializer>
  </extension>
 </plugin>
