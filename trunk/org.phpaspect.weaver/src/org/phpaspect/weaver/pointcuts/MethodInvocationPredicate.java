@@ -45,9 +45,10 @@ public class MethodInvocationPredicate extends AbstractPointcut {
 			Variable var = (Variable)node.getMethod().getFunctionName().getName();
 			Identifier identifier = (Identifier)var.getName();
 			String methodName = identifier.getName();
-			if(node.getDispatcher().resolveTypeBinding().getName() == null){
+			String objectType = node.getDispatcher().resolveTypeBinding().getName();
+			if(objectType == null){
 				return setRuntimePredication(ast, node, declaringType);
-			} else if(methodName.matches(this.methodName) && node.getDispatcher().resolveTypeBinding().getName().matches(declaringType)){
+			} else if(methodName.matches(this.methodName) && objectType.matches(declaringType)){
 				runtimeAssertion = ast.newScalar("true");
 				matched = true;
 			} else if(methodName.matches(this.methodName) && subType){
