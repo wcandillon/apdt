@@ -7,7 +7,7 @@ import java.io.Reader;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.php.test.infra.project.TestProject;
-import org.phpaspect.weaver.pointucts.MethodInvocationPredicate;
+import org.phpaspect.weaver.pointcuts.MethodInvocationPredicate;
 import org.phpaspect.weaver.visitor.RuntimeVisitor;
 import org.phpaspect.weaver.visitor.WeaverVisitor;
 
