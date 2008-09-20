@@ -4,6 +4,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.dltk.internal.ui.scriptview.ScriptExplorerPart;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
@@ -37,16 +39,16 @@ public class RefreshPackageExplorer extends UIJob{
 		getRefreshJob().schedule(delay);
 	}
 
-
 	public IStatus runInUIThread(IProgressMonitor monitor) {
 		long start = System.currentTimeMillis();
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		if (page != null) {
-			//TODO: unimplemented method
-//		    ExplorerPart explorerPart = (ExplorerPart) page.findView("org.eclipse.php.ui.explorer");
-//		    if (explorerPart != null) {
-//		    	explorerPart.getViewer().refresh();
-//		    }
+			ScriptExplorerPart explorerPart = (ScriptExplorerPart) page.findView("org.eclipse.php.ui.explorer");
+		    if (explorerPart != null) {
+		    	TreeViewer treeViewer = explorerPart.getTreeViewer();
+		    	assert(treeViewer != null);
+				treeViewer.refresh();
+		    }
 		}
 		previousExecutionTime = (int)(System.currentTimeMillis() - start);
 		return Status.OK_STATUS;
