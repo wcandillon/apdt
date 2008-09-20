@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: APDT Debug UI Plug-in
 Bundle-SymbolicName: org.phpaspect.apdt.debug.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: org.phpaspect.apdt.debug.ui.Activator
+Bundle-Activator: org.phpaspect.apdt.debug.ui.APDTDebugUI
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.php.debug.ui,
  org.eclipse.php.debug.core,
