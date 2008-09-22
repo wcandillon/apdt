@@ -6,18 +6,12 @@
          point="org.eclipse.core.runtime.contentTypes">
       <content-type
             base-type="org.eclipse.php.core.phpsource"
+            describer="org.phpaspect.apdt.internal.core.builder.PHPAspectContentDescriber"
             file-extensions="ap"
             id="org.phpaspect.apdt.core.phpaspectsource"
             name="PHPAspect Content Type"
-            priority="high">
+            priority="low">
       </content-type>
-    </extension>
-    <!-- PHPAspect mixin build visitor -->
-    <extension
-        point="org.eclipse.php.core.phpMixinBuildVisitors">
-      <visitor
-            class="org.phpaspect.apdt.internal.core.builder.PHPAspectMixinBuildVisitor">
-      </visitor>
     </extension>
 	<!-- PHPAspect Model Handler -->
 	<extension
@@ -65,27 +59,19 @@
 	    <super type="org.eclipse.core.resources.textmarker"/>
 	 </extension>
   <extension
-	   point="org.eclipse.dltk.core.language">
-	<language
-	      class="org.phpaspect.apdt.internal.core.builder.PHPAspectLanguageToolkit"
-	      nature="org.phpaspect.apdt.core.phpAspectNature"
-	      priority="0">
-	</language>
-  </extension>
- <extension
        point="org.eclipse.dltk.core.sourceParsers">
     <parserContribution
-          natureId="org.phpaspect.apdt.core.phpAspectNature">
+          natureId="org.eclipse.php.core.PHPNature">
        <parser
              class="org.phpaspect.apdt.internal.core.compiler.ast.parser.PHPAspectSourceParserFactory"
              description="Creates PHPAspect source parser"
              id="org.phpaspect.apdt.core.phpAspectSourceParserFactory"
              name="PHPAspect source parser factory"
-             priority="0">
+             priority="10">
        </parser>
     </parserContribution>
  </extension>
- <extension
+ <!--extension
        point="org.eclipse.dltk.core.sourceElementParsers">
     <parser                                                           
           class="org.phpaspect.apdt.internal.core.compiler.ast.parser.PHPAspectSourceElementParser"
@@ -100,12 +86,18 @@
           nature="org.phpaspect.apdt.core.phpAspectNature"
           priority="0">
     </mixin>
- </extension>
- <extension
+ </extension-->
+ <!--extension
        point="org.eclipse.dltk.core.buildpathContainerInitializer">
     <buildpathContainerInitializer
           class="org.phpaspect.apdt.internal.core.language.LanguageModelInitializer"
           id="org.phpaspect.apdt.core.RUNTIME_LANGUAGE">
     </buildpathContainerInitializer>
+ </extension-->
+ <extension
+       point="org.eclipse.php.core.phpSourceElementRequestors">
+    <requestor
+          class="org.phpaspect.apdt.internal.core.compiler.ast.parser.PHPAspectSourceElementParser">
+    </requestor>
  </extension>
 </plugin>
