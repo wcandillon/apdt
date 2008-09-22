@@ -4,6 +4,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.dltk.core.AbstractLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.php.internal.core.documentModel.provisional.contenttype.ContentTypeIdForPHP;
 import org.phpaspect.apdt.internal.core.APDTCorePlugin;
 import org.phpaspect.apdt.internal.core.documentModel.provisional.contenttype.ContentTypeIdForPHPAspect;
 
@@ -36,5 +37,4 @@ public class PHPAspectLanguageToolkit extends AbstractLanguageToolkit {
 	public static IDLTKLanguageToolkit getDefault() {
 		return toolkit;
 	}
-
 }

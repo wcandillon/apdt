@@ -1,11 +1,7 @@
 package org.phpaspect.apdt.internal.core.compiler.ast.parser;
 
-import org.eclipse.dltk.core.AbstractSourceElementParser;
-import org.phpaspect.apdt.internal.core.builder.PHPAspectNature;
+import org.eclipse.php.core.PHPSourceElementRequestorExtension;
 
-public class PHPAspectSourceElementParser extends AbstractSourceElementParser {
+public class PHPAspectSourceElementParser extends PHPSourceElementRequestorExtension {
 
-	protected String getNatureId() {
-		return PHPAspectNature.NATURE_ID;
-	}
 }
