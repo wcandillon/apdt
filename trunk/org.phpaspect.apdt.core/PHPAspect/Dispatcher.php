@@ -1,5 +1,7 @@
 <?php
 require_once 'PHPAspect/AspectRegistry.php';
+require_once 'PHPAspect/Model/Joinpoint.php';
+require_once 'PHPAspect/Model/MethodInvocationJoinpoint.php';
 
 function isTypeMatching($object, $pattern)
 {
