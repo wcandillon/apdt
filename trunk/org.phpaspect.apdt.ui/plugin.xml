@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+ <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IResource"
+            adaptable="true"
+            id="tools.menu">
+            <menu
+                label="PHPAspect Tools"
+                path="additions"
+                icon="icons/obj16/aspect.gif"
+                id="tools.submenu">
+                <groupMarker name="content" />
+                <separator name="additions" />
+          <separator
+                name="weaving">
+          </separator>
+            </menu>
+      </objectContribution>
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IResource"
+            adaptable="true"
+            id="convertToPHPAspect">
+                 <action
+                       label="Convert to PHPAspect Project"
+                       class="org.phpaspect.apdt.internal.ui.actions.TogglePHPAspectNatureAction"
+                       id="addphpaspectnatureaction"
+               		   icon="icons/obj16/phpaspect_project_obj.gif"
+                       menubarPath="tools.submenu/content">
+                 </action>
+        <visibility>
+                <and>
+                        <objectState name="nature" value="org.eclipse.php.core.PHPNature"/>
+                        <not>
+                                <objectState name="nature" value="org.phpaspect.apdt.core.nature"/>
+                        </not>
+                    </and>
+         </visibility>
+      </objectContribution>
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IProject"
+            adaptable="true"
+            id="convertToPHP">
+         <visibility>
+                <objectState name="nature" value="org.phpaspect.apdt.core.nature"/>
+         </visibility>
+         <action
+             class="org.phpaspect.apdt.internal.ui.actions.TogglePHPAspectNatureAction"
+             icon="icons/obj16/add_php_project.gif"
+             id="removephpaspectnatureaction"
+             label="Remove PHPAspect capability"
+             menubarPath="tools.submenu/content">
+         </action>
+      </objectContribution>
+    <objectContribution
+          adaptable="true"
+          id="Weaver"
+          objectClass="org.eclipse.core.resources.IProject">
+       <action
+             class="org.phpaspect.apdt.internal.ui.actions.WeaveAction"
+             icon="icons/obj16/weave.gif"
+             id="org.phpaspect.apdt.ui.action2"
+             label="Weave Project"
+             menubarPath="tools.submenu/weaving">
+       </action>
+         <visibility>
+                <objectState name="nature" value="org.phpaspect.apdt.core.nature"/>
+         </visibility>
+    </objectContribution>
+   </extension>
+      <extension
+         point="org.eclipse.ui.ide.projectNatureImages">
+      <image
+            icon="icons/ovr16/phpaspect_ovr.gif"
+            natureId="org.phpaspect.apdt.core.nature"
+            id="org.phpaspect.apdt.core.natureImage">
+      </image>
+   </extension>
+</plugin>

@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Core Plug-in
+Bundle-SymbolicName: org.phpaspect.apdt.core;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.phpaspect.apdt.core.APDTCorePlugin
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources;bundle-version="3.4.0",
+ org.eclipse.dltk.core;bundle-version="1.0.0",
+ org.eclipse.php.core
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: org.phpaspect.apdt.core,
+ org.phpaspect.apdt.internal.core,
+ org.phpaspect.apdt.internal.core.joinpoints,
+ org.phpaspect.apdt.internal.core.pointcuts,
+ org.phpaspect.apdt.internal.core.visitor,
+ org.phpaspect.core.weaver,
+ org.phpaspect.internal.core.weaver
+Import-Package: org.eclipse.jface.text,
+ org.eclipse.text.edits
+Bundle-ClassPath: .,
+ Resources/antlr-runtime-3.1.3.jar
