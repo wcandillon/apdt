@@ -43,15 +43,15 @@ pointcut
  ;
  
 or_joinpoint
- : pt1=and_joinpoint (OR pt2=and_joinpoint -> ^(OR $pt1 $pt2))*
+ : pt1=and_joinpoint (OR^ pt2=and_joinpoint)*
  ;
 
 and_joinpoint
- : pt1=not_joinpoint (AND pt2=not_joinpoint -> ^(AND $pt1 $pt2))*
+ : pt1=not_joinpoint (AND^ pt2=not_joinpoint)*
  ;
  
 not_joinpoint
- :  (not=NOT)? joinpoint -> ^(JOINPOINT joinpoint $not)
+ :  (NOT^)? joinpoint
  ;
  
 //[2]
