@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: APDT Help Plug-in
+Bundle-SymbolicName: org.phpaspect.apdt.help; singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.phpaspect.apdt.help.APDTHelpPlugin
+Bundle-Vendor: phpAspect.org
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime
+Eclipse-LazyStart: true

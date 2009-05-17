@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<chapter id="pointcuts">
+    <title>Poincuts</title>
+    <para>
+    Pointcuts compose joinpoints like predicates, using:
+    <userinput>||</userinput> (or), <userinput>&#38;&#38;</userinput> (and) and <userinput>!</userinput> (not).
+    </para>
+    <para>
+        In the following example, we intercept all constructions of an Account instance 
+        and all executions of the methods from the Account class except the login method:
+    </para>
+    <userinput>pointcut ensureAuthorization:(new(Account(0)) || exec(public Account::*(*)))
+        &#38;&#38; !exec(public Account::login(2));</userinput>
+    <para>
+    The following example shows the flexibily of the poincut syntax
+    </para>
+    <example id="pointcuts-syntax">
+        <title>Pointcuts syntax.</title>
+        <programlisting><![CDATA[<?php
+aspect Security{
+
+    pointcut accountConstruction:new(Account(0));
+    pointcut accountExecution:exec(public Account::*(*));
+
+    around(): (accountConstruction || accountExecution)
+                and !exec(public Account::login(2)){
+        //Ensure Authorization...
+    }
+}
+?>]]></programlisting>
+    </example>
+</chapter>

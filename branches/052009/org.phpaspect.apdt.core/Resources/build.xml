@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="APDTBuild" default="build" basedir=".">
+	
+	<property name="jflex_home_122" value="JFlex-1.2.2.jar" />
+	<property name="jflex_home" value="jflex-1.4.1/lib/JFlex.jar" />
+
+	<target name="generateParser">
+		<java jar="../../org.eclipse.php.core/Resources/parserTools/javacup/java-cup-10k.jar" input="phpaspect_dltk_parser.cup" fork="true">
+			<arg value="-compact_red" />
+			<arg value="-expect" />
+			<arg value="4" />
+			<arg value="-parser" />
+			<arg value="PHPAspectParser" />
+			<arg value="-symbols" />
+			<arg value="PHPAspectSymbols" />
+			<arg value="-interface" />
+		</java>
+		
+		<replace
+			file="PHPAspectParser.java"
+			token="extends java_cup.runtime.lr_parser"
+			value="extends AbstractASTParser"/>
+
+		<move file="PHPAspectParser.java" todir="../src/org/phpaspect/apdt/internal/core/compiler/ast/parser/" />
+
+		<move file="PHPAspectSymbols.java" todir="../src/org/phpaspect/apdt/internal/core/compiler/ast/parser" />
+
+	</target>
+	
+	<target name="build">
+		<!-- PHPAspect DLTK Parser -->
+		<antcall target="generateParser" />
+		<!-- Generating the PHPAspect syntax highlighter Lexer -->
+		<java jar="${jflex_home_122}" fork="true" failonerror="true">
+			<arg value="highlighting/PHPAspectTokenizer.jflex" />
+			<arg line="-skel highlighting/skeleton.sse" />
+		</java>
+		<java jar="${jflex_home}" fork="true" failonerror="true">
+			<arg value="highlighting/PHPAspectLexer.jflex" />
+		</java>
+		<move file="highlighting/PHPAspectTokenizer.java" todir="../src/org/phpaspect/apdt/internal/core/documentModel/parser" />
+		<move file="highlighting/PHPAspectLexer.java" todir="../src/org/phpaspect/apdt/internal/core/documentModel/parser" />
+	</target>
+</project>

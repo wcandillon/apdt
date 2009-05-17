@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.phpaspect.apdt.feature"
+      label="APDT Feature"
+      version="1.0.0.qualifier">
+
+   <description url="http://phpaspect.org/apdt">
+      Aspect-Oriented PHP Developement Tools.
+   </description>
+
+   <copyright>
+      Copyright © 2006-2007 William Candillon {wcandillon@elv.telecom-lille1.eu} and Gilles Vanwormhoudt {vanwormhoudt@telecom-lille1.eu}.
+   </copyright>
+
+   <license url="http://www.eclipse.org/legal/epl-v10.html">
+      Eclipse Public License.
+   </license>
+
+   <url>
+      <discovery label="APDT Site Update" url="http://phpaspect.org/apdt/update"/>
+   </url>
+
+   <plugin
+         id="org.phpaspect.apdt"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.phpaspect.apdt.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.phpaspect.apdt.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.phpaspect.apdt.help"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description url="http://phpaspect.org/apdt/update">
+      APDT Site Update
+   </description>
+   <feature url="features/org.phpaspect.apdt.feature_1.0.0.qualifier.jar" id="org.phpaspect.apdt.feature" version="1.0.0.qualifier">
+      <category name="APDT"/>
+   </feature>
+   <feature url="features/org.phpaspect.apdt.sdk_feature_1.0.0.qualifier.jar" id="org.phpaspect.apdt.sdk_feature" version="1.0.0.qualifier">
+      <category name="APDT"/>
+   </feature>
+   <category-def name="APDT" label="Aspect PHP Developement Tools"/>
+</site>

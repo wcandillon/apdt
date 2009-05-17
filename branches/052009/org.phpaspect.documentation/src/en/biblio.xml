@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<appendix id="appendixes.bibliography">
+  <title>Bibliography</title>
+  
+  <biblioentry id="Ramnivas2003">
+      <abbrev>AspectJ in Action</abbrev>
+      <title>AspectJ in Action</title>
+      <authorgroup>
+          <author><firstname>Ramnivas</firstname><surname>Laddad</surname></author>
+      </authorgroup>
+      <copyright>
+          <year>2003</year>
+      </copyright>
+      <publisher>
+          <publishername>Manning Publications</publishername>
+      </publisher>
+      <isbn>1930110936</isbn>
+  </biblioentry>
+  
+  <biblioentry id="Lesiecki2003">
+      <abbrev>Mastering AspectJ</abbrev>
+      <title>Mastering AspectJ</title>
+      <authorgroup>
+          <author><firstname>Nicholas</firstname><surname>Lesiecki</surname></author>
+          <author><firstname>Joseph D</firstname><surname>Gradecki</surname></author>
+      </authorgroup>
+      <copyright>
+          <year>2003</year>
+      </copyright>
+      <publisher>
+          <publishername>Wiley</publishername>
+      </publisher>
+      <isbn>0471431044</isbn>
+  </biblioentry>
+
+  <biblioentry id="GuBaRe2005">
+    <abbrev>PHP 5 Power Programming</abbrev>
+    <title>PHP 5 Power Programming</title>
+    <authorgroup>
+      <author><firstname>Andi</firstname><surname>Gutmans</surname></author>
+      <author><firstname>Stig</firstname><surname>Bakken</surname></author>
+      <author><firstname>Derick</firstname><surname>Rethans</surname></author>
+    </authorgroup>
+    <copyright>
+      <year>2005</year>
+    </copyright>
+    <publisher>
+      <publishername>Prentice Hall</publishername>
+    </publisher>
+    <isbn>ISBN 0-131-47149-X</isbn>
+  </biblioentry>
+</appendix>

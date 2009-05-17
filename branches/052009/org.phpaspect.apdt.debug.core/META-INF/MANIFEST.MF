@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: APDT Debug Core Plug-in
+Bundle-SymbolicName: org.phpaspect.apdt.debug.core;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.phpaspect.apdt.debug.core.APDTDebugCore
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.debug.core,
+ org.eclipse.php.debug.core,
+ org.eclipse.php.core
+Eclipse-LazyStart: true

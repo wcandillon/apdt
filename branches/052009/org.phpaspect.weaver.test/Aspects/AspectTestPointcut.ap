@@ -1,0 +1,11 @@
+<?php
+aspect AspectTestPointcut
+{
+  pointcut foo():call(Foo->bar()) || call(Bar->bar());
+
+  before(): foo() && (call(Toto->foo()) && !call(Bar->foo()))
+  {
+  	echo "before foo()";
+  }
+}
+?>

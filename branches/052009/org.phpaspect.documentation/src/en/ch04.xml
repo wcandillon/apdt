@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<chapter id="aspects">
+  <title>Writing Aspects</title>
+  <para>
+  phpAspect extends the syntax of the php compiler in order
+  to introduce a new software entity called aspects.
+  All aspects must be written in a file with the
+  <emphasis>.aspect.php</emphasis> extension.
+  </para>
+  <para>
+  In a <emphasis>aspect.php</emphasis> file, all the
+  code outside the aspect entity will be ignored by phpAspect.
+  </para>
+  <example id="first-aspect.php">
+    <title>Your first aspect with phpAspect</title>
+    <programlisting><![CDATA[<?php
+aspect MyCrosscuttingConcern{
+
+    //Attributes
+    //Methods
+
+    //Poincuts
+    //Advices
+    //Inter-type declarations
+}
+//The code outside the aspect will be ignored
+?>]]></programlisting>
+  </example>
+    <para>
+    Aspects are first classes entities during the
+    execution. During the execution of your program, 
+    aspects are represented by classes having attributes and methods.
+    </para>
+    <para>
+    This mean that you can write user defined methods, attributes and contants into aspects.
+    </para>
+    <example id="first-class-entity.php">
+      <title>Aspects are first classes entities during the execution</title>
+      <programlisting><![CDATA[<?php
+aspect ObserverPattern{
+
+    private $observers = array();
+
+    public function addObserver(Observer $o){
+        $this->observers[] = $o;
+    }
+}
+?>]]></programlisting>
+  </example>
+    <note>
+        <para>
+        All aspects are instanciate with a singleton pattern
+        when the program execution starts.
+        </para>
+    </note>
+</chapter>
