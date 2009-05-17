@@ -8,7 +8,7 @@ import org.phpaspect.core.weaver.Pointcut;
 public class AnnotationVisitor implements NodeVisitor{
 
     private String id;
-    private Pointcut pointcut;
+    private Pointcut pointcut = null;
     private Stack<Pointcut> stack = new Stack<Pointcut>();
     
     public AnnotationVisitor(String id)
@@ -29,31 +29,35 @@ public class AnnotationVisitor implements NodeVisitor{
         int kind = node.getType();
         switch(kind)
         {
+        	case PHPAspectParser.ANNOTATION:
+        		assert stack.size() == 1;
+        		pointcut = stack.pop();
+        	break;
             case PHPAspectParser.CALL:
                 assert id != null;
                 String type = node.getChild(0).toString();
                 String method = node.getChild(2).toString();
                 if(node.getChild(1).toString().equals("->"))
                 {
-                    pointcut = new MethodInvocationPredicate(id, type, method);
+                    stack.push(new MethodInvocationPredicate(id, type, method));
                 } else {
-                    pointcut = new StaticMethodInvocationPredicate(id, type, method);
+                    stack.push(new StaticMethodInvocationPredicate(id, type, method));
                 }
             break;
             case PHPAspectParser.PARENTHESE:
-                assert pointcut != null;
-                pointcut = new ParenthesisPointcut(pointcut);
+        		assert stack.size() == 1;
+                stack.push(new ParenthesisPointcut(stack.pop()));
             break;
             case PHPAspectParser.NOT:
-                assert pointcut != null;
-                pointcut = new NotPointcut(pointcut);
+        		assert stack.size() == 1;
+                stack.push(new NotPointcut(stack.pop()));
             break;
             case PHPAspectParser.AND:
             {
                 assert stack.size() == 2;
                 Pointcut pt1 = stack.pop();
                 Pointcut pt2 = stack.pop();
-                pointcut = new AndPointcut(pt1, pt2);
+                stack.push(new AndPointcut(pt1, pt2));
             }
             break;
             case PHPAspectParser.OR:
@@ -61,7 +65,7 @@ public class AnnotationVisitor implements NodeVisitor{
                 assert stack.size() == 2;
                 Pointcut pt1 = stack.pop();
                 Pointcut pt2 = stack.pop();
-                pointcut = new OrPointcut(pt1, pt2);
+                stack.push(new OrPointcut(pt1, pt2));
             }
             break;
         }
