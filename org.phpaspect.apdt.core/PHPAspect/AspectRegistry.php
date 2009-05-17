@@ -19,7 +19,7 @@ class AspectRegistry
     	$classes = get_declared_classes();
     	foreach($classes as $class)
     	{
-			$aspect = new ReflectionAspect($class);
+			$aspect = new Aspect($class);
 			$aspectName = $aspect->getName();
 			$this->aspects[$aspectName] = $aspect->newInstanceArgs(array());
     	}
