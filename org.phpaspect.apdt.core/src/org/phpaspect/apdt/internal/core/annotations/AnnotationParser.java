@@ -3,7 +3,6 @@ package org.phpaspect.apdt.internal.core.annotations;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.lang.ref.PhantomReference;
 import java.util.LinkedList;
 import java.util.List;
 

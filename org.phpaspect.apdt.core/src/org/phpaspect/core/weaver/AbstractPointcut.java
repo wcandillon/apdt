@@ -19,7 +19,7 @@ public abstract class AbstractPointcut implements Pointcut {
 
 	public final Expression getRuntimeAssertion() {
 		if(!matched){
-			throw new IllegalStateException("The point has to be matched before getting runtime assertions");
+			throw new IllegalStateException("The pointcut has to be matched before getting runtime assertions");
 		}
 		return runtimeAssertion;
 	}
