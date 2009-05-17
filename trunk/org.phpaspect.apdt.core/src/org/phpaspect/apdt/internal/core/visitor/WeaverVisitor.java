@@ -23,7 +23,7 @@ import org.phpaspect.internal.core.weaver.SourceLocationImpl;
 
 public class WeaverVisitor extends AbstractVisitor{
 
-	protected List<Pointcut> pointcuts = new LinkedList<Pointcut>();
+	protected List<Pointcut> pointcuts;
 	protected List<Introduction> introductions = new LinkedList<Introduction>();
 
 	private ASTParser parser;
@@ -33,8 +33,9 @@ public class WeaverVisitor extends AbstractVisitor{
 	private IDocument document = new Document();
 	private String fileName;
 	
-	public WeaverVisitor(IFile file) throws Exception {
+	public WeaverVisitor(IFile file, List<Pointcut> pointcuts) throws Exception {
 		this.fileName = file.getName();
+		this.pointcuts = pointcuts;
 	    StringBuffer source = new StringBuffer();
 	    InputStreamReader in = new InputStreamReader(file.getContents());
 	    while(in.ready()){
@@ -64,6 +65,12 @@ public class WeaverVisitor extends AbstractVisitor{
 
 	public WeaverVisitor addPointcut(Pointcut pointcut){
 		pointcuts.add(pointcut);
+		return this;
+	}
+	
+	public WeaverVisitor addPointcuts(List<Pointcut> pointcuts)
+	{
+		this.pointcuts.addAll(pointcuts);
 		return this;
 	}
 	
@@ -114,12 +121,12 @@ public class WeaverVisitor extends AbstractVisitor{
 		for(Pointcut pt: pointcuts){
 			if(pt.match(ast, joinpoint)){
 				ArrayElement e = ast.newArrayElement();
-				e.setValue(ast.newScalar(String.valueOf(pt.getName())));
+				e.setValue(ast.newScalar(String.valueOf(pt.getName()), Scalar.TYPE_STRING));
 				ids.add(e);
 				Expression assertion = pt.getRuntimeAssertion();
 				if(assertion != null){
 					ArrayElement element = ast.newArrayElement();
-					element.setKey(ast.newScalar(String.valueOf(pt.getName())));
+					element.setKey(ast.newScalar(String.valueOf(pt.getName()), Scalar.TYPE_STRING));
 					element.setValue(assertion);
 					runtimePredicates.add(element);
 				}

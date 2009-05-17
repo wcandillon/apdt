@@ -13,7 +13,7 @@ public class AnnotationVisitor implements NodeVisitor{
     
     public AnnotationVisitor(String id)
     {
-        this.id = id;
+        this.id = '\''+id+'\'';
     }
     
     public Pointcut getPointcut()
@@ -21,9 +21,7 @@ public class AnnotationVisitor implements NodeVisitor{
         return pointcut;
     }
     
-    public void beginVisit(PHPAspectCommonTree node) {
-        int type = node.getType();
-    }
+    public void beginVisit(PHPAspectCommonTree node) {}
 
     public void endVisit(PHPAspectCommonTree node) {
         int kind = node.getType();
