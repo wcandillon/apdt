@@ -8,30 +8,14 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.php.internal.core.ast.nodes.AST;
-import org.eclipse.php.internal.core.ast.nodes.ASTNode;
-import org.eclipse.php.internal.core.ast.nodes.ASTParser;
-import org.eclipse.php.internal.core.ast.nodes.ArrayElement;
-import org.eclipse.php.internal.core.ast.nodes.Block;
-import org.eclipse.php.internal.core.ast.nodes.ClassInstanceCreation;
-import org.eclipse.php.internal.core.ast.nodes.Expression;
-import org.eclipse.php.internal.core.ast.nodes.FunctionInvocation;
-import org.eclipse.php.internal.core.ast.nodes.Identifier;
-import org.eclipse.php.internal.core.ast.nodes.Include;
-import org.eclipse.php.internal.core.ast.nodes.MethodInvocation;
-import org.eclipse.php.internal.core.ast.nodes.Program;
-import org.eclipse.php.internal.core.ast.nodes.Statement;
-import org.eclipse.php.internal.core.ast.nodes.TypeDeclaration;
-import org.eclipse.php.internal.core.ast.nodes.Variable;
-import org.eclipse.php.internal.core.ast.nodes.VariableBase;
+import org.eclipse.php.internal.core.PHPVersion;
+import org.eclipse.php.internal.core.ast.nodes.*;
 import org.eclipse.php.internal.core.ast.rewrite.ASTRewrite;
 import org.eclipse.php.internal.core.ast.visitor.AbstractVisitor;
-import org.eclipse.php.internal.core.language.PHPVersion;
 import org.eclipse.text.edits.TextEdit;
 import org.phpaspect.apdt.internal.core.joinpoints.MethodInvocationJoinPoint;
 import org.phpaspect.core.weaver.*;
@@ -47,7 +31,6 @@ public class WeaverVisitor extends AbstractVisitor{
 	private AST ast;
 	private ASTRewrite rewriter;
 	private IDocument document = new Document();
-	private static final String currentPHPVersion = "php5";
 	private String fileName;
 	
 	public WeaverVisitor(IFile file) throws Exception {
@@ -58,7 +41,7 @@ public class WeaverVisitor extends AbstractVisitor{
 	    	source.append((char)in.read());
 	    }
 	    document.set(source.toString());
-		parser = ASTParser.newParser(new InputStreamReader(file.getContents()), currentPHPVersion, false, DLTKCore.createSourceModuleFrom(file));
+		parser = ASTParser.newParser(new InputStreamReader(file.getContents()), PHPVersion.PHP5, false, DLTKCore.createSourceModuleFrom(file));
 		program = parser.createAST(new NullProgressMonitor());
 		ast = program.getAST();
 		rewriter = ASTRewrite.create(ast);
