@@ -16,6 +16,11 @@ public abstract class Utils {
 	 * @throws IOException if unable to copy.
 	 */
 	public static void copyFiles(File src, File dest) throws IOException {
+		//We ignore svn meta files
+		if(src.getName().equals(".svn"))
+		{
+			return;
+		}
 		//Check to ensure that the source is valid...
 		if (!src.exists()) {
 			throw new IOException("copyFiles: Can not find source: " + src.getAbsolutePath()+".");

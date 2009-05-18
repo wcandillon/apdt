@@ -12,6 +12,7 @@ import org.eclipse.ui.progress.UIJob;
 
 @SuppressWarnings("restriction")
 public class RefreshPackageExplorer extends UIJob {
+	
     private static Job refreshJob;
     private static int previousExecutionTime;
 

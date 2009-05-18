@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Ui Plug-in
 Bundle-SymbolicName: org.phpaspect.apdt.ui;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: org.phpaspect.apdt.ui.Activator
+Bundle-Activator: org.phpaspect.apdt.ui.APDTUiPlugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui;bundle-version="3.4.0",
  org.eclipse.core.resources;bundle-version="3.4.0",

@@ -47,13 +47,14 @@ public class Weaver {
 	    root.create(IResource.KEEP_HISTORY, true, monitor);
 	    project.getFolder(runtimeFolder).create(IResource.KEEP_HISTORY, true, monitor);
         //Load project's aspects
-	    AspectFilesVisitor aspectVisitor = new AspectFilesVisitor();
+	    AspectFilesVisitor aspectVisitor = new AspectFilesVisitor(monitor);
         project.accept(aspectVisitor);
         pointcuts = aspectVisitor.getPointcuts();
         //Copy php project
         project.accept(new CopySourceFilesVisitor(project.getName(), monitor));
         //Weave php files
-	    root.accept(new PHPFilesVisitor(monitor, pointcuts));	    //Copy the PHPAspect runtime in the weaved folder
+	    root.accept(new PHPFilesVisitor(monitor, pointcuts));
+	    //Copy the PHPAspect runtime in the weaved folder
 	    String bundleLocation = APDTCorePlugin.getDefault().getBundle().getLocation();
 	    bundleLocation = bundleLocation.substring(10);
 	    URL runtime = null;
@@ -73,6 +74,7 @@ public class Weaver {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		//TODO: is it necessary
 	    root.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 		return this;
 	}

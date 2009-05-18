@@ -12,7 +12,9 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.phpaspect.apdt.core,
  org.phpaspect.apdt.internal.core,
+ org.phpaspect.apdt.internal.core.builder,
  org.phpaspect.apdt.internal.core.joinpoints,
+ org.phpaspect.apdt.internal.core.parser.antlr,
  org.phpaspect.apdt.internal.core.pointcuts,
  org.phpaspect.apdt.internal.core.visitor,
  org.phpaspect.core.weaver,
