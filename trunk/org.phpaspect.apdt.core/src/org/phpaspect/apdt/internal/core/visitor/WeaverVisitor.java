@@ -96,11 +96,8 @@ public class WeaverVisitor extends AbstractVisitor{
 		//List of the includes for PHPAspect Runtime
 		List<Statement> includes = new  LinkedList<Statement>();
 		//TODO: include runtime aspects
-		//require_once 'Runtime/Reflection/JoinPointImpl.php';
-		Expression jpFile = ast.newScalar("'PHPAspect/Runtime/Reflection/JoinPointImpl.php'");
-	    includes.add(ast.newExpressionStatement(ast.newInclude(jpFile, Include.IT_REQUIRE_ONCE)));
-	    //require_once 'Runtime/Dispatcher.php';
-		Expression dispatcherFile = ast.newScalar("'PHPAspect/Runtime/Dispatcher.php'");
+		//require_once 'Runtime/Dispatcher.php';
+		Expression dispatcherFile = ast.newScalar("'PHPAspect/Dispatcher.php'");
 	    includes.add(ast.newExpressionStatement(ast.newInclude(dispatcherFile, Include.IT_REQUIRE_ONCE)));
 	    //Add the includes in front of the statement list
 	    List<Statement> statements = program.statements();
@@ -139,8 +136,6 @@ public class WeaverVisitor extends AbstractVisitor{
 			args.add(ast.newArrayCreation(ids));
 			List<Expression> jpArgs = new LinkedList<Expression>();
 			//TODO: add type safety
-			//JoinPoint type
-			jpArgs.add(ast.newStaticConstantAccess(ast.newIdentifier("JoinPoint"), ast.newIdentifier("METHOD_EXECUTION")));
 			//Object name
 			VariableBase dispatcher = ASTNode.copySubtree(ast, methodInvocation.getDispatcher());
 			jpArgs.add(dispatcher);
@@ -148,12 +143,7 @@ public class WeaverVisitor extends AbstractVisitor{
 			Variable var = (Variable)methodInvocation.getMethod().getFunctionName().getName();
 			Identifier methodIdentifier = (Identifier)var.getName();
 			String methodName = "'"+methodIdentifier.getName()+"'";
-			List<Expression> ctorParams = new LinkedList<Expression>();
-			dispatcher = ASTNode.copySubtree(ast, methodInvocation.getDispatcher());
-			ctorParams.add(dispatcher);
-			ctorParams.add(ast.newScalar(methodName));
-			ClassInstanceCreation source = ast.newClassInstanceCreation(ast.newClassName(ast.newIdentifier("ReflectionMethod")), ctorParams);
-			jpArgs.add(source);
+			jpArgs.add(ast.newScalar(methodName, Scalar.TYPE_STRING));
 			//Arguments
 			List<ArrayElement> arguments = new LinkedList<ArrayElement>();
 			List<Expression> parameters = methodInvocation.getMethod().parameters();
@@ -166,11 +156,11 @@ public class WeaverVisitor extends AbstractVisitor{
 			//Source location
 			jpArgs.add(ast.newScalar("__FILE__"));
 			jpArgs.add(ast.newScalar("__LINE__"));
-			args.add(ast.newClassInstanceCreation(ast.newClassName(ast.newIdentifier("JoinPointImpl")), jpArgs));
+			args.add(ast.newClassInstanceCreation(ast.newClassName(ast.newIdentifier("MethodInvocationJoinpoint")), jpArgs));
 			if(runtimePredicates.size() > 0){
 				args.add(ast.newArrayCreation(runtimePredicates));
 			}
-			FunctionInvocation inv = ast.newFunctionInvocation(ast.newFunctionName(ast.newIdentifier("PHPAspect_dispatch")), args);
+			FunctionInvocation inv = ast.newFunctionInvocation(ast.newFunctionName(ast.newIdentifier("dispatch")), args);
 			rewriter.replace(methodInvocation, inv, null);
 		}
 	}

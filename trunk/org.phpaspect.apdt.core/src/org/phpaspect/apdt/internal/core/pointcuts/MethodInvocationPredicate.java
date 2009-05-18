@@ -85,7 +85,7 @@ public class MethodInvocationPredicate extends AbstractPointcut {
 		VariableBase dispatch = ASTNode.copySubtree(ast, inv.getDispatcher());
 		parameters.add(dispatch);
 		parameters.add(ast.newScalar("'"+declaringType+"'"));
-		FunctionInvocation functionInvocation = ast.newFunctionInvocation(ast.newFunctionName(ast.newIdentifier("PHPAspect_match")), parameters);
+		FunctionInvocation functionInvocation = ast.newFunctionInvocation(ast.newFunctionName(ast.newIdentifier("isTypeMatching")), parameters);
 		runtimeAssertion = ast.newParenthesisExpression(functionInvocation);
 		return methodName.matches(this.methodName);		
 	}
