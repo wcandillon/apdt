@@ -30,11 +30,13 @@ public class PHPFilesVisitor implements IResourceVisitor {
             if(isPHPFile(file))
             {
 				try {
+					monitor.beginTask("Weave "+file.getName(), 1);
 					WeaverVisitor weaver = new WeaverVisitor(file, pointcuts);
 	            	String content = weaver.weave();
 	            	InputStream in = 
 	            		new ByteArrayInputStream(content.getBytes());
 	            	file.setContents(in, IResource.KEEP_HISTORY, monitor);
+	            	monitor.done();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

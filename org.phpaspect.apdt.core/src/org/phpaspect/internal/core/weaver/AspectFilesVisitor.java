@@ -8,6 +8,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.parser.ISourceParser;
@@ -20,13 +21,14 @@ public class AspectFilesVisitor implements IResourceVisitor {
 
     private ISourceParser parser;
     private List<Pointcut> pointcuts = new LinkedList<Pointcut>();
+	private IProgressMonitor monitor;
     
-    public AspectFilesVisitor()
-    {
+    public AspectFilesVisitor(IProgressMonitor monitor) {
+		this.monitor = monitor;
         parser = new PHPSourceParserFactory().createSourceParser();
-    }
-    
-    private char[] getContent(IFile file)
+	}
+
+	private char[] getContent(IFile file)
     {
         String content = "";
         try {
@@ -47,6 +49,7 @@ public class AspectFilesVisitor implements IResourceVisitor {
             IFile file = (IFile)resource;
             if(isAspectFile(file))
             {
+            	monitor.beginTask("Loading aspect "+file.getName(), 1);
                 char[] content = getContent(file);
                 ModuleDeclaration module = parser.parse(file.getName().toCharArray(), content, null);
                 AspectVisitor visitor = new AspectVisitor(content);
@@ -56,6 +59,7 @@ public class AspectFilesVisitor implements IResourceVisitor {
                     e.printStackTrace();
                 }
                 pointcuts.addAll(visitor.getPointcuts());
+                monitor.done();
             }
         }
         return true;
