@@ -19,14 +19,13 @@ class AspectRegistry
     	$classes = get_declared_classes();
     	foreach($classes as $class)
     	{
-    		try {
-				$aspect = new Aspect($class);
-				assert($aspect != null);
-				$aspectName = $aspect->getName();
-				$this->aspects[$aspectName] = $aspect->newInstanceArgs(array());
-    		} catch (Exception $e) {
-    			//do nothing here...
-    		}
+    		if(is_subclass_of($class, 'Aspect'))
+			{
+    			$aspect = new $class();
+				assert($aspect != null);            
+				$aspectName = $aspect->getAspect()->getName();
+				$this->aspects[$aspectName] = $aspect->getAspect()->newInstanceArgs();
+			}
     	}
 	}
 	

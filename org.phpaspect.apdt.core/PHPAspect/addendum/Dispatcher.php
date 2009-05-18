@@ -2,6 +2,7 @@
 require_once 'PHPAspect/AspectRegistry.php';
 require_once 'PHPAspect/Model/Joinpoint.php';
 require_once 'PHPAspect/Model/MethodInvocationJoinpoint.php';
+require_once 'PHPAspect/InvalidCodeAdviceException.php';
 
 function isTypeMatching($object, $pattern)
 {
@@ -20,7 +21,8 @@ function dispatch(array $advices, Joinpoint $jp, array $predicates = null)
 	{
 		list($aspect, $codeAdvice) = explode(':', $advice);
 		$aspect = $registry->getAspect($aspect);
-		$codeAdviceReflection = $aspect->getCodeAdvice($codeAdvice);
+		assert($aspect instanceof Aspect);
+		$codeAdviceReflection = $aspect->getAspect()->getCodeAdvice($codeAdvice);
 		if($codeAdviceReflection == null)
 		{
 			throw new InvalidCodeAdviceException($codeAdvice . " doesn't exists");
@@ -43,16 +45,15 @@ function dispatch(array $advices, Joinpoint $jp, array $predicates = null)
 	foreach ($before as $codeAdvice)
 	{
 		$id = $codeAdvice->getDeclaringAspect()->getName().':'.$codeAdvice->getName();
-		if($predicates == null || $codeAdvice[$id])
+		if($predicates == null || $predicates[$id])
 		{
-			$aspectName = $codeAdvice->getName();
+			$aspectName = $codeAdvice->getDeclaringClass()->getName();
 			$aspect = $registry->getAspect($aspectName);
 			$codeAdvice->invoke($aspect, $jp);
 		}
 	}
 	
-	$codeAdvices = $registry->getAroundCodeAdvices();
-	if(count($codeAdvices))
+	if(count($around))
 	{
 		foreach ($around as $codeAdvice)
 		{
@@ -63,7 +64,7 @@ function dispatch(array $advices, Joinpoint $jp, array $predicates = null)
 	} else {
 		$returnValue = $jp->invoke();
 	}
-	$codeAdvices = $registry->getAfterCodeAdvices();
+	
 	foreach ($after as $codeAdvice)
 	{
 		$aspectName = $codeAdvice->getName();
