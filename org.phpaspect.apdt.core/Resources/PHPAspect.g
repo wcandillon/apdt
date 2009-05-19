@@ -4,6 +4,7 @@ options {
 output = AST;
 ASTLabelType=PHPAspectCommonTree;
 TokenLabelType=CommonToken;
+superClass='APDTParser';
 }
 
 tokens {

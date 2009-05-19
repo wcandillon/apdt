@@ -7,6 +7,8 @@ import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.builder.IBuildContext;
 import org.eclipse.dltk.core.builder.IBuildParticipant;
 import org.eclipse.php.internal.core.compiler.ast.parser.PHPSourceParserFactory;
+import org.phpaspect.apdt.internal.core.parser.antlr.AnnotationVisitor;
+import org.phpaspect.apdt.internal.core.visitor.AspectVisitor;
 
 public class AnnotationBuildParticipant implements IBuildParticipant {
 
@@ -17,7 +19,13 @@ public class AnnotationBuildParticipant implements IBuildParticipant {
 		IProblemReporter reporter = context.getProblemReporter();
 		PHPSourceParserFactory parser = new PHPSourceParserFactory();
 		ModuleDeclaration module = parser.parse(fileName, context.getContents(), new NullProblemReporter());
-		
+		AspectVisitor visitor = new AspectVisitor(context);
+		try {
+			module.traverse(visitor);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
