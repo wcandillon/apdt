@@ -1,9 +1,12 @@
-// $ANTLR 3.1.3 Mar 17, 2009 19:23:44 PHPAspect.g 2009-05-17 18:44:04
+// $ANTLR 3.1.3 Mar 17, 2009 19:23:44 PHPAspect.g 2009-05-18 22:43:19
 
 package org.phpaspect.apdt.internal.core.parser.antlr;
 
 
 import org.antlr.runtime.*;
+import java.util.Stack;
+import java.util.List;
+import java.util.ArrayList;
 
 public class PHPAspectLexer extends Lexer {
     public static final int LPARENTHESE=13;
@@ -50,8 +53,8 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = DIGIT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:72:3: ( '0' .. '9' )
-            // PHPAspect.g:72:5: '0' .. '9'
+            // PHPAspect.g:73:3: ( '0' .. '9' )
+            // PHPAspect.g:73:5: '0' .. '9'
             {
             matchRange('0','9'); 
 
@@ -70,10 +73,10 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = INTLIT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:76:3: ( ( DIGIT )+ )
-            // PHPAspect.g:76:5: ( DIGIT )+
+            // PHPAspect.g:77:3: ( ( DIGIT )+ )
+            // PHPAspect.g:77:5: ( DIGIT )+
             {
-            // PHPAspect.g:76:5: ( DIGIT )+
+            // PHPAspect.g:77:5: ( DIGIT )+
             int cnt1=0;
             loop1:
             do {
@@ -87,7 +90,7 @@ public class PHPAspectLexer extends Lexer {
 
                 switch (alt1) {
             	case 1 :
-            	    // PHPAspect.g:76:6: DIGIT
+            	    // PHPAspect.g:77:6: DIGIT
             	    {
             	    mDIGIT(); 
 
@@ -119,8 +122,8 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = CHARLIT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:80:3: ( '\\'' . '\\'' )
-            // PHPAspect.g:80:5: '\\'' . '\\''
+            // PHPAspect.g:81:3: ( '\\'' . '\\'' )
+            // PHPAspect.g:81:5: '\\'' . '\\''
             {
             match('\''); 
             matchAny(); 
@@ -141,11 +144,11 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = STRING_LITERAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:85:3: ( '\"' ( '\"' '\"' | ~ ( '\"' | '\\n' | '\\r' ) )* ( '\"' | ) )
-            // PHPAspect.g:85:5: '\"' ( '\"' '\"' | ~ ( '\"' | '\\n' | '\\r' ) )* ( '\"' | )
+            // PHPAspect.g:86:3: ( '\"' ( '\"' '\"' | ~ ( '\"' | '\\n' | '\\r' ) )* ( '\"' | ) )
+            // PHPAspect.g:86:5: '\"' ( '\"' '\"' | ~ ( '\"' | '\\n' | '\\r' ) )* ( '\"' | )
             {
             match('\"'); 
-            // PHPAspect.g:86:5: ( '\"' '\"' | ~ ( '\"' | '\\n' | '\\r' ) )*
+            // PHPAspect.g:87:5: ( '\"' '\"' | ~ ( '\"' | '\\n' | '\\r' ) )*
             loop2:
             do {
                 int alt2=3;
@@ -167,7 +170,7 @@ public class PHPAspectLexer extends Lexer {
 
                 switch (alt2) {
             	case 1 :
-            	    // PHPAspect.g:86:7: '\"' '\"'
+            	    // PHPAspect.g:87:7: '\"' '\"'
             	    {
             	    match('\"'); 
             	    match('\"'); 
@@ -175,7 +178,7 @@ public class PHPAspectLexer extends Lexer {
             	    }
             	    break;
             	case 2 :
-            	    // PHPAspect.g:87:7: ~ ( '\"' | '\\n' | '\\r' )
+            	    // PHPAspect.g:88:7: ~ ( '\"' | '\\n' | '\\r' )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -195,7 +198,7 @@ public class PHPAspectLexer extends Lexer {
                 }
             } while (true);
 
-            // PHPAspect.g:89:5: ( '\"' | )
+            // PHPAspect.g:90:5: ( '\"' | )
             int alt3=2;
             int LA3_0 = input.LA(1);
 
@@ -206,14 +209,14 @@ public class PHPAspectLexer extends Lexer {
                 alt3=2;}
             switch (alt3) {
                 case 1 :
-                    // PHPAspect.g:89:7: '\"'
+                    // PHPAspect.g:90:7: '\"'
                     {
                     match('\"'); 
 
                     }
                     break;
                 case 2 :
-                    // PHPAspect.g:91:5: 
+                    // PHPAspect.g:92:5: 
                     {
                     }
                     break;
@@ -236,10 +239,10 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:94:3: ( ( ' ' | '\\n' | '\\r' | '\\t' )+ )
-            // PHPAspect.g:94:5: ( ' ' | '\\n' | '\\r' | '\\t' )+
+            // PHPAspect.g:95:3: ( ( ' ' | '\\n' | '\\r' | '\\t' )+ )
+            // PHPAspect.g:95:5: ( ' ' | '\\n' | '\\r' | '\\t' )+
             {
-            // PHPAspect.g:94:5: ( ' ' | '\\n' | '\\r' | '\\t' )+
+            // PHPAspect.g:95:5: ( ' ' | '\\n' | '\\r' | '\\t' )+
             int cnt4=0;
             loop4:
             do {
@@ -294,8 +297,8 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = DOT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:97:12: ( '.' )
-            // PHPAspect.g:97:14: '.'
+            // PHPAspect.g:98:12: ( '.' )
+            // PHPAspect.g:98:14: '.'
             {
             match('.'); 
 
@@ -314,8 +317,8 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = LPARENTHESE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:98:17: ( '(' )
-            // PHPAspect.g:98:19: '('
+            // PHPAspect.g:99:17: ( '(' )
+            // PHPAspect.g:99:19: '('
             {
             match('('); 
 
@@ -334,8 +337,8 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = RPARENTHESE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:99:17: ( ')' )
-            // PHPAspect.g:99:19: ')'
+            // PHPAspect.g:100:17: ( ')' )
+            // PHPAspect.g:100:19: ')'
             {
             match(')'); 
 
@@ -354,8 +357,8 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = AT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:100:7: ( '@' )
-            // PHPAspect.g:100:9: '@'
+            // PHPAspect.g:101:7: ( '@' )
+            // PHPAspect.g:101:9: '@'
             {
             match('@'); 
 
@@ -374,8 +377,8 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = CALL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:101:12: ( 'call' )
-            // PHPAspect.g:101:14: 'call'
+            // PHPAspect.g:102:12: ( 'call' )
+            // PHPAspect.g:102:14: 'call'
             {
             match("call"); 
 
@@ -395,8 +398,8 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = PAAMAYIM_NEKUDOTAYIM;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:102:22: ( '::' )
-            // PHPAspect.g:102:24: '::'
+            // PHPAspect.g:103:22: ( '::' )
+            // PHPAspect.g:103:24: '::'
             {
             match("::"); 
 
@@ -416,8 +419,8 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = OBJECT_OPERATOR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:103:17: ( '->' )
-            // PHPAspect.g:103:19: '->'
+            // PHPAspect.g:104:17: ( '->' )
+            // PHPAspect.g:104:19: '->'
             {
             match("->"); 
 
@@ -437,8 +440,8 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = AND;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:104:5: ( '&&' )
-            // PHPAspect.g:104:7: '&&'
+            // PHPAspect.g:105:5: ( '&&' )
+            // PHPAspect.g:105:7: '&&'
             {
             match("&&"); 
 
@@ -458,8 +461,8 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = OR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:105:4: ( '||' )
-            // PHPAspect.g:105:6: '||'
+            // PHPAspect.g:106:4: ( '||' )
+            // PHPAspect.g:106:6: '||'
             {
             match("||"); 
 
@@ -479,8 +482,8 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = NOT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:106:5: ( '!' )
-            // PHPAspect.g:106:7: '!'
+            // PHPAspect.g:107:5: ( '!' )
+            // PHPAspect.g:107:7: '!'
             {
             match('!'); 
 
@@ -499,8 +502,8 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = BEFORE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:107:8: ( 'Before' )
-            // PHPAspect.g:107:10: 'Before'
+            // PHPAspect.g:108:8: ( 'Before' )
+            // PHPAspect.g:108:10: 'Before'
             {
             match("Before"); 
 
@@ -520,8 +523,8 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = AROUND;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:108:8: ( 'Around' )
-            // PHPAspect.g:108:10: 'Around'
+            // PHPAspect.g:109:8: ( 'Around' )
+            // PHPAspect.g:109:10: 'Around'
             {
             match("Around"); 
 
@@ -541,8 +544,8 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = AFTER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:109:7: ( 'After' )
-            // PHPAspect.g:109:9: 'After'
+            // PHPAspect.g:110:7: ( 'After' )
+            // PHPAspect.g:110:9: 'After'
             {
             match("After"); 
 
@@ -562,8 +565,8 @@ public class PHPAspectLexer extends Lexer {
         try {
             int _type = LABEL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspect.g:113:3: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
-            // PHPAspect.g:113:5: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // PHPAspect.g:114:3: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
+            // PHPAspect.g:114:5: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             {
             if ( (input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
                 input.consume();
@@ -574,7 +577,7 @@ public class PHPAspectLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // PHPAspect.g:113:28: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // PHPAspect.g:114:28: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             loop5:
             do {
                 int alt5=2;
