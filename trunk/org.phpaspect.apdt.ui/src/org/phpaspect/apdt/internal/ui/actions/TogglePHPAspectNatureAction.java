@@ -72,7 +72,6 @@ public class TogglePHPAspectNatureAction implements  IObjectActionDelegate {
                                         return;
                                 }
                         }
-
                         // Add the nature
                         //We put the PHPAspect as the first element for the icon decoration
                         String[] newNatures = new String[natures.length + 1];

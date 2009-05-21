@@ -6,13 +6,20 @@ import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 
 public abstract class SelectionUtils {
+	
+	public static List<IProject> getSelectedProjects(ISelection selection)
+	{
+		return getSelectedProjects(selection, null);
+	}
+	
     @SuppressWarnings("unchecked")
-    public static List<IProject> getSelectedProjects(ISelection selection)
+    public static List<IProject> getSelectedProjects(ISelection selection, String natureId)
     {
             List<IProject> projectList = new LinkedList<IProject>();
             if(selection instanceof IStructuredSelection)
@@ -31,7 +38,19 @@ public abstract class SelectionUtils {
                     IProject project = resource.getProject();
                     if(!projectList.contains(project))
                     {
+                    	if(natureId != null)
+                    	{
+                    		try {
+								if(project.hasNature(natureId))
+								{
+									projectList.add(project);
+								}
+							} catch (CoreException e) {
+								e.printStackTrace();
+							}
+                    	} else {
                             projectList.add(project);
+                    	}
                     }
                 }
         }
