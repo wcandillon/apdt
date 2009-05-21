@@ -1,11 +1,12 @@
-package org.phpaspect.core.weaver;
+package org.phpaspect.apdt.core.weaver;
 
-public abstract class AbstractJoinPoint implements JoinPoint {
-
+public abstract class AbstractJoinpoint implements Joinpoint
+{
 	protected Kind kind;
 	protected SourceLocation sourceLocation;
 	
-	public AbstractJoinPoint(Kind kind, SourceLocation sourceLocation){
+	public AbstractJoinpoint(Kind kind, SourceLocation sourceLocation)
+	{
 		this.kind = kind;
 		this.sourceLocation = sourceLocation;
 	}
@@ -22,3 +23,4 @@ public abstract class AbstractJoinPoint implements JoinPoint {
 		return toString()+" at "+sourceLocation;
 	}
 }
+

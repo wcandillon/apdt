@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -18,9 +17,9 @@ import org.eclipse.php.internal.core.ast.nodes.*;
 import org.eclipse.php.internal.core.ast.rewrite.ASTRewrite;
 import org.eclipse.php.internal.core.ast.visitor.AbstractVisitor;
 import org.eclipse.text.edits.TextEdit;
-import org.phpaspect.apdt.internal.core.weaver.joinpoints.ConstructorJoinPoint;
-import org.phpaspect.apdt.internal.core.weaver.joinpoints.MethodInvocationJoinPoint;
-import org.phpaspect.core.weaver.*;
+import org.phpaspect.apdt.core.weaver.*;
+import org.phpaspect.apdt.internal.core.weaver.joinpoints.ConstructorJoinpoint;
+import org.phpaspect.apdt.internal.core.weaver.joinpoints.MethodInvocationJoinpoint;
 import org.phpaspect.internal.core.weaver.SourceLocationImpl;
 
 public class WeaverVisitor extends AbstractVisitor{
@@ -94,23 +93,7 @@ public class WeaverVisitor extends AbstractVisitor{
 		return document.get();
 	}
 	
-	@Override
-	public void endVisit(Program program){ 
-		//List of the includes for PHPAspect Runtime
-		List<Statement> includes = new  LinkedList<Statement>();
-		//TODO: include runtime aspects
-		//require_once 'Runtime/Dispatcher.php';
-		Expression dispatcherFile = ast.newScalar("'PHPAspect/Dispatcher.php'");
-	    includes.add(ast.newExpressionStatement(ast.newInclude(dispatcherFile, Include.IT_REQUIRE_ONCE)));
-	    //Add the includes in front of the statement list
-	    List<Statement> statements = program.statements();
-	    Statement firstStatement = ASTNode.copySubtree(ast, statements.get(0));
-	    includes.add(firstStatement);
-		Block PHPAspectRuntimeImports = ast.newBlock(includes);
-	    rewriter.replace(statements.get(0), PHPAspectRuntimeImports, null);
-	}
-	
-	private Pair<List<ArrayElement>, List<ArrayElement>> getRuntimePredicates(JoinPoint joinpoint)
+	private Pair<List<ArrayElement>, List<ArrayElement>> getRuntimePredicates(Joinpoint joinpoint)
 	{	
 		//If a pointcut is matched we store its id
 		List<ArrayElement> ids = new LinkedList<ArrayElement>();
@@ -130,8 +113,46 @@ public class WeaverVisitor extends AbstractVisitor{
 				}
 			}
 		}
-		Pair<List<ArrayElement>, List<ArrayElement>> pair = new Pair<List<ArrayElement>, List<ArrayElement>>(ids, runtimePredicates);
+		Pair<List<ArrayElement>, List<ArrayElement>> pair =
+			new Pair<List<ArrayElement>, List<ArrayElement>>(ids, runtimePredicates);
 		return pair;
+	}
+	
+	public FunctionInvocation getDispatchCall(List<ArrayElement> ids,
+			Joinpoint.Kind kind, Expression source, Expression target,
+			List<ArrayElement> arguments, List<ArrayElement> runtimePredicates)
+	{ 
+		List<Expression> args = new LinkedList<Expression>();
+		args.add(ast.newArrayCreation(ids));
+		List<Expression> jpArgs = new LinkedList<Expression>();
+		jpArgs.add(source);
+		jpArgs.add(target);
+		jpArgs.add(ast.newArrayCreation(arguments));
+		jpArgs.add(ast.newScalar("__FILE__"));
+		jpArgs.add(ast.newScalar("__LINE__"));
+		args.add(ast.newClassInstanceCreation(ast.newClassName(ast.newIdentifier(kind.getName())), jpArgs));
+		if(runtimePredicates.size() > 0){
+			args.add(ast.newArrayCreation(runtimePredicates));
+		}
+		return ast.newFunctionInvocation(
+				ast.newFunctionName(
+						ast.newIdentifier("dispatch")), args);
+	}
+	
+	@Override
+	public void endVisit(Program program){ 
+		//List of the includes for PHPAspect Runtime
+		List<Statement> includes = new  LinkedList<Statement>();
+		//TODO: include runtime aspects
+		//require_once 'Runtime/Dispatcher.php';
+		Expression dispatcherFile = ast.newScalar("'PHPAspect/Dispatcher.php'");
+	    includes.add(ast.newExpressionStatement(ast.newInclude(dispatcherFile, Include.IT_REQUIRE_ONCE)));
+	    //Add the includes in front of the statement list
+	    List<Statement> statements = program.statements();
+	    Statement firstStatement = ASTNode.copySubtree(ast, statements.get(0));
+	    includes.add(firstStatement);
+		Block PHPAspectRuntimeImports = ast.newBlock(includes);
+	    rewriter.replace(statements.get(0), PHPAspectRuntimeImports, null);
 	}
 	
 	@Override
@@ -139,7 +160,7 @@ public class WeaverVisitor extends AbstractVisitor{
 	{
 		//Create a joinpoint
 		SourceLocation sourceLocation = getSourceLocation(instanceCreation);
-		JoinPoint joinpoint = new ConstructorJoinPoint(sourceLocation, instanceCreation);
+		Joinpoint joinpoint = new ConstructorJoinpoint(sourceLocation, instanceCreation);
 		//If a pointcut is matched we store its id
 		List<ArrayElement> ids = new LinkedList<ArrayElement>();
 		//Foreach id, we store the corresponding runtime assertion
@@ -171,40 +192,19 @@ public class WeaverVisitor extends AbstractVisitor{
 	public void endVisit(MethodInvocation methodInvocation) {
 		//Create a joinpoint
 		SourceLocation sourceLocation = getSourceLocation(methodInvocation);
-		JoinPoint joinpoint = new MethodInvocationJoinPoint(sourceLocation, methodInvocation);
-		//If a pointcut is matched we store its id
-		List<ArrayElement> ids = new LinkedList<ArrayElement>();
-		//Foreach id, we store the corresponding runtime assertion
-	    List<ArrayElement> runtimePredicates = new LinkedList<ArrayElement>();
-		for(Pointcut pt: pointcuts){
-			if(pt.match(ast, joinpoint)){
-				ArrayElement e = ast.newArrayElement();
-				e.setValue(ast.newScalar(String.valueOf(pt.getName()), Scalar.TYPE_STRING));
-				ids.add(e);
-				Expression assertion = pt.getRuntimeAssertion();
-				if(assertion != null){
-					ArrayElement element = ast.newArrayElement();
-					element.setKey(ast.newScalar(String.valueOf(pt.getName()), Scalar.TYPE_STRING));
-					element.setValue(assertion);
-					runtimePredicates.add(element);
-				}
-			}
-		}
+		Joinpoint joinpoint = new MethodInvocationJoinpoint(sourceLocation, methodInvocation);
+		Pair<List<ArrayElement>, List<ArrayElement>> pair = getRuntimePredicates(joinpoint);
+		List<ArrayElement> ids = pair.getIndex();
+	    List<ArrayElement> runtimePredicates = pair.getValue();
 		//If at least one pointcut has been matched
 		if(ids.size() > 0){
-			AST ast = program.getAST();
-			List<Expression> args = new LinkedList<Expression>();
-			args.add(ast.newArrayCreation(ids));
-			List<Expression> jpArgs = new LinkedList<Expression>();
-			//TODO: add type safety
 			//Object name
 			VariableBase dispatcher = ASTNode.copySubtree(ast, methodInvocation.getDispatcher());
-			jpArgs.add(dispatcher);
 			//Method name
 			Variable var = (Variable)methodInvocation.getMethod().getFunctionName().getName();
 			Identifier methodIdentifier = (Identifier)var.getName();
 			String methodName = "'"+methodIdentifier.getName()+"'";
-			jpArgs.add(ast.newScalar(methodName, Scalar.TYPE_STRING));
+			Scalar target = ast.newScalar(methodName, Scalar.TYPE_STRING);
 			//Arguments
 			List<ArrayElement> arguments = new LinkedList<ArrayElement>();
 			List<Expression> parameters = methodInvocation.getMethod().parameters();
@@ -213,15 +213,7 @@ public class WeaverVisitor extends AbstractVisitor{
 			    e.setValue(ASTNode.copySubtree(ast, param));
 				arguments.add(e);
 			}
-			jpArgs.add(ast.newArrayCreation(arguments));
-			//Source location
-			jpArgs.add(ast.newScalar("__FILE__"));
-			jpArgs.add(ast.newScalar("__LINE__"));
-			args.add(ast.newClassInstanceCreation(ast.newClassName(ast.newIdentifier("MethodInvocationJoinpoint")), jpArgs));
-			if(runtimePredicates.size() > 0){
-				args.add(ast.newArrayCreation(runtimePredicates));
-			}
-			FunctionInvocation inv = ast.newFunctionInvocation(ast.newFunctionName(ast.newIdentifier("dispatch")), args);
+			FunctionInvocation inv = getDispatchCall(ids, Joinpoint.Kind.METHOD_CALL, dispatcher, target, arguments, runtimePredicates);
 			rewriter.replace(methodInvocation, inv, null);
 		}
 	}

@@ -1,4 +1,4 @@
-package org.phpaspect.core.weaver;
+package org.phpaspect.apdt.core.weaver;
 
 public class PointcutFactory {
 	public static Pointcut createPointcut(){

@@ -1,4 +1,4 @@
-package org.phpaspect.core.weaver;
+package org.phpaspect.apdt.core.weaver;
 
 import org.eclipse.php.internal.core.ast.nodes.AST;
 import org.eclipse.php.internal.core.ast.nodes.ASTNode;

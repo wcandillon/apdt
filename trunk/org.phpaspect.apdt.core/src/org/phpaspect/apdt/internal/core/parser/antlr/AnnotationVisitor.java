@@ -2,9 +2,9 @@ package org.phpaspect.apdt.internal.core.parser.antlr;
 
 import java.util.Stack;
 
+import org.phpaspect.apdt.core.weaver.Mixin;
+import org.phpaspect.apdt.core.weaver.Pointcut;
 import org.phpaspect.apdt.internal.core.weaver.pointcuts.*;
-import org.phpaspect.core.weaver.Mixin;
-import org.phpaspect.core.weaver.Pointcut;
 
 public class AnnotationVisitor implements PHPAspectNodeVisitor{
 

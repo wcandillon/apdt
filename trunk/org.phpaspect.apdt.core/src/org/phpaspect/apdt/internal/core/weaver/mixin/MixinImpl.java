@@ -3,7 +3,7 @@ package org.phpaspect.apdt.internal.core.weaver.mixin;
 import org.eclipse.php.internal.core.ast.nodes.AST;
 import org.eclipse.php.internal.core.ast.nodes.ASTNode;
 import org.eclipse.php.internal.core.ast.nodes.ClassDeclaration;
-import org.phpaspect.core.weaver.Mixin;
+import org.phpaspect.apdt.core.weaver.Mixin;
 
 public class MixinImpl implements Mixin {
 

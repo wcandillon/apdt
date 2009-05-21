@@ -14,9 +14,9 @@ import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.php.internal.core.compiler.ast.parser.PHPSourceParserFactory;
+import org.phpaspect.apdt.core.weaver.Pointcut;
 import org.phpaspect.apdt.internal.core.APDTNature;
 import org.phpaspect.apdt.internal.core.visitor.AspectVisitor;
-import org.phpaspect.core.weaver.Pointcut;
 
 public class AspectFilesVisitor implements IResourceVisitor {
 

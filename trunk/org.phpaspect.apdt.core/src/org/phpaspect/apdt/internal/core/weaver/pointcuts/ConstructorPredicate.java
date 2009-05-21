@@ -3,9 +3,9 @@ package org.phpaspect.apdt.internal.core.weaver.pointcuts;
 import org.eclipse.php.internal.core.ast.nodes.AST;
 import org.eclipse.php.internal.core.ast.nodes.ClassInstanceCreation;
 import org.eclipse.php.internal.core.ast.nodes.Expression;
-import org.phpaspect.core.weaver.AbstractPointcut;
-import org.phpaspect.core.weaver.JoinPoint;
-import org.phpaspect.core.weaver.Pointcut;
+import org.phpaspect.apdt.core.weaver.AbstractPointcut;
+import org.phpaspect.apdt.core.weaver.Joinpoint;
+import org.phpaspect.apdt.core.weaver.Pointcut;
 
 public class ConstructorPredicate extends AbstractPointcut
 {
@@ -25,9 +25,9 @@ public class ConstructorPredicate extends AbstractPointcut
 	}
 
 	@Override
-	public boolean match(AST ast, JoinPoint jp)
+	public boolean match(AST ast, Joinpoint jp)
 	{
-		if (jp.getKind() == JoinPoint.Kind.CONSTRUCTOR_CALL)
+		if (jp.getKind() == Joinpoint.Kind.CONSTRUCTOR_CALL)
 		{
 			ClassInstanceCreation instance = (ClassInstanceCreation)jp.getNode();
 			Expression name = instance.getClassName().getName();

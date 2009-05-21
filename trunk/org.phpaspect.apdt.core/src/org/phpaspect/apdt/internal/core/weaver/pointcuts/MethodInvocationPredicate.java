@@ -12,7 +12,7 @@ import org.eclipse.php.internal.core.ast.nodes.MethodInvocation;
 import org.eclipse.php.internal.core.ast.nodes.Identifier;
 import org.eclipse.php.internal.core.ast.nodes.Variable;
 import org.eclipse.php.internal.core.ast.nodes.VariableBase;
-import org.phpaspect.core.weaver.*;
+import org.phpaspect.apdt.core.weaver.*;
 
 public class MethodInvocationPredicate extends AbstractPointcut {
 	
@@ -35,10 +35,10 @@ public class MethodInvocationPredicate extends AbstractPointcut {
 		return new MethodInvocationPredicate(name, declaringType, methodName, subType);
 	}
 
-	public boolean match(AST ast, JoinPoint jp) {
+	public boolean match(AST ast, Joinpoint jp) {
 		//TODO: warning for ambiguous types
 		//TODO: check for subtypes
-		if (jp.getKind() == JoinPoint.Kind.METHOD_CALL){
+		if (jp.getKind() == Joinpoint.Kind.METHOD_CALL){
 			MethodInvocation node = (MethodInvocation) jp.getNode();
 			Variable var = (Variable)node.getMethod().getFunctionName().getName();
 			Identifier identifier = (Identifier)var.getName();
