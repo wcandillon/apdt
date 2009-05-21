@@ -2,13 +2,15 @@ package org.phpaspect.apdt.internal.core.parser.antlr;
 
 import java.util.Stack;
 
-import org.phpaspect.apdt.internal.core.pointcuts.*;
+import org.phpaspect.apdt.internal.core.weaver.pointcuts.*;
+import org.phpaspect.core.weaver.Mixin;
 import org.phpaspect.core.weaver.Pointcut;
 
-public class AnnotationVisitor implements NodeVisitor{
+public class AnnotationVisitor implements PHPAspectNodeVisitor{
 
     private String id;
     private Pointcut pointcut = null;
+    private Mixin mixin = null;
     private Stack<Pointcut> stack = new Stack<Pointcut>();
     
     public AnnotationVisitor(String id)
@@ -21,6 +23,16 @@ public class AnnotationVisitor implements NodeVisitor{
         return pointcut;
     }
     
+    public boolean isPointcut()
+    {
+    	return pointcut != null;
+    }
+    
+    public boolean isMixin()
+    {
+    	return mixin != null;
+    }
+    
     public void beginVisit(PHPAspectCommonTree node) {}
 
     public void endVisit(PHPAspectCommonTree node) {
@@ -28,10 +40,13 @@ public class AnnotationVisitor implements NodeVisitor{
         switch(kind)
         {
         	case PHPAspectParser.ANNOTATION:
+        	{
         		assert stack.size() == 1;
         		pointcut = stack.pop();
+        	}
         	break;
             case PHPAspectParser.CALL:
+            {
                 assert id != null;
                 String type = node.getChild(0).toString();
                 String method = node.getChild(2).toString();
@@ -41,14 +56,26 @@ public class AnnotationVisitor implements NodeVisitor{
                 } else {
                     stack.push(new StaticMethodInvocationPredicate(id, type, method));
                 }
+            }
+            break;
+            case PHPAspectParser.NEW:
+            {
+            	assert id != null;
+            	String type = node.getChild(0).toString();
+            	stack.push(new ConstructorPredicate(id, type));
+            }
             break;
             case PHPAspectParser.PARENTHESE:
+            {
         		assert stack.size() == 1;
                 stack.push(new ParenthesisPointcut(stack.pop()));
+            }
             break;
             case PHPAspectParser.NOT:
+            {
         		assert stack.size() == 1;
                 stack.push(new NotPointcut(stack.pop()));
+            }
             break;
             case PHPAspectParser.AND:
             {

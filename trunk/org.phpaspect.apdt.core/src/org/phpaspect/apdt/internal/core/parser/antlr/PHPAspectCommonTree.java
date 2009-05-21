@@ -17,7 +17,7 @@ public class PHPAspectCommonTree extends CommonTree {
         super(t);
     }
 
-    public void accept(NodeVisitor visitor) {
+    public void accept(PHPAspectNodeVisitor visitor) {
         visitor.beginVisit(this);
         for (int i = 0; i < getChildCount(); i++) {
             PHPAspectCommonTree child = (PHPAspectCommonTree)getChild(i);

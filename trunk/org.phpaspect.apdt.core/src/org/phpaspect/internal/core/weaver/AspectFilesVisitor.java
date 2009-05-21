@@ -9,6 +9,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.parser.ISourceParser;
@@ -24,7 +25,7 @@ public class AspectFilesVisitor implements IResourceVisitor {
 	private IProgressMonitor monitor;
     
     public AspectFilesVisitor(IProgressMonitor monitor) {
-		this.monitor = monitor;
+		this.monitor = new SubProgressMonitor(monitor, 2);
         parser = new PHPSourceParserFactory().createSourceParser();
 	}
 

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -17,14 +18,15 @@ import org.eclipse.php.internal.core.ast.nodes.*;
 import org.eclipse.php.internal.core.ast.rewrite.ASTRewrite;
 import org.eclipse.php.internal.core.ast.visitor.AbstractVisitor;
 import org.eclipse.text.edits.TextEdit;
-import org.phpaspect.apdt.internal.core.joinpoints.MethodInvocationJoinPoint;
+import org.phpaspect.apdt.internal.core.weaver.joinpoints.ConstructorJoinPoint;
+import org.phpaspect.apdt.internal.core.weaver.joinpoints.MethodInvocationJoinPoint;
 import org.phpaspect.core.weaver.*;
 import org.phpaspect.internal.core.weaver.SourceLocationImpl;
 
 public class WeaverVisitor extends AbstractVisitor{
 
 	protected List<Pointcut> pointcuts;
-	protected List<Introduction> introductions = new LinkedList<Introduction>();
+	protected List<Mixin> mixins = new LinkedList<Mixin>();
 
 	private ASTParser parser;
 	private Program program;
@@ -74,8 +76,8 @@ public class WeaverVisitor extends AbstractVisitor{
 		return this;
 	}
 	
-	public WeaverVisitor addIntroduction(Introduction introduction){
-		introductions.add(introduction);
+	public WeaverVisitor addMixin(Mixin mixin){
+		mixins.add(mixin);
 		return this;
 	}
 	
@@ -92,6 +94,7 @@ public class WeaverVisitor extends AbstractVisitor{
 		return document.get();
 	}
 	
+	@Override
 	public void endVisit(Program program){ 
 		//List of the includes for PHPAspect Runtime
 		List<Statement> includes = new  LinkedList<Statement>();
@@ -107,6 +110,64 @@ public class WeaverVisitor extends AbstractVisitor{
 	    rewriter.replace(statements.get(0), PHPAspectRuntimeImports, null);
 	}
 	
+	private Pair<List<ArrayElement>, List<ArrayElement>> getRuntimePredicates(JoinPoint joinpoint)
+	{	
+		//If a pointcut is matched we store its id
+		List<ArrayElement> ids = new LinkedList<ArrayElement>();
+		//Foreach id, we store the corresponding runtime assertion
+	    List<ArrayElement> runtimePredicates = new LinkedList<ArrayElement>();
+		for(Pointcut pt: pointcuts){
+			if(pt.match(ast, joinpoint)){
+				ArrayElement e = ast.newArrayElement();
+				e.setValue(ast.newScalar(String.valueOf(pt.getName()), Scalar.TYPE_STRING));
+				ids.add(e);
+				Expression assertion = pt.getRuntimeAssertion();
+				if(assertion != null){
+					ArrayElement element = ast.newArrayElement();
+					element.setKey(ast.newScalar(String.valueOf(pt.getName()), Scalar.TYPE_STRING));
+					element.setValue(assertion);
+					runtimePredicates.add(element);
+				}
+			}
+		}
+		Pair<List<ArrayElement>, List<ArrayElement>> pair = new Pair<List<ArrayElement>, List<ArrayElement>>(ids, runtimePredicates);
+		return pair;
+	}
+	
+	@Override
+	public void endVisit(ClassInstanceCreation instanceCreation)
+	{
+		//Create a joinpoint
+		SourceLocation sourceLocation = getSourceLocation(instanceCreation);
+		JoinPoint joinpoint = new ConstructorJoinPoint(sourceLocation, instanceCreation);
+		//If a pointcut is matched we store its id
+		List<ArrayElement> ids = new LinkedList<ArrayElement>();
+		//Foreach id, we store the corresponding runtime assertion
+	    List<ArrayElement> runtimePredicates = new LinkedList<ArrayElement>();
+		for(Pointcut pt: pointcuts){
+			if(pt.match(ast, joinpoint)){
+				ArrayElement e = ast.newArrayElement();
+				e.setValue(ast.newScalar(String.valueOf(pt.getName()), Scalar.TYPE_STRING));
+				ids.add(e);
+				Expression assertion = pt.getRuntimeAssertion();
+				if(assertion != null){
+					ArrayElement element = ast.newArrayElement();
+					element.setKey(ast.newScalar(String.valueOf(pt.getName()), Scalar.TYPE_STRING));
+					element.setValue(assertion);
+					runtimePredicates.add(element);
+				}
+			}
+		}
+		//If at least one pointcut has been matched
+		if(ids.size() > 0){
+			AST ast = program.getAST();
+			List<Expression> args = new LinkedList<Expression>();
+			args.add(ast.newArrayCreation(ids));
+			List<Expression> jpArgs = new LinkedList<Expression>();
+		}
+	}
+	
+	@Override
 	public void endVisit(MethodInvocation methodInvocation) {
 		//Create a joinpoint
 		SourceLocation sourceLocation = getSourceLocation(methodInvocation);

@@ -1,4 +1,4 @@
-package org.phpaspect.apdt.internal.core.pointcuts;
+package org.phpaspect.apdt.internal.core.weaver.pointcuts;
 
 import org.eclipse.php.internal.core.ast.nodes.AST;
 import org.eclipse.php.internal.core.ast.nodes.Expression;

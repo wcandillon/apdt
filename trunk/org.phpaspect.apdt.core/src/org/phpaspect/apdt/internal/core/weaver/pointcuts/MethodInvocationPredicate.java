@@ -1,4 +1,4 @@
-package org.phpaspect.apdt.internal.core.pointcuts;
+package org.phpaspect.apdt.internal.core.weaver.pointcuts;
 
 import java.util.LinkedList;
 import java.util.List;
