@@ -12,8 +12,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.php.internal.core.documentModel.provisional.contenttype.ContentTypeIdForPHP;
+import org.phpaspect.apdt.core.weaver.Pointcut;
 import org.phpaspect.apdt.internal.core.visitor.WeaverVisitor;
-import org.phpaspect.core.weaver.Pointcut;
 
 public class PHPFilesVisitor implements IResourceVisitor {
 	

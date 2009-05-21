@@ -1,4 +1,4 @@
-package org.phpaspect.core.weaver;
+package org.phpaspect.apdt.core.weaver;
 
 import org.eclipse.php.internal.core.ast.nodes.AST;
 import org.eclipse.php.internal.core.ast.nodes.Expression;
@@ -24,7 +24,7 @@ public abstract class AbstractPointcut implements Pointcut {
 		return runtimeAssertion;
 	}
 
-	public abstract boolean match(AST ast, JoinPoint jp);
+	public abstract boolean match(AST ast, Joinpoint jp);
 	
 	public abstract Pointcut clone();
 

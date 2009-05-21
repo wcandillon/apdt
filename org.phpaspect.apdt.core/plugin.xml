@@ -25,7 +25,7 @@
 	        class="org.phpaspect.apdt.internal.core.builder.AnnotationBuildParticipantFactory"
             id="org.phpaspect.apdt.core.buildParticipant.parser"
             name="PHPAspect annotation parser"
-            nature="org.eclipse.php.core.PHPNature">
+            nature="org.phpaspect.apdt.core.nature">
       </buildParticipant>
     </extension>
 </plugin>

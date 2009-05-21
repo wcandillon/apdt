@@ -1,6 +1,6 @@
 package org.phpaspect.internal.core.weaver;
 
-import org.phpaspect.core.weaver.SourceLocation;
+import org.phpaspect.apdt.core.weaver.SourceLocation;
 
 public class SourceLocationImpl implements SourceLocation {
 

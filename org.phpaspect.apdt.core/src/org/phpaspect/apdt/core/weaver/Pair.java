@@ -1,4 +1,4 @@
-package org.phpaspect.core.weaver;
+package org.phpaspect.apdt.core.weaver;
 
 public class Pair<T1, T2> {
 

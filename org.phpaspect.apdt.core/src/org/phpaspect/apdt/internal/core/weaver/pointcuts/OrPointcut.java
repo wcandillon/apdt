@@ -2,7 +2,7 @@ package org.phpaspect.apdt.internal.core.weaver.pointcuts;
 
 import org.eclipse.php.internal.core.ast.nodes.AST;
 import org.eclipse.php.internal.core.ast.nodes.InfixExpression;
-import org.phpaspect.core.weaver.*;
+import org.phpaspect.apdt.core.weaver.*;
 
 public class OrPointcut extends AbstractPointcut {
 
@@ -15,7 +15,7 @@ public class OrPointcut extends AbstractPointcut {
 		this.pt2 = pt2;
 	}
 
-	public boolean match(AST ast, JoinPoint jp) {
+	public boolean match(AST ast, Joinpoint jp) {
 		boolean match = pt1.match(ast, jp) || pt2.match(ast, jp);
 		runtimeAssertion = ast.newInfixExpression(pt1.getRuntimeAssertion(), InfixExpression.OP_BOOL_OR, pt2.getRuntimeAssertion());
 		return match;

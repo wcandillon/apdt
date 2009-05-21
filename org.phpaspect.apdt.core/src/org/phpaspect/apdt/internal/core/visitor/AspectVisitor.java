@@ -13,9 +13,9 @@ import org.antlr.runtime.RecognitionException;
 import org.eclipse.dltk.core.builder.IBuildContext;
 import org.eclipse.php.internal.core.compiler.ast.nodes.*;
 import org.eclipse.php.internal.core.compiler.ast.visitor.PHPASTVisitor;
+import org.phpaspect.apdt.core.weaver.Pointcut;
 import org.phpaspect.apdt.internal.core.parser.antlr.*;
 import org.phpaspect.apdt.internal.core.parser.antlr.PHPAspectParser.annotation_return;
-import org.phpaspect.core.weaver.Pointcut;
 
 public class AspectVisitor extends PHPASTVisitor {
 

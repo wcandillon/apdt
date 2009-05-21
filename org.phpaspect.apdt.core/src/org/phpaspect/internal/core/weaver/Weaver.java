@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.phpaspect.apdt.core.APDTCorePlugin;
-import org.phpaspect.core.weaver.Pointcut;
+import org.phpaspect.apdt.core.weaver.Pointcut;
 
 public class Weaver {
     

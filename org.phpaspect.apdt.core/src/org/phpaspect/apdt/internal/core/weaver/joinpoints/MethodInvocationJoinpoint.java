@@ -2,19 +2,17 @@ package org.phpaspect.apdt.internal.core.weaver.joinpoints;
 
 import org.eclipse.php.internal.core.ast.nodes.ASTNode;
 import org.eclipse.php.internal.core.ast.nodes.MethodInvocation;
-import org.phpaspect.core.weaver.*;
+import org.phpaspect.apdt.core.weaver.AbstractJoinpoint;
+import org.phpaspect.apdt.core.weaver.Joinpoint;
+import org.phpaspect.apdt.core.weaver.SourceLocation;
 
-public class StaticMethodInvocationJoinPoint extends AbstractJoinPoint {
+public class MethodInvocationJoinpoint extends AbstractJoinpoint {
 
 	private MethodInvocation methodInvocation;
 	
-	public StaticMethodInvocationJoinPoint(SourceLocation sourceLocation, MethodInvocation node) {
-		super(JoinPoint.Kind.STATIC_METHOD_CALL, sourceLocation);
+	public MethodInvocationJoinpoint(SourceLocation sourceLocation, MethodInvocation node) {
+		super(Joinpoint.Kind.METHOD_CALL, sourceLocation);
 		methodInvocation = node;
-	}
-
-	public String toLongString() {
-		return toString()+" at "+sourceLocation;
 	}
 	
 	public String toString(){
