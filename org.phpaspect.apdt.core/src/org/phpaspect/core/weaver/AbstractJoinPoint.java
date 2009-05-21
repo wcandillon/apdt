@@ -17,4 +17,8 @@ public abstract class AbstractJoinPoint implements JoinPoint {
 	public SourceLocation getSourceLocation() {
 		return sourceLocation;
 	}
+	
+	public String toLongString() {
+		return toString()+" at "+sourceLocation;
+	}
 }

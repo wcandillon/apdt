@@ -1,28 +1,31 @@
 package org.phpaspect.apdt.internal.core.parser.antlr;
 
-import org.antlr.runtime.*;
+import org.antlr.runtime.CharStream;
+import org.antlr.runtime.Lexer;
+import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.RecognizerSharedState;
 import org.eclipse.dltk.compiler.problem.DefaultProblem;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.core.builder.IBuildContext;
 
-public abstract class APDTParser extends Parser {
+public abstract class APDTLexer extends Lexer {
 
 	private IBuildContext context;
 	private int sourceStart = 0;
 	private int lineNo = 1;
 	
-	public APDTParser(TokenStream input)
+	public APDTLexer()
 	{
-		this(input, new RecognizerSharedState());
+		super();
 	}
-
-	public APDTParser(TokenStream input, RecognizerSharedState state)
+	
+	public APDTLexer(CharStream input, RecognizerSharedState state)
 	{
 		super(input, state);
 	}
-	
-	public APDTParser setContext(IBuildContext context, int sourceStart)
+
+	public APDTLexer setContext(IBuildContext context, int sourceStart)
 	{
 		this.context = context;
 		this.sourceStart = sourceStart;
@@ -46,8 +49,8 @@ public abstract class APDTParser extends Parser {
 			}
 			String filename = context.getFile().getName();
 			String message = getErrorMessage(e, getTokenNames());
-			int start = sourceStart+e.token.getCharPositionInLine();
-			int end = start+e.token.getText().length();
+			int start = sourceStart+e.charPositionInLine;
+			int end = start+1;
 			IProblem problem = new DefaultProblem(filename, message, IProblem.Syntax,
 					new String[0], ProblemSeverities.Error, start+1, end+1, lineNo);
 			context.getProblemReporter().reportProblem(problem);

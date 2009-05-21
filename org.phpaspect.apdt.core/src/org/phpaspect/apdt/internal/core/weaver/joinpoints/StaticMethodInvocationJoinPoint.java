@@ -1,4 +1,4 @@
-package org.phpaspect.apdt.internal.core.joinpoints;
+package org.phpaspect.apdt.internal.core.weaver.joinpoints;
 
 import org.eclipse.php.internal.core.ast.nodes.ASTNode;
 import org.eclipse.php.internal.core.ast.nodes.MethodInvocation;

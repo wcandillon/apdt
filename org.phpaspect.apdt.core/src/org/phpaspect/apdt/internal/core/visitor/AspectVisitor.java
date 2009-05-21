@@ -3,17 +3,13 @@ package org.phpaspect.apdt.internal.core.visitor;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
-import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.core.builder.IBuildContext;
 import org.eclipse.php.internal.core.compiler.ast.nodes.*;
 import org.eclipse.php.internal.core.compiler.ast.visitor.PHPASTVisitor;
@@ -60,10 +56,11 @@ public class AspectVisitor extends PHPASTVisitor {
                 		!line.substring(start).startsWith("@Around(") &&
                 		!line.substring(start).startsWith("@After(")) continue;
                 String annotation = line.substring(start, end+1);
-                CharStream content = new ANTLRStringStream(annotation);
-                PHPAspectLexer lexer = new PHPAspectLexer(content);
-                PHPAspectParser parser = new PHPAspectParser(new CommonTokenStream(lexer)); 
+                CharStream content = new ANTLRStringStream(annotation); 
             	int s = sourceStart-line.toCharArray().length+line.indexOf('@');
+                PHPAspectLexer lexer = new PHPAspectLexer(content);
+                lexer.setContext(context, s);
+                PHPAspectParser parser = new PHPAspectParser(new CommonTokenStream(lexer));
                 parser.setContext(context, s);
                 parser.setTreeAdaptor(new PHPAspectCommonTreeAdaptator());
                 try {
