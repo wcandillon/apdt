@@ -10,7 +10,6 @@
             <menu
                 label="PHPAspect Tools"
                 path="additions"
-                icon="icons/obj16/aspect.gif"
                 id="tools.submenu">
                 <groupMarker name="content" />
                 <separator name="additions" />
@@ -78,4 +77,72 @@
             id="org.phpaspect.apdt.core.natureImage">
       </image>
    </extension>
+      <extension
+            point="org.eclipse.ui.actionSets">
+         <actionSet
+               description="PHPAspect set of actions"
+               id="org.phpaspect.apdt.ui.actionSet"
+               label="PHPAspect Action Set"
+               visible="false">
+            <menu
+                  id="phpaspectMenu"
+                  label="&amp;PHPAspect">
+               <separator
+                     name="phpaspectGroup">
+               </separator>
+            </menu>
+            <action
+                  class="org.phpaspect.apdt.internal.ui.actions.WeaveAction"
+                  icon="icons/obj16/weave.gif"
+                  id="org.phpaspect.apdt.internal.ui.actions.SampleAction"
+                  label="&amp;Weave Project"
+                  menubarPath="phpaspectMenu/phpaspectGroup"
+                  toolbarPath="phpaspectGroup"
+                  tooltip="Weave project">
+            </action>
+            <action
+                  icon="icons/obj16/aspect.gif"
+                  id="org.phpaspect.apdt.ui.actions.newaspect"
+                  label="&amp;New Aspect"
+                  menubarPath="phpaspectMenu/phpaspectGroup"
+                  style="push"
+                  class="org.phpaspect.apdt.internal.ui.actions.NewAspectAction"
+                  toolbarPath="phpaspectGroup"
+                  tooltip="New Aspect">
+            </action>
+         </actionSet>
+      </extension>
+      <extension
+            point="org.eclipse.ui.actionSetPartAssociations">
+         <actionSetPartAssociation
+               targetID="org.phpaspect.apdt.ui.actionSet">
+            <part
+                  id="org.eclipse.php.editor">
+            </part>
+         </actionSetPartAssociation>
+      </extension>
+      <extension
+            point="org.eclipse.ui.newWizards">
+         <category
+               id="org.phpaspect.apdt.ui.wizcategory"
+               name="PHPAspect">
+         </category>
+         <wizard
+               category="org.phpaspect.apdt.ui.wizcategory"
+               class="org.phpaspect.apdt.internal.ui.wizards.NewAspectWizard"
+               finalPerspective="org.eclipse.php.perspective"
+               icon="icons/obj16/aspect.gif"
+               id="org.phpaspect.apdt.ui.newaspect"
+               name="Aspect"
+               preferredPerspectives="org.eclipse.php.perspective"
+               project="false">
+         </wizard>
+      </extension>
+      	<!--PHP Perspective Extensions Definition:-->
+	<extension point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension targetID="org.eclipse.php.perspective">
+			<actionSet id="org.phpaspect.apdt.ui.actionSet" />
+			<newWizardShortcut id="org.phpaspect.apdt.ui.newaspect" />
+		</perspectiveExtension>
+	 </extension>
 </plugin>
