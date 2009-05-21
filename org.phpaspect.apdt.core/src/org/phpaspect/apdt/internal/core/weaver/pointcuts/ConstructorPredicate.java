@@ -3,6 +3,7 @@ package org.phpaspect.apdt.internal.core.weaver.pointcuts;
 import org.eclipse.php.internal.core.ast.nodes.AST;
 import org.eclipse.php.internal.core.ast.nodes.ClassInstanceCreation;
 import org.eclipse.php.internal.core.ast.nodes.Expression;
+import org.eclipse.php.internal.core.ast.nodes.Identifier;
 import org.phpaspect.apdt.core.weaver.AbstractPointcut;
 import org.phpaspect.apdt.core.weaver.Joinpoint;
 import org.phpaspect.apdt.core.weaver.Pointcut;
@@ -31,9 +32,9 @@ public class ConstructorPredicate extends AbstractPointcut
 		{
 			ClassInstanceCreation instance = (ClassInstanceCreation)jp.getNode();
 			Expression name = instance.getClassName().getName();
-			if(name.isStaticScalar())
+			if(name instanceof Identifier)
 			{
-				if(name.toString().matches(type))
+				if(((Identifier) name).getName().matches(type))
 				{
 					runtimeAssertion = ast.newScalar("true");
 					matched = true;

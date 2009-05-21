@@ -1,6 +1,7 @@
 package org.phpaspect.internal.core.weaver;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class PHPFilesVisitor implements IResourceVisitor {
             {
 				try {
 					monitor.beginTask("Weave "+file.getName(), 1);
+					setIncludePath(file);
 					WeaverVisitor weaver = new WeaverVisitor(file, pointcuts);
 	            	String content = weaver.weave();
 	            	InputStream in = 
@@ -46,6 +48,25 @@ public class PHPFilesVisitor implements IResourceVisitor {
         }
         return true;
     }
+
+	private void setIncludePath(IFile file) {
+		String content = "<?php require_once 'PHPAspect/Dispatcher.php'; ?>\n";
+		try {
+			InputStream in = file.getContents();
+			while(in.available() > 0)
+			{
+				content += (char)in.read();
+			}
+			in = new ByteArrayInputStream(content.getBytes());
+			file.setContents(in, IResource.KEEP_HISTORY, monitor);
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	private boolean isPHPFile(IFile file)
     {

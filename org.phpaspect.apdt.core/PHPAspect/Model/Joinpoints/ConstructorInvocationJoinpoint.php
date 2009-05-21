@@ -1,17 +1,30 @@
 <?php
-require_once 'PHPAspect/Model/AbstractJoinpoint.php';
+require_once 'PHPAspect/Model/Joinpoints/AbstractJoinpoint.php';
 
 class ConstructorInvocationJoinpoint extends AbstractJoinpoint
 {	
-	public function __construct($source, $method, array $arguments, $fileName, $lineNo)
+	public function __construct($source, $target, array $arguments, $fileName, $lineNo)
 	{
-		$method = new ReflectionAnnotatedMethod($source, $method);
-		parent::__construct($source, $method, $arguments, $fileName, $lineNo);
+		$target = new ReflectionAnnotatedClass($target);
+		parent::__construct($source, $target, $arguments, $fileName, $lineNo);
 	}
 	
 	public function invoke()
 	{
-		return $this->target->invokeArgs($this->source, $this->args);
+		if($this->target instanceof ReflectionAnnotatedClass)
+		{
+			$class = $this->target;
+		} else {
+			$class = new ReflectionAnnotatedClass($this->target);
+		}
+		
+		if(count($this->args) == 0)
+		{
+			$instance = $class->newInstanceArgs();	
+		} else {
+			$instance = $class->newInstanceArgs($this->args);	
+		}
+		return $instance;
 	}
 }
 ?>

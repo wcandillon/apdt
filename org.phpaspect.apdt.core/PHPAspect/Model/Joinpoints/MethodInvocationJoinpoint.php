@@ -1,5 +1,5 @@
 <?php
-require_once 'PHPAspect/Model/AbstractJoinpoint.php';
+require_once 'PHPAspect/Model/Joinpoints/AbstractJoinpoint.php';
 
 class MethodInvocationJoinpoint extends AbstractJoinpoint {
 	
