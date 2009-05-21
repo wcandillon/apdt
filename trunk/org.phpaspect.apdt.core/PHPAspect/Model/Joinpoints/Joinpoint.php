@@ -11,6 +11,7 @@ interface Joinpoint {
 	public function isAround();
 	public function isAfter();
 	public function getSource();
+	public function setTarget($target);
 	public function getTarget();
 	public function getArgs();
 	public function getFileName();

@@ -1,6 +1,6 @@
 <?php
 require_once 'PHPAspect/addendum/annotations.php';
-require_once 'PHPAspect/Model/Joinpoint.php';
+require_once 'PHPAspect/Model/Joinpoints/Joinpoint.php';
 
 abstract class AbstractJoinPoint implements Joinpoint
 {	
@@ -30,6 +30,7 @@ abstract class AbstractJoinPoint implements Joinpoint
 	public function setAdvice($codeAdvice)
 	{
 		$this->codeAdvice = $codeAdvice;
+		return $this;
 	}
 
 	public function getAdvice()
@@ -57,6 +58,12 @@ abstract class AbstractJoinPoint implements Joinpoint
 		return $this->source;
 	}
 	
+	public function setTarget($target)
+	{
+		$this->target = $target;
+		return $this;
+	}
+	
 	public function getTarget()
 	{
 		return $this->target;
@@ -77,5 +84,4 @@ abstract class AbstractJoinPoint implements Joinpoint
 		return $this->lineNumber;
 	}
 }
-
 ?>

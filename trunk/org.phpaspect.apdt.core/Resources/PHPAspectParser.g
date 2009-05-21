@@ -12,6 +12,7 @@ tokens {
 ANNOTATION;
 PARENTHESE;
 MIXIN;
+NEW;
 }
 
 @header {
@@ -49,14 +50,14 @@ not_joinpoint
 
 //[2]
 joinpoint
-: CALL LPARENTHESE type=LABEL resolution method=LABEL LPARENTHESE
--> ^(CALL $type resolution $method)
-| NEW LPARENTHESE type=LABEL LPARENTHESE
--> ^(NEW $type)
+: CALL LPARENTHESE type=LABEL resolution method=LABEL RPARENTHESE
+	-> ^(CALL $type resolution $method)
+| NEW LPARENTHESE type=LABEL RPARENTHESE
+	-> ^(NEW $type)
 | LPARENTHESE or_joinpoint RPARENTHESE
--> ^(PARENTHESE or_joinpoint)
+	-> ^(PARENTHESE or_joinpoint)
 | MIXIN LPARENTHESE type=LABEL LPARENTHESE
--> ^(MIXIN type)
+	-> ^(MIXIN type)
 ;
 
 resolution
