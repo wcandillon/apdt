@@ -10,4 +10,7 @@ public class APDTImages {
 
 	public static final ImageDescriptor DESC_WIZBAN_ASPECT_FILE = helper
 			.createUnManaged(PluginImagesHelper.T_WIZBAN, "newphpaspectprj_wiz_big.gif"); //$NON-NLS-1$
+
+	public static final ImageDescriptor OVR_ASPECT_FILE = helper
+			.createUnManaged(PluginImagesHelper.T_OVR, "aspect_ovr.gif"); //$NON-NLS-1$
 }

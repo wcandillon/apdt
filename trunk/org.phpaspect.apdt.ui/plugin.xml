@@ -145,4 +145,5 @@
 			<newWizardShortcut id="org.phpaspect.apdt.ui.newaspect" />
 		</perspectiveExtension>
 	 </extension>
+	 	<!--PHPAspect Editor:-->
 </plugin>

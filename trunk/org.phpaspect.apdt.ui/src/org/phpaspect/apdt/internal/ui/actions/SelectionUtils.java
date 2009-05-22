@@ -57,4 +57,29 @@ public abstract class SelectionUtils {
             }
             return projectList;
     }
+
+	public static List<IProject> getSelectedProjects(Object[] selection,
+			String natureId) {
+		List<IProject> projects = new LinkedList<IProject>();
+		for(Object project: selection)
+		{
+			if(project instanceof IProject)
+			{
+				IProject p = (IProject)project;
+				try {
+					if(natureId == null || p.hasNature(natureId))
+					{
+						projects.add(p);
+					}
+				} catch (CoreException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return projects;
+	}
+	
+	public static List<IProject> getSelectedProjects(Object[] selection) {
+		return getSelectedProjects(selection, null);
+	}
 }
