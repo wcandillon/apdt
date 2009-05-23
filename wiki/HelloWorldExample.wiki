@@ -75,7 +75,7 @@ class Log extends Aspect
 
 You can create this aspect using the _new Aspect_ creation wizard.
 
-[http://sites.google.com/site/phpaspect/Home/newaspect.png] [http://sites.google.com/site/phpaspect/Home/logaspect.png]
+[http://sites.google.com/site/phpaspect/Home/newaspect.png][http://sites.google.com/site/phpaspect/Home/logaspect.png]
 
 Every Aspect have to be a subtype of the _Aspect_ abstract class. This class gives you the aspect reflection capabilities.
 The anatomy of an Aspect is a class with extra annotations.
