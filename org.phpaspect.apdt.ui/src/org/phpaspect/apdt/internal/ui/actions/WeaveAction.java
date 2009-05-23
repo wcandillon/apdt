@@ -37,7 +37,7 @@ public class WeaveAction implements IObjectActionDelegate, IWorkbenchWindowActio
 		{
 			emptySelection = true;
 			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-			ListSelectionDialog dlg = new ListSelectionDialog(window.getShell(), root, new APDTProjectContentProvider(), new WorkbenchLabelProvider(), "Select a project to weave:");
+			ListSelectionDialog dlg = new ListSelectionDialog(window.getShell(), root, new APDTProjectContentProvider(), new WorkbenchLabelProvider(), "Select projects to weave:");
 			dlg.setTitle("PHPAspect Project Selection");
 			dlg.open();
 			projects = SelectionUtils.getSelectedProjects(dlg.getResult(), APDTNature.NATURE_ID);
