@@ -31,6 +31,15 @@ public class NewExampleWizard extends PHPAspectProjectCreationWizard implements 
 		}
 	}
 	
+	@SuppressWarnings("restriction")
+	@Override
+	public void addPages()
+	{
+		super.addPages();
+		fFirstPage.setTitle("PHPAspect Example Project");
+		fFirstPage.setDescription("New PHPAspect Example Project");	
+	}
+	
 	@Override
 	public boolean performFinish()
 	{

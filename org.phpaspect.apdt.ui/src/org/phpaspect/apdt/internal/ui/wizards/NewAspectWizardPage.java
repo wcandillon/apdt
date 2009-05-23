@@ -17,7 +17,7 @@ public class NewAspectWizardPage extends NewSourceModulePage {
 
 	@Override
 	protected String getPageDescription() {
-		return "This wizard creates a new Aspect for PHPAspect project";
+		return "This wizard creates a new Aspect for a PHPAspect project";
 	}
 
 	@Override
