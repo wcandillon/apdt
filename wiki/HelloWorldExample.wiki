@@ -73,12 +73,23 @@ class Log extends Aspect
 ?>
 }}}
 
+You can create this aspect using the _new Aspect_ creation wizard.
 
-After weaving, the execution result is the following :
+[http://sites.google.com/site/phpaspect/Home/newaspect.png] [http://sites.google.com/site/phpaspect/Home/logaspect.png]
 
-{{{
-2 Largo Winch added to the cart.
-Total amount of the cart: 18.62 euros
-1 Asterix added to the cart.
-Total amount of the cart: 27.08 euros
-}}}
+Every Aspect have to be a subtype of the _Aspect_ abstract class. This class gives you the aspect reflection capabilities.
+The anatomy of an Aspect is a class with extra annotations.
+Pointcut and advice declarations can be made using the _@Before_, _@After_ and _@Around_  annotations.
+For instance, _@After(call(Order->addItem))_ intercept all calls to the _addItem_ method in an instance of Order.
+
+To weave the project, use the shortcut in the PHPAspect action set or the popup menu.
+
+[http://sites.google.com/site/phpaspect/Home/converttophp.png]
+
+Once the project woven, it contains a folder named _weaved_ in the project's root that contains the woven program.
+
+[http://sites.google.com/site/phpaspect/Home/phpexplorer.png]
+
+After weaving, the execution result is the following : 
+
+[http://sites.google.com/site/phpaspect/Home/output.png]
