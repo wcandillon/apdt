@@ -19,6 +19,7 @@ import org.eclipse.php.internal.core.ast.visitor.AbstractVisitor;
 import org.eclipse.text.edits.TextEdit;
 import org.phpaspect.apdt.core.weaver.*;
 import org.phpaspect.apdt.internal.core.weaver.joinpoints.ConstructorJoinpoint;
+import org.phpaspect.apdt.internal.core.weaver.joinpoints.MethodExecutionJoinpoint;
 import org.phpaspect.apdt.internal.core.weaver.joinpoints.MethodInvocationJoinpoint;
 import org.phpaspect.internal.core.weaver.SourceLocationImpl;
 
@@ -138,26 +139,129 @@ public final class WeaverVisitor extends AbstractVisitor{
 		jpArgs.add(source);
 		jpArgs.add(target);
 		List<ArrayElement> arguments = new LinkedList<ArrayElement>();
-		for(Expression param: parameters){
-		    ArrayElement e = ast.newArrayElement();
-		    e.setValue(ASTNode.copySubtree(ast, param));
-			arguments.add(e);
+		if(parameters != null)
+		{
+			for(Expression param: parameters){
+			    ArrayElement e = ast.newArrayElement();
+			    e.setValue(ASTNode.copySubtree(ast, param));
+				arguments.add(e);
+			}			
 		}
 		jpArgs.add(ast.newArrayCreation(arguments));
-		jpArgs.add(ast.newScalar("__FILE__"));
-		jpArgs.add(ast.newScalar("__LINE__"));
+		if(kind != Joinpoint.Kind.METHOD_EXECUTION)
+		{
+			jpArgs.add(ast.newScalar("__FILE__"));
+			jpArgs.add(ast.newScalar("__LINE__"));
+		}
 		args.add(
 			ast.newClassInstanceCreation(
 				ast.newClassName(
 					ast.newIdentifier(kind.getName())
 				), jpArgs)
 		);
-		if(runtimePredicates.size() > 0){
+		if(runtimePredicates != null && runtimePredicates.size() > 0){
 			args.add(ast.newArrayCreation(runtimePredicates));
 		}
 		return ast.newFunctionInvocation(
 				ast.newFunctionName(
 						ast.newIdentifier("dispatch")), args);
+	}
+	
+	@Override
+	public void endVisit(MethodDeclaration methodDeclaration)
+	{
+		//Create a joinpoint
+		SourceLocation sourceLocation = getSourceLocation(methodDeclaration);
+		Joinpoint joinpoint = new MethodExecutionJoinpoint(sourceLocation, methodDeclaration);
+		Pair<List<ArrayElement>, List<ArrayElement>> pair = getRuntimePredicates(joinpoint);
+		List<ArrayElement> ids = pair.getIndex();
+		if(ids.size() > 0)
+		{
+			ASTNode classDecl = methodDeclaration.getParent().getParent();
+			if(classDecl instanceof ClassDeclaration)
+			{
+				String methodName = methodDeclaration.getFunction().getFunctionName().getName();
+				ClassDeclaration clazz = (ClassDeclaration)classDecl;
+				List<Statement> cSt = clazz.getBody().statements();
+				List<Statement> statements = new LinkedList<Statement>();
+				for(Statement statement: cSt)
+				{
+					if(statement instanceof MethodDeclaration)
+					{
+						MethodDeclaration m = (MethodDeclaration)statement;
+						boolean sameMethod = m.getFunction().getFunctionName().getName().endsWith(methodName);
+						if(sameMethod){ continue; }
+					}
+					statements.add(ASTNode.copySubtree(ast, statement));
+				}
+				FunctionDeclaration function = methodDeclaration.getFunction();
+				List<FormalParameter> formalParameters = function.formalParameters();
+				List<FormalParameter> newFormalParameters = new LinkedList<FormalParameter>();
+				for(FormalParameter formalParameter: formalParameters)
+				{
+					boolean isMandatory = formalParameter.isMandatory();
+					Identifier type = null;
+					Expression defaultValue = null;
+					Expression parameterName =  ASTNode.copySubtree(ast, formalParameter.getParameterName());
+					newFormalParameters.add(
+							ast.newFormalParameter(type, parameterName, defaultValue, isMandatory));
+				}
+				Block body = ASTNode.copySubtree(ast, function.getBody());
+				MethodDeclaration newMethod = ast.newMethodDeclaration(methodDeclaration.getModifier(),
+						ast.newFunctionDeclaration(
+								ast.newIdentifier("__"+function.getFunctionName().getName()),
+								newFormalParameters,
+								body, function.isReference()
+							)
+						);
+				statements.add(newMethod);
+				List<Statement> newStatements = new LinkedList<Statement>();
+				List<Expression> parameters = new LinkedList<Expression>();
+				for(FormalParameter param: formalParameters)
+				{
+					parameters.add(ast.newVariable(param.getParameterNameIdentifier().getName()));
+				}
+				newStatements.add(
+						ast.newReturnStatement(
+								getDispatchCall(ids,
+										Joinpoint.Kind.METHOD_EXECUTION,
+										ast.newVariable("this"),
+										ast.newIdentifier(methodName),
+										parameters, null)
+						)
+				);
+				body = ast.newBlock(newStatements);
+				newFormalParameters = new LinkedList<FormalParameter>();
+				for(FormalParameter formalParameter: formalParameters)
+				{
+					boolean isMandatory = formalParameter.isMandatory();
+					Identifier type = null;
+					Expression defaultValue = null;
+					Expression parameterName =  ASTNode.copySubtree(ast, formalParameter.getParameterName());
+					newFormalParameters.add(
+								ast.newFormalParameter(type, parameterName, defaultValue, isMandatory));
+				}
+				newMethod = ast.newMethodDeclaration(methodDeclaration.getModifier(),
+						ast.newFunctionDeclaration(
+								ast.newIdentifier(function.getFunctionName().getName()),
+								newFormalParameters,
+								body, function.isReference()
+							)
+						);
+				statements.add(newMethod);
+				body = ast.newBlock(statements);
+				String superClass = clazz.getSuperClass()!=null?clazz.getSuperClass().toString():null;;
+				ClassDeclaration newClass = ast.newClassDeclaration(
+						clazz.getModifier(),
+						clazz.getName().getName(),
+						superClass,
+						clazz.interfaces(),
+						body
+				);
+				rewriter.replace(clazz, newClass, null);
+				//rewriter.replace(methodDeclaration, ASTNode.copySubtree(ast, newMethod), null);
+			}
+		}
 	}
 	
 	@Override

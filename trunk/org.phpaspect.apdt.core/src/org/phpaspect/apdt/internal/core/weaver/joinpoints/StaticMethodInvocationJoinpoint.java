@@ -20,7 +20,7 @@ public class StaticMethodInvocationJoinpoint extends AbstractJoinpoint {
 	}
 	
 	public String toString(){
-		return "call("+methodInvocation.getDispatcher()+"->"+methodInvocation.getMethod()+"())";
+		return "call("+methodInvocation.getDispatcher()+"->"+methodInvocation.getMethod().getFunctionName().getName()+"())";
 	}
 	
 	public ASTNode getNode() {

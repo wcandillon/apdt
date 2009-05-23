@@ -12,7 +12,6 @@ tokens {
 ANNOTATION;
 PARENTHESE;
 MIXIN;
-NEW;
 }
 
 @header {
@@ -54,6 +53,8 @@ joinpoint
 	-> ^(CALL $type resolution $method)
 | NEW LPARENTHESE type=LABEL RPARENTHESE
 	-> ^(NEW $type)
+| EXEC LPARENTHESE type=LABEL PAAMAYIM_NEKUDOTAYIM method=LABEL RPARENTHESE
+	-> ^(EXEC $type $method)
 | LPARENTHESE or_joinpoint RPARENTHESE
 	-> ^(PARENTHESE or_joinpoint)
 | MIXIN LPARENTHESE type=LABEL LPARENTHESE

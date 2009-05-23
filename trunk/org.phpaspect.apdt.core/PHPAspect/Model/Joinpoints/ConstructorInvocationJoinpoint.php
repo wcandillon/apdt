@@ -10,19 +10,12 @@ class ConstructorInvocationJoinpoint extends AbstractJoinpoint
 	}
 	
 	public function invoke()
-	{
-		if($this->target instanceof ReflectionAnnotatedClass)
-		{
-			$class = $this->target;
-		} else {
-			$class = new ReflectionAnnotatedClass($this->target);
-		}
-		
+	{	
 		if(count($this->args) == 0)
 		{
-			$instance = $class->newInstanceArgs();	
+			$instance = $this->target->newInstanceArgs();	
 		} else {
-			$instance = $class->newInstanceArgs($this->args);	
+			$instance = $this->target->newInstanceArgs($this->args);	
 		}
 		return $instance;
 	}

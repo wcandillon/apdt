@@ -15,6 +15,7 @@ public class MethodInvocationJoinpoint extends AbstractJoinpoint {
 		methodInvocation = node;
 	}
 	
+	@Override
 	public String toString(){
 		return "call("+methodInvocation.getDispatcher()+"->"+methodInvocation.getMethod()+"())";
 	}

@@ -1,4 +1,4 @@
-// $ANTLR 3.1.3 Mar 17, 2009 19:23:44 PHPAspectLexer.g 2009-05-21 18:15:53
+// $ANTLR 3.1.3 Mar 17, 2009 19:23:44 PHPAspectLexer.g 2009-05-22 19:46:54
 
 package org.phpaspect.apdt.internal.core.parser.antlr;
 
@@ -12,25 +12,26 @@ public class PHPAspectLexer extends APDTLexer {
     public static final int LPARENTHESE=10;
     public static final int WS=8;
     public static final int NEW=14;
-    public static final int PAAMAYIM_NEKUDOTAYIM=15;
-    public static final int LABEL=25;
-    public static final int OBJECT_OPERATOR=16;
-    public static final int MIXIN=24;
-    public static final int OR=18;
-    public static final int AFTER=23;
+    public static final int PAAMAYIM_NEKUDOTAYIM=16;
+    public static final int LABEL=26;
+    public static final int OBJECT_OPERATOR=17;
+    public static final int MIXIN=25;
+    public static final int OR=19;
+    public static final int AFTER=24;
     public static final int DOT=9;
-    public static final int AND=17;
+    public static final int EXEC=15;
+    public static final int AND=18;
     public static final int INTLIT=5;
     public static final int EOF=-1;
     public static final int STRING_LITERAL=7;
     public static final int CHARLIT=6;
     public static final int CALL=13;
-    public static final int BEFORE=21;
-    public static final int PLUS=20;
+    public static final int BEFORE=22;
+    public static final int PLUS=21;
     public static final int DIGIT=4;
     public static final int RPARENTHESE=11;
-    public static final int AROUND=22;
-    public static final int NOT=19;
+    public static final int AROUND=23;
+    public static final int NOT=20;
     public static final int AT=12;
 
     // delegates
@@ -412,13 +413,34 @@ public class PHPAspectLexer extends APDTLexer {
     }
     // $ANTLR end "NEW"
 
+    // $ANTLR start "EXEC"
+    public final void mEXEC() throws RecognitionException {
+        try {
+            int _type = EXEC;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // PHPAspectLexer.g:44:6: ( 'exec' )
+            // PHPAspectLexer.g:44:8: 'exec'
+            {
+            match("exec"); 
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "EXEC"
+
     // $ANTLR start "PAAMAYIM_NEKUDOTAYIM"
     public final void mPAAMAYIM_NEKUDOTAYIM() throws RecognitionException {
         try {
             int _type = PAAMAYIM_NEKUDOTAYIM;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspectLexer.g:44:22: ( '::' )
-            // PHPAspectLexer.g:44:24: '::'
+            // PHPAspectLexer.g:45:22: ( '::' )
+            // PHPAspectLexer.g:45:24: '::'
             {
             match("::"); 
 
@@ -438,8 +460,8 @@ public class PHPAspectLexer extends APDTLexer {
         try {
             int _type = OBJECT_OPERATOR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspectLexer.g:45:17: ( '->' )
-            // PHPAspectLexer.g:45:19: '->'
+            // PHPAspectLexer.g:46:17: ( '->' )
+            // PHPAspectLexer.g:46:19: '->'
             {
             match("->"); 
 
@@ -459,8 +481,8 @@ public class PHPAspectLexer extends APDTLexer {
         try {
             int _type = AND;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspectLexer.g:46:5: ( '&&' )
-            // PHPAspectLexer.g:46:7: '&&'
+            // PHPAspectLexer.g:47:5: ( '&&' )
+            // PHPAspectLexer.g:47:7: '&&'
             {
             match("&&"); 
 
@@ -480,8 +502,8 @@ public class PHPAspectLexer extends APDTLexer {
         try {
             int _type = OR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspectLexer.g:47:4: ( '||' )
-            // PHPAspectLexer.g:47:6: '||'
+            // PHPAspectLexer.g:48:4: ( '||' )
+            // PHPAspectLexer.g:48:6: '||'
             {
             match("||"); 
 
@@ -501,8 +523,8 @@ public class PHPAspectLexer extends APDTLexer {
         try {
             int _type = NOT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspectLexer.g:48:5: ( '!' )
-            // PHPAspectLexer.g:48:7: '!'
+            // PHPAspectLexer.g:49:5: ( '!' )
+            // PHPAspectLexer.g:49:7: '!'
             {
             match('!'); 
 
@@ -521,8 +543,8 @@ public class PHPAspectLexer extends APDTLexer {
         try {
             int _type = PLUS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspectLexer.g:49:6: ( '+' )
-            // PHPAspectLexer.g:49:8: '+'
+            // PHPAspectLexer.g:50:6: ( '+' )
+            // PHPAspectLexer.g:50:8: '+'
             {
             match('+'); 
 
@@ -541,8 +563,8 @@ public class PHPAspectLexer extends APDTLexer {
         try {
             int _type = BEFORE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspectLexer.g:50:8: ( 'Before' )
-            // PHPAspectLexer.g:50:10: 'Before'
+            // PHPAspectLexer.g:51:8: ( 'Before' )
+            // PHPAspectLexer.g:51:10: 'Before'
             {
             match("Before"); 
 
@@ -562,8 +584,8 @@ public class PHPAspectLexer extends APDTLexer {
         try {
             int _type = AROUND;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspectLexer.g:51:8: ( 'Around' )
-            // PHPAspectLexer.g:51:10: 'Around'
+            // PHPAspectLexer.g:52:8: ( 'Around' )
+            // PHPAspectLexer.g:52:10: 'Around'
             {
             match("Around"); 
 
@@ -583,8 +605,8 @@ public class PHPAspectLexer extends APDTLexer {
         try {
             int _type = AFTER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspectLexer.g:52:7: ( 'After' )
-            // PHPAspectLexer.g:52:9: 'After'
+            // PHPAspectLexer.g:53:7: ( 'After' )
+            // PHPAspectLexer.g:53:9: 'After'
             {
             match("After"); 
 
@@ -604,8 +626,8 @@ public class PHPAspectLexer extends APDTLexer {
         try {
             int _type = MIXIN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspectLexer.g:53:7: ( 'Mixin' )
-            // PHPAspectLexer.g:53:9: 'Mixin'
+            // PHPAspectLexer.g:54:7: ( 'Mixin' )
+            // PHPAspectLexer.g:54:9: 'Mixin'
             {
             match("Mixin"); 
 
@@ -625,8 +647,8 @@ public class PHPAspectLexer extends APDTLexer {
         try {
             int _type = LABEL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // PHPAspectLexer.g:57:3: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '*' ) ( '*' | 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
-            // PHPAspectLexer.g:57:5: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '*' ) ( '*' | 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // PHPAspectLexer.g:58:3: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '*' ) ( '*' | 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
+            // PHPAspectLexer.g:58:5: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '*' ) ( '*' | 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             {
             if ( input.LA(1)=='*'||(input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
                 input.consume();
@@ -637,7 +659,7 @@ public class PHPAspectLexer extends APDTLexer {
                 recover(mse);
                 throw mse;}
 
-            // PHPAspectLexer.g:57:32: ( '*' | 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // PHPAspectLexer.g:58:32: ( '*' | 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             loop5:
             do {
                 int alt5=2;
@@ -682,8 +704,8 @@ public class PHPAspectLexer extends APDTLexer {
     // $ANTLR end "LABEL"
 
     public void mTokens() throws RecognitionException {
-        // PHPAspectLexer.g:1:8: ( DIGIT | INTLIT | CHARLIT | STRING_LITERAL | WS | DOT | LPARENTHESE | RPARENTHESE | AT | CALL | NEW | PAAMAYIM_NEKUDOTAYIM | OBJECT_OPERATOR | AND | OR | NOT | PLUS | BEFORE | AROUND | AFTER | MIXIN | LABEL )
-        int alt6=22;
+        // PHPAspectLexer.g:1:8: ( DIGIT | INTLIT | CHARLIT | STRING_LITERAL | WS | DOT | LPARENTHESE | RPARENTHESE | AT | CALL | NEW | EXEC | PAAMAYIM_NEKUDOTAYIM | OBJECT_OPERATOR | AND | OR | NOT | PLUS | BEFORE | AROUND | AFTER | MIXIN | LABEL )
+        int alt6=23;
         alt6 = dfa6.predict(input);
         switch (alt6) {
             case 1 :
@@ -764,77 +786,84 @@ public class PHPAspectLexer extends APDTLexer {
                 }
                 break;
             case 12 :
-                // PHPAspectLexer.g:1:89: PAAMAYIM_NEKUDOTAYIM
+                // PHPAspectLexer.g:1:89: EXEC
+                {
+                mEXEC(); 
+
+                }
+                break;
+            case 13 :
+                // PHPAspectLexer.g:1:94: PAAMAYIM_NEKUDOTAYIM
                 {
                 mPAAMAYIM_NEKUDOTAYIM(); 
 
                 }
                 break;
-            case 13 :
-                // PHPAspectLexer.g:1:110: OBJECT_OPERATOR
+            case 14 :
+                // PHPAspectLexer.g:1:115: OBJECT_OPERATOR
                 {
                 mOBJECT_OPERATOR(); 
 
                 }
                 break;
-            case 14 :
-                // PHPAspectLexer.g:1:126: AND
+            case 15 :
+                // PHPAspectLexer.g:1:131: AND
                 {
                 mAND(); 
 
                 }
                 break;
-            case 15 :
-                // PHPAspectLexer.g:1:130: OR
+            case 16 :
+                // PHPAspectLexer.g:1:135: OR
                 {
                 mOR(); 
 
                 }
                 break;
-            case 16 :
-                // PHPAspectLexer.g:1:133: NOT
+            case 17 :
+                // PHPAspectLexer.g:1:138: NOT
                 {
                 mNOT(); 
 
                 }
                 break;
-            case 17 :
-                // PHPAspectLexer.g:1:137: PLUS
+            case 18 :
+                // PHPAspectLexer.g:1:142: PLUS
                 {
                 mPLUS(); 
 
                 }
                 break;
-            case 18 :
-                // PHPAspectLexer.g:1:142: BEFORE
+            case 19 :
+                // PHPAspectLexer.g:1:147: BEFORE
                 {
                 mBEFORE(); 
 
                 }
                 break;
-            case 19 :
-                // PHPAspectLexer.g:1:149: AROUND
+            case 20 :
+                // PHPAspectLexer.g:1:154: AROUND
                 {
                 mAROUND(); 
 
                 }
                 break;
-            case 20 :
-                // PHPAspectLexer.g:1:156: AFTER
+            case 21 :
+                // PHPAspectLexer.g:1:161: AFTER
                 {
                 mAFTER(); 
 
                 }
                 break;
-            case 21 :
-                // PHPAspectLexer.g:1:162: MIXIN
+            case 22 :
+                // PHPAspectLexer.g:1:167: MIXIN
                 {
                 mMIXIN(); 
 
                 }
                 break;
-            case 22 :
-                // PHPAspectLexer.g:1:168: LABEL
+            case 23 :
+                // PHPAspectLexer.g:1:173: LABEL
                 {
                 mLABEL(); 
 
@@ -848,32 +877,32 @@ public class PHPAspectLexer extends APDTLexer {
 
     protected DFA6 dfa6 = new DFA6(this);
     static final String DFA6_eotS =
-        "\1\uffff\1\25\7\uffff\2\24\6\uffff\3\24\3\uffff\7\24\1\44\4\24\1"+
-        "\51\1\uffff\4\24\1\uffff\2\24\1\60\1\61\1\62\1\63\4\uffff";
+        "\1\uffff\1\26\7\uffff\3\25\6\uffff\3\25\3\uffff\10\25\1\47\5\25"+
+        "\1\55\1\uffff\1\56\4\25\2\uffff\2\25\1\65\1\66\1\67\1\70\4\uffff";
     static final String DFA6_eofS =
-        "\64\uffff";
+        "\71\uffff";
     static final String DFA6_minS =
-        "\1\11\1\60\7\uffff\1\141\1\145\6\uffff\1\145\1\146\1\151\3\uffff"+
-        "\1\154\1\167\1\146\1\157\1\164\1\170\1\154\1\52\1\157\1\165\1\145"+
-        "\1\151\1\52\1\uffff\1\162\1\156\1\162\1\156\1\uffff\1\145\1\144"+
-        "\4\52\4\uffff";
+        "\1\11\1\60\7\uffff\1\141\1\145\1\170\6\uffff\1\145\1\146\1\151\3"+
+        "\uffff\1\154\1\167\1\145\1\146\1\157\1\164\1\170\1\154\1\52\1\143"+
+        "\1\157\1\165\1\145\1\151\1\52\1\uffff\1\52\1\162\1\156\1\162\1\156"+
+        "\2\uffff\1\145\1\144\4\52\4\uffff";
     static final String DFA6_maxS =
-        "\1\174\1\71\7\uffff\1\141\1\145\6\uffff\1\145\1\162\1\151\3\uffff"+
-        "\1\154\1\167\1\146\1\157\1\164\1\170\1\154\1\172\1\157\1\165\1\145"+
-        "\1\151\1\172\1\uffff\1\162\1\156\1\162\1\156\1\uffff\1\145\1\144"+
-        "\4\172\4\uffff";
+        "\1\174\1\71\7\uffff\1\141\1\145\1\170\6\uffff\1\145\1\162\1\151"+
+        "\3\uffff\1\154\1\167\1\145\1\146\1\157\1\164\1\170\1\154\1\172\1"+
+        "\143\1\157\1\165\1\145\1\151\1\172\1\uffff\1\172\1\162\1\156\1\162"+
+        "\1\156\2\uffff\1\145\1\144\4\172\4\uffff";
     static final String DFA6_acceptS =
-        "\2\uffff\1\3\1\4\1\5\1\6\1\7\1\10\1\11\2\uffff\1\14\1\15\1\16\1"+
-        "\17\1\20\1\21\3\uffff\1\26\1\1\1\2\15\uffff\1\13\4\uffff\1\12\6"+
-        "\uffff\1\24\1\25\1\22\1\23";
+        "\2\uffff\1\3\1\4\1\5\1\6\1\7\1\10\1\11\3\uffff\1\15\1\16\1\17\1"+
+        "\20\1\21\1\22\3\uffff\1\27\1\1\1\2\17\uffff\1\13\5\uffff\1\12\1"+
+        "\14\6\uffff\1\25\1\26\1\23\1\24";
     static final String DFA6_specialS =
-        "\64\uffff}>";
+        "\71\uffff}>";
     static final String[] DFA6_transitionS = {
-            "\2\4\2\uffff\1\4\22\uffff\1\4\1\17\1\3\3\uffff\1\15\1\2\1\6"+
-            "\1\7\1\24\1\20\1\uffff\1\14\1\5\1\uffff\12\1\1\13\5\uffff\1"+
-            "\10\1\22\1\21\12\24\1\23\15\24\4\uffff\1\24\1\uffff\2\24\1\11"+
-            "\12\24\1\12\14\24\1\uffff\1\16",
-            "\12\26",
+            "\2\4\2\uffff\1\4\22\uffff\1\4\1\20\1\3\3\uffff\1\16\1\2\1\6"+
+            "\1\7\1\25\1\21\1\uffff\1\15\1\5\1\uffff\12\1\1\14\5\uffff\1"+
+            "\10\1\23\1\22\12\25\1\24\15\25\4\uffff\1\25\1\uffff\2\25\1\11"+
+            "\1\25\1\13\10\25\1\12\14\25\1\uffff\1\17",
+            "\12\27",
             "",
             "",
             "",
@@ -881,45 +910,50 @@ public class PHPAspectLexer extends APDTLexer {
             "",
             "",
             "",
-            "\1\27",
             "\1\30",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
             "\1\31",
-            "\1\33\13\uffff\1\32",
-            "\1\34",
+            "\1\32",
             "",
             "",
             "",
-            "\1\35",
+            "",
+            "",
+            "",
+            "\1\33",
+            "\1\35\13\uffff\1\34",
             "\1\36",
+            "",
+            "",
+            "",
             "\1\37",
             "\1\40",
             "\1\41",
             "\1\42",
             "\1\43",
-            "\1\24\5\uffff\12\24\7\uffff\32\24\4\uffff\1\24\1\uffff\32\24",
+            "\1\44",
             "\1\45",
             "\1\46",
-            "\1\47",
+            "\1\25\5\uffff\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
             "\1\50",
-            "\1\24\5\uffff\12\24\7\uffff\32\24\4\uffff\1\24\1\uffff\32\24",
-            "",
+            "\1\51",
             "\1\52",
             "\1\53",
             "\1\54",
-            "\1\55",
+            "\1\25\5\uffff\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
             "",
-            "\1\56",
+            "\1\25\5\uffff\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
             "\1\57",
-            "\1\24\5\uffff\12\24\7\uffff\32\24\4\uffff\1\24\1\uffff\32\24",
-            "\1\24\5\uffff\12\24\7\uffff\32\24\4\uffff\1\24\1\uffff\32\24",
-            "\1\24\5\uffff\12\24\7\uffff\32\24\4\uffff\1\24\1\uffff\32\24",
-            "\1\24\5\uffff\12\24\7\uffff\32\24\4\uffff\1\24\1\uffff\32\24",
+            "\1\60",
+            "\1\61",
+            "\1\62",
+            "",
+            "",
+            "\1\63",
+            "\1\64",
+            "\1\25\5\uffff\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
+            "\1\25\5\uffff\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
+            "\1\25\5\uffff\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
+            "\1\25\5\uffff\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
             "",
             "",
             "",
@@ -956,7 +990,7 @@ public class PHPAspectLexer extends APDTLexer {
             this.transition = DFA6_transition;
         }
         public String getDescription() {
-            return "1:1: Tokens : ( DIGIT | INTLIT | CHARLIT | STRING_LITERAL | WS | DOT | LPARENTHESE | RPARENTHESE | AT | CALL | NEW | PAAMAYIM_NEKUDOTAYIM | OBJECT_OPERATOR | AND | OR | NOT | PLUS | BEFORE | AROUND | AFTER | MIXIN | LABEL );";
+            return "1:1: Tokens : ( DIGIT | INTLIT | CHARLIT | STRING_LITERAL | WS | DOT | LPARENTHESE | RPARENTHESE | AT | CALL | NEW | EXEC | PAAMAYIM_NEKUDOTAYIM | OBJECT_OPERATOR | AND | OR | NOT | PLUS | BEFORE | AROUND | AFTER | MIXIN | LABEL );";
         }
     }
  
