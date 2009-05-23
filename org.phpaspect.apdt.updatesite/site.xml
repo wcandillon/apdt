@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description name="APDT update site">APDT: Aspect PHP Developement Tools Update Site</description>
-   <feature url="features/org.phpaspect.apdt.feature_1.0.0.qualifier.jar" id="org.phpaspect.apdt.feature" version="1.0.0.qualifier">
+   <description name="APDT update site">
+      APDT: Aspect PHP Developement Tools Update Site
+   </description>
+   <feature url="features/org.phpaspect.apdt.feature_1.0.0.200905231947.jar" id="org.phpaspect.apdt.feature" version="1.0.0.200905231947">
       <category name="org.phpaspect.apdt"/>
    </feature>
    <category-def name="org.phpaspect.apdt" label="APDT">
