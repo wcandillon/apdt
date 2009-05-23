@@ -66,8 +66,8 @@ class Log extends Aspect
 	 * @After(exec(Order::addItem))
 	 */
 	public function logAddItem(Joinpoint $thisJoinpoint){
-		list($reference, $quantity) = $thisJoinpoint->getArgs();
-    	printf("%d %s added to the cart\n", $quantity, $reference);
+	        list($reference, $quantity) = $thisJoinpoint->getArgs();
+    	        printf("%d %s added to the cart\n", $quantity, $reference);
 	}
 }
 ?>
