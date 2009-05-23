@@ -71,6 +71,8 @@ public final class WeaverVisitor extends AbstractVisitor{
 		} else if(enclosingNode instanceof TypeDeclaration){
 			TypeDeclaration typeDeclaration = (TypeDeclaration)enclosingNode;
 			return typeDeclaration.getName().getName();
+		} else if(node == enclosingNode) {
+			return "Main";
 		}
 		return getWithinType(enclosingNode);
 	}
@@ -196,16 +198,7 @@ public final class WeaverVisitor extends AbstractVisitor{
 				}
 				FunctionDeclaration function = methodDeclaration.getFunction();
 				List<FormalParameter> formalParameters = function.formalParameters();
-				List<FormalParameter> newFormalParameters = new LinkedList<FormalParameter>();
-				for(FormalParameter formalParameter: formalParameters)
-				{
-					boolean isMandatory = formalParameter.isMandatory();
-					Identifier type = null;
-					Expression defaultValue = null;
-					Expression parameterName =  ASTNode.copySubtree(ast, formalParameter.getParameterName());
-					newFormalParameters.add(
-							ast.newFormalParameter(type, parameterName, defaultValue, isMandatory));
-				}
+				List<FormalParameter> newFormalParameters = ASTNode.copySubtrees(ast, formalParameters);
 				Block body = ASTNode.copySubtree(ast, function.getBody());
 				MethodDeclaration newMethod = ast.newMethodDeclaration(methodDeclaration.getModifier(),
 						ast.newFunctionDeclaration(
@@ -231,16 +224,7 @@ public final class WeaverVisitor extends AbstractVisitor{
 						)
 				);
 				body = ast.newBlock(newStatements);
-				newFormalParameters = new LinkedList<FormalParameter>();
-				for(FormalParameter formalParameter: formalParameters)
-				{
-					boolean isMandatory = formalParameter.isMandatory();
-					Identifier type = null;
-					Expression defaultValue = null;
-					Expression parameterName =  ASTNode.copySubtree(ast, formalParameter.getParameterName());
-					newFormalParameters.add(
-								ast.newFormalParameter(type, parameterName, defaultValue, isMandatory));
-				}
+				newFormalParameters = ASTNode.copySubtrees(ast, formalParameters);
 				newMethod = ast.newMethodDeclaration(methodDeclaration.getModifier(),
 						ast.newFunctionDeclaration(
 								ast.newIdentifier(function.getFunctionName().getName()),
