@@ -1,0 +1,22 @@
+<?php
+require_once 'PHPAspect/Model/Aspect.php';
+
+class BillingService extends Aspect
+{
+	private $history = array();
+	
+	/**
+	 * @After(exec(Song::play))
+	 */
+	public function getBilling(Joinpoint $thisJoinpoint)
+	{
+		$name = $thisJoinpoint->getSource()->getName();
+		if(!isset($this->history[$name]))
+		{
+			$this->history[$name] = 0;
+			echo "Generating charges for ".$name."\n";
+		} else {
+			$this->history[$name]++;
+		}
+	}
+}

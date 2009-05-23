@@ -1,0 +1,21 @@
+<?php
+require_once 'PHPAspect/Model/Aspect.php';
+
+class Singleton extends Aspect
+{
+	private static $instances = array();
+	
+	/**
+	 * @Around(new(*))
+	 */
+	public function getInstance(Joinpoint $thisJoinpoint)
+	{
+		$name = $thisJoinpoint->getTarget()->getName();
+		if(!isset(self::$instances[$name]))
+		{
+			self::$instances[$name] = $thisJoinpoint->invoke();
+		}
+		return self::$instances[$name];
+	}
+}
+?>

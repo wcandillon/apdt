@@ -84,19 +84,11 @@
                id="org.phpaspect.apdt.ui.actionSet"
                label="PHPAspect Action Set"
                visible="false">
-            <menu
-                  id="phpaspectMenu"
-                  label="&amp;PHPAspect">
-               <separator
-                     name="phpaspectGroup">
-               </separator>
-            </menu>
             <action
                   class="org.phpaspect.apdt.internal.ui.actions.WeaveAction"
                   icon="icons/obj16/weave.gif"
                   id="org.phpaspect.apdt.internal.ui.actions.SampleAction"
                   label="&amp;Weave Project"
-                  menubarPath="phpaspectMenu/phpaspectGroup"
                   toolbarPath="phpaspectGroup"
                   tooltip="Weave project">
             </action>
@@ -104,7 +96,6 @@
                   icon="icons/obj16/aspect.gif"
                   id="org.phpaspect.apdt.ui.actions.newaspect"
                   label="&amp;New Aspect"
-                  menubarPath="phpaspectMenu/phpaspectGroup"
                   style="push"
                   class="org.phpaspect.apdt.internal.ui.actions.NewAspectAction"
                   toolbarPath="phpaspectGroup"
@@ -127,6 +118,11 @@
                id="org.phpaspect.apdt.ui.wizcategory"
                name="PHPAspect">
          </category>
+         <category
+               id="org.phpaspect.apdt.ui.wizcategory.examples"
+               name="Examples"
+               parentCategory="org.phpaspect.apdt.ui.wizcategory">
+         </category>
          <wizard
                category="org.phpaspect.apdt.ui.wizcategory"
                class="org.phpaspect.apdt.internal.ui.wizards.NewAspectWizard"
@@ -137,13 +133,53 @@
                preferredPerspectives="org.eclipse.php.perspective"
                project="false">
          </wizard>
+         <wizard
+               category="org.phpaspect.apdt.ui.wizcategory"
+               class="org.phpaspect.apdt.internal.ui.wizards.PHPAspectProjectCreationWizard"
+               finalPerspective="org.eclipse.php.perspective"
+               icon="icons/obj16/phpaspect_project_obj.gif"
+               id="org.phpaspect.apdt.ui.newproject"
+               name="PHPAspect Project"
+               preferredPerspectives="org.eclipse.php.perspective"
+               project="true">
+         </wizard>
+         <wizard
+               category="org.phpaspect.apdt.ui.wizcategory//org.phpaspect.apdt.ui.wizcategory.examples"
+               class="org.phpaspect.apdt.internal.ui.wizards.NewExampleWizard:Singleton"
+               finalPerspective="org.eclipse.php.perspective"
+               icon="icons/obj16/phpaspect_project_obj.gif"
+               id="org.phpaspect.apdt.ui.newsingletonexample"
+               name="Singleton Example"
+               preferredPerspectives="org.eclipse.php.perspective"
+               project="true">
+         </wizard>
+         <wizard
+               category="org.phpaspect.apdt.ui.wizcategory//org.phpaspect.apdt.ui.wizcategory.examples"
+               class="org.phpaspect.apdt.internal.ui.wizards.NewExampleWizard:Playlists"
+               finalPerspective="org.eclipse.php.perspective"
+               icon="icons/obj16/phpaspect_project_obj.gif"
+               id="org.phpaspect.apdt.ui.newplaylistsexample"
+               name="Playlists Example"
+               preferredPerspectives="org.eclipse.php.perspective"
+               project="true">
+         </wizard>
+         <wizard
+               category="org.phpaspect.apdt.ui.wizcategory//org.phpaspect.apdt.ui.wizcategory.examples"
+               class="org.phpaspect.apdt.internal.ui.wizards.NewExampleWizard:Order"
+               finalPerspective="org.eclipse.php.perspective"
+               icon="icons/obj16/phpaspect_project_obj.gif"
+               id="org.phpaspect.apdt.ui.neworderexample"
+               name="Order Example"
+               preferredPerspectives="org.eclipse.php.perspective"
+               project="true">
+         </wizard>
       </extension>
       	<!--PHP Perspective Extensions Definition:-->
 	<extension point="org.eclipse.ui.perspectiveExtensions">
 		<perspectiveExtension targetID="org.eclipse.php.perspective">
 			<actionSet id="org.phpaspect.apdt.ui.actionSet" />
 			<newWizardShortcut id="org.phpaspect.apdt.ui.newaspect" />
+			<newWizardShortcut id="org.phpaspect.apdt.ui.newproject" />
 		</perspectiveExtension>
 	 </extension>
-	 	<!--PHPAspect Editor:-->
 </plugin>
