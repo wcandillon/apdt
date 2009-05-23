@@ -41,6 +41,7 @@ RPARENTHESE     : ')'   ;
 AT : '@'   ;
 CALL : 'call';
 NEW : 'new';
+EXEC : 'exec';
 PAAMAYIM_NEKUDOTAYIM : '::';
 OBJECT_OPERATOR : '->';
 AND : '&&';

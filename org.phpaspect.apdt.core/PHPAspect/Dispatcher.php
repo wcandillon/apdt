@@ -2,6 +2,7 @@
 require_once 'PHPAspect/Model/Joinpoints/Joinpoint.php';
 require_once 'PHPAspect/Model/Joinpoints/MethodInvocationJoinpoint.php';
 require_once 'PHPAspect/Model/Joinpoints/ConstructorInvocationJoinpoint.php';
+require_once 'PHPAspect/Model/Joinpoints/MethodExecutionJoinpoint.php';
 require_once 'PHPAspect/AspectRegistry.php';
 require_once 'PHPAspect/InvalidCodeAdviceException.php';
 
@@ -61,7 +62,7 @@ function dispatch(array $advices, Joinpoint $jp, array $predicates = null)
 			$id = $codeAdvice->getDeclaringAspect()->getName().':'.$codeAdvice->getName();
 			if($predicates == null || $predicates[$id])
 			{
-				$aspectName = $codeAdvice->getName();
+				$aspectName = $codeAdvice->getDeclaringClass()->getName();
 				$aspect = $registry->getAspect($aspectName);
 				$returnValue = $codeAdvice->invoke($aspect, $jp);
 			}

@@ -2,7 +2,7 @@
 <?eclipse version="3.2"?>
 <plugin>
    <!-- PHPAspect Script Nature -->
-   <extension id="nature" point="org.eclipse.core.resources.natures">
+   <extension id="org.phpaspect.apdt.core.nature" point="org.eclipse.core.resources.natures">
       <runtime>
          <run class="org.phpaspect.apdt.internal.core.APDTNature"/>
       </runtime>
@@ -16,7 +16,7 @@
             file-extensions="ap"
             id="org.phpaspect.apdt.core.aspectsource"
             name="PHPAspect Content Type"
-            priority="low">
+            priority="high">
       </content-type>
     </extension>
    <!-- PHPAspect builder -->
