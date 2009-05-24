@@ -13,7 +13,6 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.phpaspect.apdt.ui.APDTUiPlugin;
-import org.phpaspect.internal.core.weaver.Utils;
 
 public class NewExampleWizard extends PHPAspectProjectCreationWizard implements IExecutableExtension
 {
@@ -63,15 +62,7 @@ public class NewExampleWizard extends PHPAspectProjectCreationWizard implements 
 		    } catch (URISyntaxException e) {
 		    	src = new File(files.getPath());
 			}
-		    try {
-				Utils.copyFiles(src, project.getLocation().toFile());
-				project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		    Examples.run(project, example);
 		}
 		return finished;
 	}
