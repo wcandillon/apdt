@@ -49,7 +49,7 @@
              class="org.phpaspect.apdt.internal.ui.actions.TogglePHPAspectNatureAction"
              icon="icons/obj16/add_php_project.gif"
              id="removephpaspectnatureaction"
-             label="Remove PHPAspect capability"
+             label="Remove PHPAspect capabilities"
              menubarPath="tools.submenu/content">
          </action>
       </objectContribution>
