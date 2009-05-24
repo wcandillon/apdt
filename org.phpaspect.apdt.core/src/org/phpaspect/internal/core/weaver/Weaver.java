@@ -11,6 +11,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -45,8 +46,7 @@ public class Weaver {
             root.delete(IResource.KEEP_HISTORY, monitor);
 	    }
 	    root.create(IResource.KEEP_HISTORY, true, monitor);
-	    project.getFolder(runtimeFolder).create(IResource.KEEP_HISTORY, true, monitor);
-        //Load project's aspects
+	    //Load project's aspects
 	    AspectFilesVisitor aspectVisitor = new AspectFilesVisitor(monitor);
         project.accept(aspectVisitor);
         pointcuts = aspectVisitor.getPointcuts();
@@ -54,27 +54,8 @@ public class Weaver {
         project.accept(new CopySourceFilesVisitor(project.getName(), monitor));
         //Weave php files
 	    root.accept(new PHPFilesVisitor(monitor, pointcuts));
-	    //Copy the PHPAspect runtime in the weaved folder
-	    String bundleLocation = APDTCorePlugin.getDefault().getBundle().getLocation();
-	    bundleLocation = bundleLocation.substring(10);
-	    URL runtime = null;
-		try {
-			runtime = new URL(bundleLocation+"PHPAspect/");
-		} catch (MalformedURLException e1) {
-			throw new IOException("Couldn't build bundle location: "+bundleLocation);
-		}
-	    File src = null;
-	    try {
-	    	src = new File(runtime.toURI());
-	    } catch (URISyntaxException e) {
-	    	src = new File(runtime.getPath());
-		}
-	    try {
-			Utils.copyFiles(src, project.getFile(runtimeFolder).getLocation().toFile());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		//TODO: is it necessary
+	    //Copy PHP aspect runtime
+	    PHPAspectRuntime.run(project);
 	    root.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 		return this;
 	}
