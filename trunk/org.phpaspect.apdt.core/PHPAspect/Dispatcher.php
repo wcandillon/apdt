@@ -51,8 +51,11 @@ function dispatch(array $advices, Joinpoint $jp, array $predicates = null)
 	foreach ($advices as $advice)
 	{
 		list($aspect, $codeAdvice) = explode(':', $advice);
+		if(!class_exists($aspect))
+		{
+			throw new Exception('Cannot find a definition of '.$aspect.'.');
+		}
 		$aspect = $registry->getAspect($aspect);
-		assert($aspect instanceof Aspect);
 		$codeAdviceReflection = $aspect->getAspect()->getCodeAdvice($codeAdvice);
 		if($codeAdviceReflection == null)
 		{

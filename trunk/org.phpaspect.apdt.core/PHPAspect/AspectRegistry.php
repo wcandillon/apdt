@@ -14,6 +14,7 @@ class AspectRegistry
 		return self::$instance;
 	}
 	
+	//TODO: lazy init of aspects, aspects in sessions
 	private function AspectRegistry()
 	{
     	$classes = get_declared_classes();
@@ -32,6 +33,11 @@ class AspectRegistry
 	public function getAspects()
 	{
 		return $this->aspects;
+	}
+	
+	public function hasAspect($aspect)
+	{
+		return $this->aspects[$name];
 	}
 	
 	public function getAspect($name)
