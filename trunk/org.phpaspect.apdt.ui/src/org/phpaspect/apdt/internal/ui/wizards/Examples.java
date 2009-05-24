@@ -21,17 +21,14 @@ public abstract class Examples {
 	
 	private static final String FILES_PATH = "/Examples/"; //$NON-NLS-1$	
 
-	private static final String ORDER_FOLDER = "Order/"; //$NON-NLS-1$	
 	private static final String ORDER_FILE1 = "Order/Log.ap"; //$NON-NLS-1$	
 	private static final String ORDER_FILE2 = "Order/Order.php"; //$NON-NLS-1$
 
-	private static final String PLAYLISTS_FOLDER = "Playlists/"; //$NON-NLS-1$	
 	private static final String PLAYLISTS_FILE1 = "Playlists/BillingService.ap"; //$NON-NLS-1$	
 	private static final String PLAYLISTS_FILE2 = "Playlists/index.php"; //$NON-NLS-1$	
 	private static final String PLAYLISTS_FILE3 = "Playlists/Playlist.php"; //$NON-NLS-1$	
 	private static final String PLAYLISTS_FILE4 = "Playlists/Song.php"; //$NON-NLS-1$	
-
-	private static final String SINGLETON_FOLDER = "Singleton/"; //$NON-NLS-1$	
+	
 	private static final String SINGLETON_FILE1 = "Singleton/test.php"; //$NON-NLS-1$	
 	private static final String SINGLETON_FILE2 = "Singleton/Singleton.ap"; //$NON-NLS-1$
 	
@@ -40,15 +37,12 @@ public abstract class Examples {
 		try {
 			if("Singleton".equals(example))
 			{
-				createFolder(project, FILES_PATH, SINGLETON_FOLDER);
 				createFile(project, FILES_PATH, SINGLETON_FILE1);
 				createFile(project, FILES_PATH, SINGLETON_FILE2);
 			} else if("Order".equals(example)) {
-				createFolder(project, FILES_PATH, ORDER_FOLDER);
 				createFile(project, FILES_PATH, ORDER_FILE1);
 				createFile(project, FILES_PATH, ORDER_FILE2);
 			} else if("Playlists".equals(example)) {
-				createFolder(project, FILES_PATH, PLAYLISTS_FOLDER);
 				createFile(project, FILES_PATH, PLAYLISTS_FILE1);
 				createFile(project, FILES_PATH, PLAYLISTS_FILE2);
 				createFile(project, FILES_PATH, PLAYLISTS_FILE3);
@@ -63,7 +57,7 @@ public abstract class Examples {
 		URL demoFileURL = FileLocator.find(Platform.getBundle(APDTUiPlugin.PLUGIN_ID), new Path(filePath + fileName), null); 
 		demoFileURL = FileLocator.resolve(demoFileURL);
 		IPath p = project.getFullPath();
-		p = p.append(fileName);
+		p = p.append(new Path(fileName).lastSegment());
 		final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(p);
 		InputStream inputStream = (InputStream) demoFileURL.getContent();
 		file.create(inputStream, true, null);
