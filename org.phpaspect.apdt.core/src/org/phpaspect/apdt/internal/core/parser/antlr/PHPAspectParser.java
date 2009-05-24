@@ -1,4 +1,4 @@
-// $ANTLR 3.1.3 Mar 17, 2009 19:23:44 PHPAspectParser.g 2009-05-22 19:46:54
+// $ANTLR 3.1.3 Mar 17, 2009 19:23:44 PHPAspectParser.g 2009-05-24 10:44:57
 
 package org.phpaspect.apdt.internal.core.parser.antlr;
 
@@ -13,13 +13,15 @@ import org.antlr.runtime.tree.*;
 
 public class PHPAspectParser extends APDTParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "DIGIT", "INTLIT", "CHARLIT", "STRING_LITERAL", "WS", "DOT", "LPARENTHESE", "RPARENTHESE", "AT", "CALL", "NEW", "EXEC", "PAAMAYIM_NEKUDOTAYIM", "OBJECT_OPERATOR", "AND", "OR", "NOT", "PLUS", "BEFORE", "AROUND", "AFTER", "MIXIN", "LABEL", "ANNOTATION", "PARENTHESE"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "DIGIT", "INTLIT", "CHARLIT", "STRING_LITERAL", "WS", "DOT", "LPARENTHESE", "RPARENTHESE", "AT", "CALL", "NEW", "EXEC", "PAAMAYIM_NEKUDOTAYIM", "OBJECT_OPERATOR", "AND", "OR", "NOT", "PLUS", "BEFORE", "AROUND", "AFTER", "MIXIN", "FILE", "WITHIN", "LABEL", "STRING", "ANNOTATION", "PARENTHESE"
     };
+    public static final int WITHIN=27;
     public static final int LPARENTHESE=10;
     public static final int WS=8;
+    public static final int STRING=29;
     public static final int NEW=14;
     public static final int PAAMAYIM_NEKUDOTAYIM=16;
-    public static final int LABEL=26;
+    public static final int LABEL=28;
     public static final int OBJECT_OPERATOR=17;
     public static final int MIXIN=25;
     public static final int OR=19;
@@ -27,17 +29,18 @@ public class PHPAspectParser extends APDTParser {
     public static final int DOT=9;
     public static final int EXEC=15;
     public static final int AND=18;
+    public static final int FILE=26;
     public static final int INTLIT=5;
     public static final int EOF=-1;
     public static final int STRING_LITERAL=7;
-    public static final int CHARLIT=6;
     public static final int CALL=13;
-    public static final int ANNOTATION=27;
+    public static final int CHARLIT=6;
+    public static final int ANNOTATION=30;
     public static final int DIGIT=4;
     public static final int PLUS=21;
     public static final int BEFORE=22;
     public static final int RPARENTHESE=11;
-    public static final int PARENTHESE=28;
+    public static final int PARENTHESE=31;
     public static final int NOT=20;
     public static final int AROUND=23;
     public static final int AT=12;
@@ -124,7 +127,7 @@ public class PHPAspectParser extends APDTParser {
 
 
             // AST REWRITE
-            // elements: advice, pointcut
+            // elements: pointcut, advice
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -530,7 +533,7 @@ public class PHPAspectParser extends APDTParser {
     };
 
     // $ANTLR start "joinpoint"
-    // PHPAspectParser.g:51:1: joinpoint : ( CALL LPARENTHESE type= LABEL resolution method= LABEL RPARENTHESE -> ^( CALL $type resolution $method) | NEW LPARENTHESE type= LABEL RPARENTHESE -> ^( NEW $type) | EXEC LPARENTHESE type= LABEL PAAMAYIM_NEKUDOTAYIM method= LABEL RPARENTHESE -> ^( EXEC $type $method) | LPARENTHESE or_joinpoint RPARENTHESE -> ^( PARENTHESE or_joinpoint ) | MIXIN LPARENTHESE type= LABEL LPARENTHESE -> ^( MIXIN type ) );
+    // PHPAspectParser.g:51:1: joinpoint : ( CALL LPARENTHESE type= LABEL resolution method= LABEL RPARENTHESE -> ^( CALL $type resolution $method) | NEW LPARENTHESE type= LABEL RPARENTHESE -> ^( NEW $type) | FILE LPARENTHESE string= STRING RPARENTHESE -> ^( FILE $string) | WITHIN LPARENTHESE type= LABEL RPARENTHESE -> ^( WITHIN $type) | EXEC LPARENTHESE type= LABEL PAAMAYIM_NEKUDOTAYIM method= LABEL RPARENTHESE -> ^( EXEC $type $method) | LPARENTHESE or_joinpoint RPARENTHESE -> ^( PARENTHESE or_joinpoint ) | MIXIN LPARENTHESE type= LABEL LPARENTHESE -> ^( MIXIN type ) );
     public final PHPAspectParser.joinpoint_return joinpoint() throws RecognitionException {
         PHPAspectParser.joinpoint_return retval = new PHPAspectParser.joinpoint_return();
         retval.start = input.LT(1);
@@ -539,56 +542,73 @@ public class PHPAspectParser extends APDTParser {
 
         CommonToken type=null;
         CommonToken method=null;
+        CommonToken string=null;
         CommonToken CALL12=null;
         CommonToken LPARENTHESE13=null;
         CommonToken RPARENTHESE15=null;
         CommonToken NEW16=null;
         CommonToken LPARENTHESE17=null;
         CommonToken RPARENTHESE18=null;
-        CommonToken EXEC19=null;
+        CommonToken FILE19=null;
         CommonToken LPARENTHESE20=null;
-        CommonToken PAAMAYIM_NEKUDOTAYIM21=null;
-        CommonToken RPARENTHESE22=null;
+        CommonToken RPARENTHESE21=null;
+        CommonToken WITHIN22=null;
         CommonToken LPARENTHESE23=null;
-        CommonToken RPARENTHESE25=null;
-        CommonToken MIXIN26=null;
-        CommonToken LPARENTHESE27=null;
-        CommonToken LPARENTHESE28=null;
+        CommonToken RPARENTHESE24=null;
+        CommonToken EXEC25=null;
+        CommonToken LPARENTHESE26=null;
+        CommonToken PAAMAYIM_NEKUDOTAYIM27=null;
+        CommonToken RPARENTHESE28=null;
+        CommonToken LPARENTHESE29=null;
+        CommonToken RPARENTHESE31=null;
+        CommonToken MIXIN32=null;
+        CommonToken LPARENTHESE33=null;
+        CommonToken LPARENTHESE34=null;
         PHPAspectParser.resolution_return resolution14 = null;
 
-        PHPAspectParser.or_joinpoint_return or_joinpoint24 = null;
+        PHPAspectParser.or_joinpoint_return or_joinpoint30 = null;
 
 
         PHPAspectCommonTree type_tree=null;
         PHPAspectCommonTree method_tree=null;
+        PHPAspectCommonTree string_tree=null;
         PHPAspectCommonTree CALL12_tree=null;
         PHPAspectCommonTree LPARENTHESE13_tree=null;
         PHPAspectCommonTree RPARENTHESE15_tree=null;
         PHPAspectCommonTree NEW16_tree=null;
         PHPAspectCommonTree LPARENTHESE17_tree=null;
         PHPAspectCommonTree RPARENTHESE18_tree=null;
-        PHPAspectCommonTree EXEC19_tree=null;
+        PHPAspectCommonTree FILE19_tree=null;
         PHPAspectCommonTree LPARENTHESE20_tree=null;
-        PHPAspectCommonTree PAAMAYIM_NEKUDOTAYIM21_tree=null;
-        PHPAspectCommonTree RPARENTHESE22_tree=null;
+        PHPAspectCommonTree RPARENTHESE21_tree=null;
+        PHPAspectCommonTree WITHIN22_tree=null;
         PHPAspectCommonTree LPARENTHESE23_tree=null;
-        PHPAspectCommonTree RPARENTHESE25_tree=null;
-        PHPAspectCommonTree MIXIN26_tree=null;
-        PHPAspectCommonTree LPARENTHESE27_tree=null;
-        PHPAspectCommonTree LPARENTHESE28_tree=null;
+        PHPAspectCommonTree RPARENTHESE24_tree=null;
+        PHPAspectCommonTree EXEC25_tree=null;
+        PHPAspectCommonTree LPARENTHESE26_tree=null;
+        PHPAspectCommonTree PAAMAYIM_NEKUDOTAYIM27_tree=null;
+        PHPAspectCommonTree RPARENTHESE28_tree=null;
+        PHPAspectCommonTree LPARENTHESE29_tree=null;
+        PHPAspectCommonTree RPARENTHESE31_tree=null;
+        PHPAspectCommonTree MIXIN32_tree=null;
+        PHPAspectCommonTree LPARENTHESE33_tree=null;
+        PHPAspectCommonTree LPARENTHESE34_tree=null;
         RewriteRuleTokenStream stream_PAAMAYIM_NEKUDOTAYIM=new RewriteRuleTokenStream(adaptor,"token PAAMAYIM_NEKUDOTAYIM");
+        RewriteRuleTokenStream stream_WITHIN=new RewriteRuleTokenStream(adaptor,"token WITHIN");
         RewriteRuleTokenStream stream_LPARENTHESE=new RewriteRuleTokenStream(adaptor,"token LPARENTHESE");
         RewriteRuleTokenStream stream_LABEL=new RewriteRuleTokenStream(adaptor,"token LABEL");
+        RewriteRuleTokenStream stream_FILE=new RewriteRuleTokenStream(adaptor,"token FILE");
         RewriteRuleTokenStream stream_RPARENTHESE=new RewriteRuleTokenStream(adaptor,"token RPARENTHESE");
         RewriteRuleTokenStream stream_MIXIN=new RewriteRuleTokenStream(adaptor,"token MIXIN");
+        RewriteRuleTokenStream stream_STRING=new RewriteRuleTokenStream(adaptor,"token STRING");
         RewriteRuleTokenStream stream_NEW=new RewriteRuleTokenStream(adaptor,"token NEW");
         RewriteRuleTokenStream stream_EXEC=new RewriteRuleTokenStream(adaptor,"token EXEC");
         RewriteRuleTokenStream stream_CALL=new RewriteRuleTokenStream(adaptor,"token CALL");
         RewriteRuleSubtreeStream stream_or_joinpoint=new RewriteRuleSubtreeStream(adaptor,"rule or_joinpoint");
         RewriteRuleSubtreeStream stream_resolution=new RewriteRuleSubtreeStream(adaptor,"rule resolution");
         try {
-            // PHPAspectParser.g:52:1: ( CALL LPARENTHESE type= LABEL resolution method= LABEL RPARENTHESE -> ^( CALL $type resolution $method) | NEW LPARENTHESE type= LABEL RPARENTHESE -> ^( NEW $type) | EXEC LPARENTHESE type= LABEL PAAMAYIM_NEKUDOTAYIM method= LABEL RPARENTHESE -> ^( EXEC $type $method) | LPARENTHESE or_joinpoint RPARENTHESE -> ^( PARENTHESE or_joinpoint ) | MIXIN LPARENTHESE type= LABEL LPARENTHESE -> ^( MIXIN type ) )
-            int alt4=5;
+            // PHPAspectParser.g:52:1: ( CALL LPARENTHESE type= LABEL resolution method= LABEL RPARENTHESE -> ^( CALL $type resolution $method) | NEW LPARENTHESE type= LABEL RPARENTHESE -> ^( NEW $type) | FILE LPARENTHESE string= STRING RPARENTHESE -> ^( FILE $string) | WITHIN LPARENTHESE type= LABEL RPARENTHESE -> ^( WITHIN $type) | EXEC LPARENTHESE type= LABEL PAAMAYIM_NEKUDOTAYIM method= LABEL RPARENTHESE -> ^( EXEC $type $method) | LPARENTHESE or_joinpoint RPARENTHESE -> ^( PARENTHESE or_joinpoint ) | MIXIN LPARENTHESE type= LABEL LPARENTHESE -> ^( MIXIN type ) )
+            int alt4=7;
             switch ( input.LA(1) ) {
             case CALL:
                 {
@@ -600,19 +620,29 @@ public class PHPAspectParser extends APDTParser {
                 alt4=2;
                 }
                 break;
-            case EXEC:
+            case FILE:
                 {
                 alt4=3;
                 }
                 break;
-            case LPARENTHESE:
+            case WITHIN:
                 {
                 alt4=4;
                 }
                 break;
-            case MIXIN:
+            case EXEC:
                 {
                 alt4=5;
+                }
+                break;
+            case LPARENTHESE:
+                {
+                alt4=6;
+                }
+                break;
+            case MIXIN:
+                {
+                alt4=7;
                 }
                 break;
             default:
@@ -650,7 +680,7 @@ public class PHPAspectParser extends APDTParser {
 
 
                     // AST REWRITE
-                    // elements: method, type, resolution, CALL
+                    // elements: method, resolution, CALL, type
                     // token labels: type, method
                     // rule labels: retval
                     // token list labels: 
@@ -699,7 +729,7 @@ public class PHPAspectParser extends APDTParser {
 
 
                     // AST REWRITE
-                    // elements: NEW, type
+                    // elements: type, NEW
                     // token labels: type
                     // rule labels: retval
                     // token list labels: 
@@ -728,30 +758,122 @@ public class PHPAspectParser extends APDTParser {
                     }
                     break;
                 case 3 :
-                    // PHPAspectParser.g:56:3: EXEC LPARENTHESE type= LABEL PAAMAYIM_NEKUDOTAYIM method= LABEL RPARENTHESE
+                    // PHPAspectParser.g:56:3: FILE LPARENTHESE string= STRING RPARENTHESE
                     {
-                    EXEC19=(CommonToken)match(input,EXEC,FOLLOW_EXEC_in_joinpoint232);  
-                    stream_EXEC.add(EXEC19);
+                    FILE19=(CommonToken)match(input,FILE,FOLLOW_FILE_in_joinpoint232);  
+                    stream_FILE.add(FILE19);
 
                     LPARENTHESE20=(CommonToken)match(input,LPARENTHESE,FOLLOW_LPARENTHESE_in_joinpoint234);  
                     stream_LPARENTHESE.add(LPARENTHESE20);
 
-                    type=(CommonToken)match(input,LABEL,FOLLOW_LABEL_in_joinpoint238);  
-                    stream_LABEL.add(type);
+                    string=(CommonToken)match(input,STRING,FOLLOW_STRING_in_joinpoint238);  
+                    stream_STRING.add(string);
 
-                    PAAMAYIM_NEKUDOTAYIM21=(CommonToken)match(input,PAAMAYIM_NEKUDOTAYIM,FOLLOW_PAAMAYIM_NEKUDOTAYIM_in_joinpoint240);  
-                    stream_PAAMAYIM_NEKUDOTAYIM.add(PAAMAYIM_NEKUDOTAYIM21);
-
-                    method=(CommonToken)match(input,LABEL,FOLLOW_LABEL_in_joinpoint244);  
-                    stream_LABEL.add(method);
-
-                    RPARENTHESE22=(CommonToken)match(input,RPARENTHESE,FOLLOW_RPARENTHESE_in_joinpoint246);  
-                    stream_RPARENTHESE.add(RPARENTHESE22);
+                    RPARENTHESE21=(CommonToken)match(input,RPARENTHESE,FOLLOW_RPARENTHESE_in_joinpoint240);  
+                    stream_RPARENTHESE.add(RPARENTHESE21);
 
 
 
                     // AST REWRITE
-                    // elements: EXEC, type, method
+                    // elements: FILE, string
+                    // token labels: string
+                    // rule labels: retval
+                    // token list labels: 
+                    // rule list labels: 
+                    // wildcard labels: 
+                    retval.tree = root_0;
+                    RewriteRuleTokenStream stream_string=new RewriteRuleTokenStream(adaptor,"token string",string);
+                    RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
+
+                    root_0 = (PHPAspectCommonTree)adaptor.nil();
+                    // 57:2: -> ^( FILE $string)
+                    {
+                        // PHPAspectParser.g:57:5: ^( FILE $string)
+                        {
+                        PHPAspectCommonTree root_1 = (PHPAspectCommonTree)adaptor.nil();
+                        root_1 = (PHPAspectCommonTree)adaptor.becomeRoot(stream_FILE.nextNode(), root_1);
+
+                        adaptor.addChild(root_1, stream_string.nextNode());
+
+                        adaptor.addChild(root_0, root_1);
+                        }
+
+                    }
+
+                    retval.tree = root_0;
+                    }
+                    break;
+                case 4 :
+                    // PHPAspectParser.g:58:3: WITHIN LPARENTHESE type= LABEL RPARENTHESE
+                    {
+                    WITHIN22=(CommonToken)match(input,WITHIN,FOLLOW_WITHIN_in_joinpoint254);  
+                    stream_WITHIN.add(WITHIN22);
+
+                    LPARENTHESE23=(CommonToken)match(input,LPARENTHESE,FOLLOW_LPARENTHESE_in_joinpoint256);  
+                    stream_LPARENTHESE.add(LPARENTHESE23);
+
+                    type=(CommonToken)match(input,LABEL,FOLLOW_LABEL_in_joinpoint260);  
+                    stream_LABEL.add(type);
+
+                    RPARENTHESE24=(CommonToken)match(input,RPARENTHESE,FOLLOW_RPARENTHESE_in_joinpoint262);  
+                    stream_RPARENTHESE.add(RPARENTHESE24);
+
+
+
+                    // AST REWRITE
+                    // elements: WITHIN, type
+                    // token labels: type
+                    // rule labels: retval
+                    // token list labels: 
+                    // rule list labels: 
+                    // wildcard labels: 
+                    retval.tree = root_0;
+                    RewriteRuleTokenStream stream_type=new RewriteRuleTokenStream(adaptor,"token type",type);
+                    RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
+
+                    root_0 = (PHPAspectCommonTree)adaptor.nil();
+                    // 59:2: -> ^( WITHIN $type)
+                    {
+                        // PHPAspectParser.g:59:5: ^( WITHIN $type)
+                        {
+                        PHPAspectCommonTree root_1 = (PHPAspectCommonTree)adaptor.nil();
+                        root_1 = (PHPAspectCommonTree)adaptor.becomeRoot(stream_WITHIN.nextNode(), root_1);
+
+                        adaptor.addChild(root_1, stream_type.nextNode());
+
+                        adaptor.addChild(root_0, root_1);
+                        }
+
+                    }
+
+                    retval.tree = root_0;
+                    }
+                    break;
+                case 5 :
+                    // PHPAspectParser.g:60:3: EXEC LPARENTHESE type= LABEL PAAMAYIM_NEKUDOTAYIM method= LABEL RPARENTHESE
+                    {
+                    EXEC25=(CommonToken)match(input,EXEC,FOLLOW_EXEC_in_joinpoint276);  
+                    stream_EXEC.add(EXEC25);
+
+                    LPARENTHESE26=(CommonToken)match(input,LPARENTHESE,FOLLOW_LPARENTHESE_in_joinpoint278);  
+                    stream_LPARENTHESE.add(LPARENTHESE26);
+
+                    type=(CommonToken)match(input,LABEL,FOLLOW_LABEL_in_joinpoint282);  
+                    stream_LABEL.add(type);
+
+                    PAAMAYIM_NEKUDOTAYIM27=(CommonToken)match(input,PAAMAYIM_NEKUDOTAYIM,FOLLOW_PAAMAYIM_NEKUDOTAYIM_in_joinpoint284);  
+                    stream_PAAMAYIM_NEKUDOTAYIM.add(PAAMAYIM_NEKUDOTAYIM27);
+
+                    method=(CommonToken)match(input,LABEL,FOLLOW_LABEL_in_joinpoint288);  
+                    stream_LABEL.add(method);
+
+                    RPARENTHESE28=(CommonToken)match(input,RPARENTHESE,FOLLOW_RPARENTHESE_in_joinpoint290);  
+                    stream_RPARENTHESE.add(RPARENTHESE28);
+
+
+
+                    // AST REWRITE
+                    // elements: method, type, EXEC
                     // token labels: type, method
                     // rule labels: retval
                     // token list labels: 
@@ -763,9 +885,9 @@ public class PHPAspectParser extends APDTParser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (PHPAspectCommonTree)adaptor.nil();
-                    // 57:2: -> ^( EXEC $type $method)
+                    // 61:2: -> ^( EXEC $type $method)
                     {
-                        // PHPAspectParser.g:57:5: ^( EXEC $type $method)
+                        // PHPAspectParser.g:61:5: ^( EXEC $type $method)
                         {
                         PHPAspectCommonTree root_1 = (PHPAspectCommonTree)adaptor.nil();
                         root_1 = (PHPAspectCommonTree)adaptor.becomeRoot(stream_EXEC.nextNode(), root_1);
@@ -781,20 +903,20 @@ public class PHPAspectParser extends APDTParser {
                     retval.tree = root_0;
                     }
                     break;
-                case 4 :
-                    // PHPAspectParser.g:58:3: LPARENTHESE or_joinpoint RPARENTHESE
+                case 6 :
+                    // PHPAspectParser.g:62:3: LPARENTHESE or_joinpoint RPARENTHESE
                     {
-                    LPARENTHESE23=(CommonToken)match(input,LPARENTHESE,FOLLOW_LPARENTHESE_in_joinpoint263);  
-                    stream_LPARENTHESE.add(LPARENTHESE23);
+                    LPARENTHESE29=(CommonToken)match(input,LPARENTHESE,FOLLOW_LPARENTHESE_in_joinpoint307);  
+                    stream_LPARENTHESE.add(LPARENTHESE29);
 
-                    pushFollow(FOLLOW_or_joinpoint_in_joinpoint265);
-                    or_joinpoint24=or_joinpoint();
+                    pushFollow(FOLLOW_or_joinpoint_in_joinpoint309);
+                    or_joinpoint30=or_joinpoint();
 
                     state._fsp--;
 
-                    stream_or_joinpoint.add(or_joinpoint24.getTree());
-                    RPARENTHESE25=(CommonToken)match(input,RPARENTHESE,FOLLOW_RPARENTHESE_in_joinpoint267);  
-                    stream_RPARENTHESE.add(RPARENTHESE25);
+                    stream_or_joinpoint.add(or_joinpoint30.getTree());
+                    RPARENTHESE31=(CommonToken)match(input,RPARENTHESE,FOLLOW_RPARENTHESE_in_joinpoint311);  
+                    stream_RPARENTHESE.add(RPARENTHESE31);
 
 
 
@@ -809,9 +931,9 @@ public class PHPAspectParser extends APDTParser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (PHPAspectCommonTree)adaptor.nil();
-                    // 59:2: -> ^( PARENTHESE or_joinpoint )
+                    // 63:2: -> ^( PARENTHESE or_joinpoint )
                     {
-                        // PHPAspectParser.g:59:5: ^( PARENTHESE or_joinpoint )
+                        // PHPAspectParser.g:63:5: ^( PARENTHESE or_joinpoint )
                         {
                         PHPAspectCommonTree root_1 = (PHPAspectCommonTree)adaptor.nil();
                         root_1 = (PHPAspectCommonTree)adaptor.becomeRoot((PHPAspectCommonTree)adaptor.create(PARENTHESE, "PARENTHESE"), root_1);
@@ -826,20 +948,20 @@ public class PHPAspectParser extends APDTParser {
                     retval.tree = root_0;
                     }
                     break;
-                case 5 :
-                    // PHPAspectParser.g:60:3: MIXIN LPARENTHESE type= LABEL LPARENTHESE
+                case 7 :
+                    // PHPAspectParser.g:64:3: MIXIN LPARENTHESE type= LABEL LPARENTHESE
                     {
-                    MIXIN26=(CommonToken)match(input,MIXIN,FOLLOW_MIXIN_in_joinpoint280);  
-                    stream_MIXIN.add(MIXIN26);
+                    MIXIN32=(CommonToken)match(input,MIXIN,FOLLOW_MIXIN_in_joinpoint324);  
+                    stream_MIXIN.add(MIXIN32);
 
-                    LPARENTHESE27=(CommonToken)match(input,LPARENTHESE,FOLLOW_LPARENTHESE_in_joinpoint282);  
-                    stream_LPARENTHESE.add(LPARENTHESE27);
+                    LPARENTHESE33=(CommonToken)match(input,LPARENTHESE,FOLLOW_LPARENTHESE_in_joinpoint326);  
+                    stream_LPARENTHESE.add(LPARENTHESE33);
 
-                    type=(CommonToken)match(input,LABEL,FOLLOW_LABEL_in_joinpoint286);  
+                    type=(CommonToken)match(input,LABEL,FOLLOW_LABEL_in_joinpoint330);  
                     stream_LABEL.add(type);
 
-                    LPARENTHESE28=(CommonToken)match(input,LPARENTHESE,FOLLOW_LPARENTHESE_in_joinpoint288);  
-                    stream_LPARENTHESE.add(LPARENTHESE28);
+                    LPARENTHESE34=(CommonToken)match(input,LPARENTHESE,FOLLOW_LPARENTHESE_in_joinpoint332);  
+                    stream_LPARENTHESE.add(LPARENTHESE34);
 
 
 
@@ -854,9 +976,9 @@ public class PHPAspectParser extends APDTParser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (PHPAspectCommonTree)adaptor.nil();
-                    // 61:2: -> ^( MIXIN type )
+                    // 65:2: -> ^( MIXIN type )
                     {
-                        // PHPAspectParser.g:61:5: ^( MIXIN type )
+                        // PHPAspectParser.g:65:5: ^( MIXIN type )
                         {
                         PHPAspectCommonTree root_1 = (PHPAspectCommonTree)adaptor.nil();
                         root_1 = (PHPAspectCommonTree)adaptor.becomeRoot(stream_MIXIN.nextNode(), root_1);
@@ -895,27 +1017,27 @@ public class PHPAspectParser extends APDTParser {
     };
 
     // $ANTLR start "resolution"
-    // PHPAspectParser.g:64:1: resolution : ( PAAMAYIM_NEKUDOTAYIM | OBJECT_OPERATOR );
+    // PHPAspectParser.g:68:1: resolution : ( PAAMAYIM_NEKUDOTAYIM | OBJECT_OPERATOR );
     public final PHPAspectParser.resolution_return resolution() throws RecognitionException {
         PHPAspectParser.resolution_return retval = new PHPAspectParser.resolution_return();
         retval.start = input.LT(1);
 
         PHPAspectCommonTree root_0 = null;
 
-        CommonToken set29=null;
+        CommonToken set35=null;
 
-        PHPAspectCommonTree set29_tree=null;
+        PHPAspectCommonTree set35_tree=null;
 
         try {
-            // PHPAspectParser.g:65:1: ( PAAMAYIM_NEKUDOTAYIM | OBJECT_OPERATOR )
+            // PHPAspectParser.g:69:1: ( PAAMAYIM_NEKUDOTAYIM | OBJECT_OPERATOR )
             // PHPAspectParser.g:
             {
             root_0 = (PHPAspectCommonTree)adaptor.nil();
 
-            set29=(CommonToken)input.LT(1);
+            set35=(CommonToken)input.LT(1);
             if ( (input.LA(1)>=PAAMAYIM_NEKUDOTAYIM && input.LA(1)<=OBJECT_OPERATOR) ) {
                 input.consume();
-                adaptor.addChild(root_0, (PHPAspectCommonTree)adaptor.create(set29));
+                adaptor.addChild(root_0, (PHPAspectCommonTree)adaptor.create(set35));
                 state.errorRecovery=false;
             }
             else {
@@ -951,42 +1073,50 @@ public class PHPAspectParser extends APDTParser {
 
     public static final BitSet FOLLOW_AT_in_annotation65 = new BitSet(new long[]{0x0000000001C00000L});
     public static final BitSet FOLLOW_advice_in_annotation67 = new BitSet(new long[]{0x0000000000000400L});
-    public static final BitSet FOLLOW_LPARENTHESE_in_annotation69 = new BitSet(new long[]{0x000000000210E400L});
+    public static final BitSet FOLLOW_LPARENTHESE_in_annotation69 = new BitSet(new long[]{0x000000000E10E400L});
     public static final BitSet FOLLOW_pointcut_in_annotation71 = new BitSet(new long[]{0x0000000000000800L});
     public static final BitSet FOLLOW_RPARENTHESE_in_annotation73 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_set_in_advice0 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_or_joinpoint_in_pointcut110 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_and_joinpoint_in_or_joinpoint121 = new BitSet(new long[]{0x0000000000080002L});
-    public static final BitSet FOLLOW_OR_in_or_joinpoint124 = new BitSet(new long[]{0x000000000210E400L});
+    public static final BitSet FOLLOW_OR_in_or_joinpoint124 = new BitSet(new long[]{0x000000000E10E400L});
     public static final BitSet FOLLOW_and_joinpoint_in_or_joinpoint129 = new BitSet(new long[]{0x0000000000080002L});
     public static final BitSet FOLLOW_not_joinpoint_in_and_joinpoint142 = new BitSet(new long[]{0x0000000000040002L});
-    public static final BitSet FOLLOW_AND_in_and_joinpoint145 = new BitSet(new long[]{0x000000000210E400L});
+    public static final BitSet FOLLOW_AND_in_and_joinpoint145 = new BitSet(new long[]{0x000000000E10E400L});
     public static final BitSet FOLLOW_not_joinpoint_in_and_joinpoint150 = new BitSet(new long[]{0x0000000000040002L});
-    public static final BitSet FOLLOW_NOT_in_not_joinpoint162 = new BitSet(new long[]{0x000000000210E400L});
+    public static final BitSet FOLLOW_NOT_in_not_joinpoint162 = new BitSet(new long[]{0x000000000E10E400L});
     public static final BitSet FOLLOW_joinpoint_in_not_joinpoint167 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_CALL_in_joinpoint177 = new BitSet(new long[]{0x0000000000000400L});
-    public static final BitSet FOLLOW_LPARENTHESE_in_joinpoint179 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_LPARENTHESE_in_joinpoint179 = new BitSet(new long[]{0x0000000010000000L});
     public static final BitSet FOLLOW_LABEL_in_joinpoint183 = new BitSet(new long[]{0x0000000000030000L});
-    public static final BitSet FOLLOW_resolution_in_joinpoint185 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_resolution_in_joinpoint185 = new BitSet(new long[]{0x0000000010000000L});
     public static final BitSet FOLLOW_LABEL_in_joinpoint189 = new BitSet(new long[]{0x0000000000000800L});
     public static final BitSet FOLLOW_RPARENTHESE_in_joinpoint191 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_NEW_in_joinpoint210 = new BitSet(new long[]{0x0000000000000400L});
-    public static final BitSet FOLLOW_LPARENTHESE_in_joinpoint212 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_LPARENTHESE_in_joinpoint212 = new BitSet(new long[]{0x0000000010000000L});
     public static final BitSet FOLLOW_LABEL_in_joinpoint216 = new BitSet(new long[]{0x0000000000000800L});
     public static final BitSet FOLLOW_RPARENTHESE_in_joinpoint218 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_EXEC_in_joinpoint232 = new BitSet(new long[]{0x0000000000000400L});
-    public static final BitSet FOLLOW_LPARENTHESE_in_joinpoint234 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_LABEL_in_joinpoint238 = new BitSet(new long[]{0x0000000000010000L});
-    public static final BitSet FOLLOW_PAAMAYIM_NEKUDOTAYIM_in_joinpoint240 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_LABEL_in_joinpoint244 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_RPARENTHESE_in_joinpoint246 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LPARENTHESE_in_joinpoint263 = new BitSet(new long[]{0x000000000210E400L});
-    public static final BitSet FOLLOW_or_joinpoint_in_joinpoint265 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_RPARENTHESE_in_joinpoint267 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_MIXIN_in_joinpoint280 = new BitSet(new long[]{0x0000000000000400L});
-    public static final BitSet FOLLOW_LPARENTHESE_in_joinpoint282 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_LABEL_in_joinpoint286 = new BitSet(new long[]{0x0000000000000400L});
-    public static final BitSet FOLLOW_LPARENTHESE_in_joinpoint288 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_FILE_in_joinpoint232 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_LPARENTHESE_in_joinpoint234 = new BitSet(new long[]{0x0000000020000000L});
+    public static final BitSet FOLLOW_STRING_in_joinpoint238 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_RPARENTHESE_in_joinpoint240 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_WITHIN_in_joinpoint254 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_LPARENTHESE_in_joinpoint256 = new BitSet(new long[]{0x0000000010000000L});
+    public static final BitSet FOLLOW_LABEL_in_joinpoint260 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_RPARENTHESE_in_joinpoint262 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_EXEC_in_joinpoint276 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_LPARENTHESE_in_joinpoint278 = new BitSet(new long[]{0x0000000010000000L});
+    public static final BitSet FOLLOW_LABEL_in_joinpoint282 = new BitSet(new long[]{0x0000000000010000L});
+    public static final BitSet FOLLOW_PAAMAYIM_NEKUDOTAYIM_in_joinpoint284 = new BitSet(new long[]{0x0000000010000000L});
+    public static final BitSet FOLLOW_LABEL_in_joinpoint288 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_RPARENTHESE_in_joinpoint290 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LPARENTHESE_in_joinpoint307 = new BitSet(new long[]{0x000000000E10E400L});
+    public static final BitSet FOLLOW_or_joinpoint_in_joinpoint309 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_RPARENTHESE_in_joinpoint311 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_MIXIN_in_joinpoint324 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_LPARENTHESE_in_joinpoint326 = new BitSet(new long[]{0x0000000010000000L});
+    public static final BitSet FOLLOW_LABEL_in_joinpoint330 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_LPARENTHESE_in_joinpoint332 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_set_in_resolution0 = new BitSet(new long[]{0x0000000000000002L});
 
 }

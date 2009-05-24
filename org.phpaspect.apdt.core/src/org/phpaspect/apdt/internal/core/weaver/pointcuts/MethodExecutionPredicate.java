@@ -37,6 +37,7 @@ public class MethodExecutionPredicate extends AbstractPointcut {
 					boolean m = clazz.getName().getName().matches(type);
 					if(m)
 					{
+						runtimeAssertion = ast.newScalar("true");
 						matched = true;
 						return true;
 					}
