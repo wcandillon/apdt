@@ -53,6 +53,10 @@ joinpoint
 	-> ^(CALL $type resolution $method)
 | NEW LPARENTHESE type=LABEL RPARENTHESE
 	-> ^(NEW $type)
+| FILE LPARENTHESE string=STRING RPARENTHESE
+	-> ^(FILE $string)
+| WITHIN LPARENTHESE type=LABEL RPARENTHESE
+	-> ^(WITHIN $type)
 | EXEC LPARENTHESE type=LABEL PAAMAYIM_NEKUDOTAYIM method=LABEL RPARENTHESE
 	-> ^(EXEC $type $method)
 | LPARENTHESE or_joinpoint RPARENTHESE

@@ -73,6 +73,18 @@ public class AnnotationVisitor implements PHPAspectNodeVisitor{
             	stack.push(new MethodExecutionPredicate(id, type, method));
             }
             break;
+            case PHPAspectParser.FILE:
+            {
+            	assert id != null;
+            	String file = node.getChild(0).toString();
+            	stack.push(new FilePredicate(id, file));
+            }
+            break;
+            case PHPAspectParser.WITHIN:
+            {
+            	String within = node.getChild(0).toString();
+            	stack.push(new WithinPredicate(id, within));
+            }
             case PHPAspectParser.PARENTHESE:
             {
         		assert stack.size() == 1;

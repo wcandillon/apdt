@@ -1,6 +1,7 @@
 package org.phpaspect.apdt.internal.core.weaver.pointcuts;
 
 import org.eclipse.php.internal.core.ast.nodes.AST;
+import org.eclipse.php.internal.core.ast.nodes.Expression;
 import org.eclipse.php.internal.core.ast.nodes.InfixExpression;
 import org.phpaspect.apdt.core.weaver.*;
 
@@ -16,8 +17,15 @@ public class AndPointcut extends AbstractPointcut{
 	}
 
 	public boolean match(AST ast, Joinpoint jp) {
-		boolean match = pt1.match(ast, jp) && pt2.match(ast, jp);
-		runtimeAssertion = ast.newInfixExpression(pt1.getRuntimeAssertion(), InfixExpression.OP_BOOL_AND, pt2.getRuntimeAssertion());
+		boolean m1 = pt1.match(ast, jp);
+		boolean m2 = pt2.match(ast, jp);
+		boolean match = m1 && m2;
+		matched = true;
+		Expression pt1 = m1?this.pt1.getRuntimeAssertion():ast.newScalar("false");
+		Expression pt2 = m2?this.pt2.getRuntimeAssertion():ast.newScalar("false");
+		runtimeAssertion = ast.newInfixExpression(pt1==null?ast.newScalar("true"):pt1,
+													InfixExpression.OP_BOOL_AND,
+													pt2==null?ast.newScalar("true"):pt2);
 		return match;
 	}
 

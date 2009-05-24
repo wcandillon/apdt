@@ -52,8 +52,14 @@ BEFORE : 'Before';
 AROUND : 'Around';
 AFTER : 'After';
 MIXIN : 'Mixin';
+FILE : 'file';
+WITHIN : 'within';
 
 //[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*
 LABEL
-  : ('a'..'z'|'A'..'Z'|'_'|'*')('*'|'a'..'z'|'A'..'Z'|'_'|'0'..'9')*
-  ;
+: ('a'..'z'|'A'..'Z'|'_'|'*')('*'|'a'..'z'|'A'..'Z'|'_'|'0'..'9')*
+;
+  
+STRING
+: '"'.*'"'
+;

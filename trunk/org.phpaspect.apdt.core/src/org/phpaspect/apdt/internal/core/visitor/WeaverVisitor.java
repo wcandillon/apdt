@@ -65,16 +65,12 @@ public final class WeaverVisitor extends AbstractVisitor{
 	}
 	
 	private String getWithinType(ASTNode node){
-		ASTNode enclosingNode = node.getEnclosingBodyNode();
-		if(enclosingNode instanceof Program){
-			return "Main";
-		} else if(enclosingNode instanceof TypeDeclaration){
-			TypeDeclaration typeDeclaration = (TypeDeclaration)enclosingNode;
-			return typeDeclaration.getName().getName();
-		} else if(node == enclosingNode) {
+		if(node instanceof MethodDeclaration)
+		{
+			return ((ClassDeclaration)node.getParent().getParent()).getName().getName();
+		} else {
 			return "Main";
 		}
-		return getWithinType(enclosingNode);
 	}
 
 	public WeaverVisitor addPointcut(Pointcut pointcut){

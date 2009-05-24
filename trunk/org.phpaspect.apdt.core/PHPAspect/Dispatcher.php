@@ -6,13 +6,42 @@ require_once 'PHPAspect/Model/Joinpoints/MethodExecutionJoinpoint.php';
 require_once 'PHPAspect/AspectRegistry.php';
 require_once 'PHPAspect/InvalidCodeAdviceException.php';
 
+class JoinpointRegistry
+{
+	private static $joinpoint;
+	
+	public static function set(Joinpoint $joinpoint)
+	{
+		self::$joinpoint = $joinpoint;
+	}
+	
+	public static function get()
+	{
+		return self::$joinpoint;
+	}
+	
+	public static function clear()
+	{
+		self::$joinpoint = null;
+	}
+}
 function isTypeMatching($object, $pattern)
 {
 	return eregi($pattern, get_class($object));
 }
 
+function proceed()
+{
+	$thisJoinpoint =  JoinpointRegistry::get();
+	if($thisJoinpoint instanceof Joinpoint)
+	{
+		return $thisJoinpoint->invoke();
+	}
+}
+
 function dispatch(array $advices, Joinpoint $jp, array $predicates = null)
 {
+	JoinpointRegistry::set($jp);
 	$returnValue = null;
 	$before = array();
 	$around = array();
@@ -83,6 +112,7 @@ function dispatch(array $advices, Joinpoint $jp, array $predicates = null)
 			$codeAdvice->invoke($aspect, $jp);
 		}
 	}
+	JoinpointRegistry::clear();
 	return $returnValue;
 }
 ?>
