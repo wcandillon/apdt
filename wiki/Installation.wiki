@@ -2,4 +2,5 @@
 
 You can install APDT using our update site: [http://apdt.googlecode.com/svn/trunk/org.phpaspect.apdt.updatesite/]
 
-*Warning: APDT requires PDT 2.1.0 RC1, from a build older than 05/24/2009!*
+*Warning: APDT requires PDT 2.1.0 RC2 at least!*
+*PDT 2.1.0 RC2 is available at [http://www.eclipse.org/pdt/downloads/]!
