@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<project name="phpAspectParser" default="generateParser" basedir=".">
+	<target name="generateParser">
+		<property name="destination" value="../src/org/phpaspect/apdt/internal/core/parser/antlr" />
+		<java classpath="antlr-3.1.3.jar" classname="org.antlr.Tool">
+			<arg value="PHPAspectLexer.g" />
+			<arg value="PHPAspectParser.g" />
+		</java>
+		<move file="PHPAspectParser.tokens" todir="${destination}" />
+		<move file="PHPAspectLexer.tokens" todir="${destination}" />
+		<move file="PHPAspectLexer.java" todir="${destination}" />
+		<move file="PHPAspectParser.java" todir="${destination}" />
+	</target>
+</project>
